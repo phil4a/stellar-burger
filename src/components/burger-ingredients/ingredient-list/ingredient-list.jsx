@@ -1,4 +1,5 @@
 import IngredientItem from '../ingredient-item/ingredient-item';
+import styles from './ingredient-list.module.css';
 
 const IngredientList = ({ ingredients }) => {
 	const groupedIngredients = ingredients.reduce((acc, item) => {
@@ -21,18 +22,11 @@ const IngredientList = ({ ingredients }) => {
 	};
 
 	return (
-		<div style={{ height: '100%', overflowY: 'auto' }}>
+		<div className={styles.wrapper}>
 			{Object.keys(groupedIngredients).map((type) => (
 				<div key={type}>
 					<h2 className="text text_type_main-medium mt-10 mb-6">{getIngredientType(type)}</h2>
-					<ul
-						style={{
-							display: 'grid',
-							gridTemplateColumns: 'repeat(2, 1fr)',
-							rowGap: '32px',
-							columnGap: '24px',
-						}}
-						className="pl-4">
+					<ul className={`${styles.list} pl-4`}>
 						{groupedIngredients[type].map((ingredient) => (
 							<IngredientItem key={ingredient._id} {...ingredient} />
 						))}
