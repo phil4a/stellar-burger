@@ -4,6 +4,8 @@ import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 
+import Modal from '../modals/modal';
+
 import appStyles from './app.module.css';
 
 import { useEffect } from 'react';
@@ -14,6 +16,7 @@ const App = () => {
 		isLoading: true,
 		hasError: false,
 		ingredients: [],
+		isShowModal: false,
 	});
 
 	useEffect(() => {
@@ -30,6 +33,14 @@ const App = () => {
 		};
 		getIngredients();
 	}, []);
+
+	const handleOpenModal = () => {
+		setState({ ...state, isShowModal: true });
+	};
+	const handleCloseModal = () => {
+		setState({ ...state, isShowModal: false });
+	};
+
 	return (
 		<>
 			<AppHeader></AppHeader>
@@ -39,9 +50,10 @@ const App = () => {
 				{!state.isLoading && !state.hasError && (
 					<>
 						<BurgerIngredients ingredients={state.ingredients} />
-						<BurgerConstructor ingredients={state.ingredients} />
+						<BurgerConstructor ingredients={state.ingredients} show={handleOpenModal} />
 					</>
 				)}
+				{state.isShowModal && <Modal hide={handleCloseModal}>TEST</Modal>}
 			</main>
 		</>
 	);

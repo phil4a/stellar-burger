@@ -5,7 +5,7 @@ import styles from './burger-constructor.module.css';
 import propTypes from 'prop-types';
 import { ingredientType } from '../../utils/types';
 
-const BurgerConstructor = ({ ingredients }) => {
+const BurgerConstructor = ({ ingredients, show }) => {
 	const buns = ingredients.filter((item) => item.type === 'bun');
 
 	const otherIngredients = ingredients.filter((item) => item.type !== 'bun');
@@ -42,7 +42,7 @@ const BurgerConstructor = ({ ingredients }) => {
 
 			<div className={`${styles.actions} mt-4`}>
 				<OrderTotalPrice />
-				<Button htmlType="button" type="primary" size="large" extraClass="ml-10">
+				<Button htmlType="button" type="primary" size="large" extraClass="ml-10" onClick={show}>
 					Оформить заказ
 				</Button>
 			</div>
