@@ -7,6 +7,7 @@ import { ingredientType } from '../../utils/types';
 
 const BurgerConstructor = ({ ingredients }) => {
 	const buns = ingredients.filter((item) => item.type === 'bun');
+
 	const otherIngredients = ingredients.filter((item) => item.type !== 'bun');
 
 	const bun = buns[0];
