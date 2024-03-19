@@ -1,7 +1,7 @@
 import IngredientItem from '../ingredient-item/ingredient-item';
 import styles from './ingredient-list.module.css';
 
-const IngredientList = ({ ingredients }) => {
+const IngredientList = ({ ingredients, show }) => {
 	const groupedIngredients = ingredients.reduce((acc, item) => {
 		if (!acc[item.type]) acc[item.type] = [];
 		acc[item.type].push(item);
@@ -28,7 +28,7 @@ const IngredientList = ({ ingredients }) => {
 					<h2 className="text text_type_main-medium mt-10 mb-6">{getIngredientType(type)}</h2>
 					<ul className={`${styles.list} pl-4`}>
 						{groupedIngredients[type].map((ingredient) => (
-							<IngredientItem key={ingredient._id} {...ingredient} />
+							<IngredientItem key={ingredient._id} show={show} {...ingredient} />
 						))}
 					</ul>
 				</div>

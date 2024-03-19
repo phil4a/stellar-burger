@@ -1,4 +1,6 @@
 import ReactDOM from 'react-dom';
+import ModalOverlay from '../modal-overlay/modal-overlay';
+
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './modal.module.css';
 
@@ -13,7 +15,7 @@ const Modal = ({ children, hide }) => {
 				</button>
 				{children}
 			</div>
-			<div onClick={hide} className={styles.backdrop}></div>
+			<ModalOverlay hide={hide} />
 		</>,
 		modalRoot,
 	);

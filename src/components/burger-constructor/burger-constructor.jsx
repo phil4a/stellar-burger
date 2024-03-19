@@ -42,7 +42,14 @@ const BurgerConstructor = ({ ingredients, show }) => {
 
 			<div className={`${styles.actions} mt-4`}>
 				<OrderTotalPrice />
-				<Button htmlType="button" type="primary" size="large" extraClass="ml-10" onClick={show}>
+				<Button
+					htmlType="button"
+					type="primary"
+					size="large"
+					extraClass="ml-10"
+					onClick={() => {
+						show('orderDetails');
+					}}>
 					Оформить заказ
 				</Button>
 			</div>
@@ -51,7 +58,7 @@ const BurgerConstructor = ({ ingredients, show }) => {
 };
 
 BurgerConstructor.propTypes = {
-	ingredients: propTypes.arrayOf(ingredientType),
+	ingredients: propTypes.arrayOf(ingredientType).isRequired,
 };
 
 export default BurgerConstructor;
