@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom';
 import ModalOverlay from '../modal-overlay/modal-overlay';
+import propTypes from 'prop-types';
 
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './modal.module.css';
@@ -19,6 +20,10 @@ const Modal = ({ children, hide }) => {
 		</>,
 		modalRoot,
 	);
+};
+Modal.propTypes = {
+	children: propTypes.element.isRequired,
+	hide: propTypes.node.isRequired,
 };
 
 export default Modal;

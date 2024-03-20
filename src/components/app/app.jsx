@@ -66,7 +66,7 @@ const App = () => {
 					<Modal hide={handleCloseModal}>
 						{state.currentModal === 'orderDetails' && <OrderDetails />}
 						{state.currentModal === 'ingredientDetails' && (
-							<IngredientDetails ingredient={state.currentIngredient} />
+							<IngredientDetails {...state.currentIngredient} />
 						)}
 					</Modal>
 				)}
