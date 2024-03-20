@@ -12,6 +12,9 @@ import appStyles from './app.module.css';
 
 import { useEffect } from 'react';
 
+//Todo
+//! Разобраться с ingredientDetails
+//! Улучшить быстродействие, добавить мемоизацию
 const App = () => {
 	const API_URL = 'https://norma.nomoreparties.space/api';
 	const [state, setState] = useState({
@@ -20,25 +23,23 @@ const App = () => {
 		ingredients: [],
 		isShowModal: false,
 		currentModal: null,
-		currentIngredient: null,
+		currentIngredient: {},
 	});
 
 	useEffect(() => {
-		const getIngredients = () => {
-			setState({ ...state, hasError: false, isLoading: true });
-			fetch(`${API_URL}/ingredients`)
-				.then((res) => res.json())
-				.then((data) => {
-					setState({ ...state, ingredients: data.data, isLoading: false });
-				})
-				.catch((e) => {
-					setState({ ...state, hasError: true, isLoading: false });
-				});
+		const getIngredientsFromServer = async () => {
+			try {
+				const response = await fetch(`${API_URL}/ingredients`);
+				const data = await response.json();
+				setState({ ...state, ingredients: data.data, isLoading: false });
+			} catch (error) {
+				setState({ ...state, hasError: true, isLoading: false });
+			}
 		};
-		getIngredients();
+		getIngredientsFromServer();
 	}, []);
 
-	const handleOpenModal = (modalType, ingredient = null) => {
+	const handleOpenModal = (modalType, ingredient = {}) => {
 		setState({
 			...state,
 			isShowModal: true,

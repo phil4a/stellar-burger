@@ -22,8 +22,8 @@ const Modal = ({ children, hide }) => {
 	);
 };
 Modal.propTypes = {
-	children: propTypes.element.isRequired,
-	hide: propTypes.node.isRequired,
+	children: propTypes.node.isRequired,
+	hide: propTypes.func.isRequired,
 };
 
 export default Modal;

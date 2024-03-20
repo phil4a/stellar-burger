@@ -59,6 +59,7 @@ const BurgerConstructor = ({ ingredients, show }) => {
 
 BurgerConstructor.propTypes = {
 	ingredients: propTypes.arrayOf(ingredientType).isRequired,
+	show: propTypes.func.isRequired,
 };
 
 export default BurgerConstructor;
