@@ -17,7 +17,7 @@ const Modal = ({ children, hide }) => {
 		return () => {
 			document.removeEventListener('keydown', handleEsc);
 		};
-	});
+	}, [hide]);
 
 	const modalRoot = document.querySelector('#modals');
 
