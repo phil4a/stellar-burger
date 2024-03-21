@@ -2,8 +2,7 @@ import styles from './ingredient-details.module.css';
 import propTypes from 'prop-types';
 import { ingredientType } from '../../../utils/types';
 
-const IngredientDetails = (props) => {
-	console.log(props);
+const IngredientDetails = ({ props }) => {
 	return (
 		<div className={styles.body}>
 			<h2 className={`${styles.title} text text_type_main-large`}>Детали ингредиента</h2>
@@ -32,7 +31,7 @@ const IngredientDetails = (props) => {
 };
 
 IngredientDetails.propTypes = {
-	props: propTypes.object.isRequired,
+	props: ingredientType.isRequired,
 };
 
 export default IngredientDetails;

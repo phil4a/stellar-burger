@@ -9,6 +9,7 @@ const OrderDetails = () => {
 			<div className={styles.check}>
 				<CheckMarkIcon />
 			</div>
+
 			<p className="text text_type_main-default mb-2">Ваш заказ начали готовить</p>
 			<p className="text text_type_main-default text_color_inactive">
 				Дождитесь готовности на орбитальной станции

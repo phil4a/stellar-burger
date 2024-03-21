@@ -13,7 +13,6 @@ import appStyles from './app.module.css';
 import { useEffect } from 'react';
 
 //Todo
-//! Разобраться с ingredientDetails
 //! Улучшить быстродействие, добавить мемоизацию
 const App = () => {
 	const API_URL = 'https://norma.nomoreparties.space/api';
@@ -48,9 +47,8 @@ const App = () => {
 		});
 	};
 	const handleCloseModal = () => {
-		setState({ ...state, isShowModal: false, currentModal: null, currentIngredient: null });
+		setState({ ...state, isShowModal: false, currentModal: null, currentIngredient: {} });
 	};
-
 	return (
 		<>
 			<AppHeader></AppHeader>
@@ -67,7 +65,7 @@ const App = () => {
 					<Modal hide={handleCloseModal}>
 						{state.currentModal === 'orderDetails' && <OrderDetails />}
 						{state.currentModal === 'ingredientDetails' && (
-							<IngredientDetails {...state.currentIngredient} />
+							<IngredientDetails props={state.currentIngredient} />
 						)}
 					</Modal>
 				)}
