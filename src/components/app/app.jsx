@@ -29,6 +29,9 @@ const App = () => {
 		const getIngredientsFromServer = async () => {
 			try {
 				const response = await fetch(`${API_URL}/ingredients`);
+				if (!response.ok) {
+					return Promise.reject(`Ошибка ${response.status}`);
+				}
 				const data = await response.json();
 				setState({ ...state, ingredients: data.data, isLoading: false });
 			} catch (error) {
