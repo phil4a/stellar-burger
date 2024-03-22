@@ -1,0 +1,24 @@
+.body {
+	padding: 120px 0;
+	text-align: center;
+}
+
+.title {
+	filter: drop-shadow(0px 0px 16px #3333ff54);
+}
+
+.check {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	width: 80px;
+	height: 80px;
+	margin: 60px 0;
+	background-color: #3333ff17;
+}
+
+.check svg {
+	width: 40px;
+	height: auto;
+}
