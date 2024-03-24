@@ -1,11 +1,15 @@
+import { useContext } from 'react';
 import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderTotalPrice from './order-total-price/order-total-price';
+
+import { IngredientsContext } from '../../services/ingredients-context';
+
 import styles from './burger-constructor.module.css';
 
 import propTypes from 'prop-types';
-import { ingredientType } from '../../utils/types';
 
-const BurgerConstructor = ({ ingredients, show }) => {
+const BurgerConstructor = ({ show }) => {
+	const { ingredients } = useContext(IngredientsContext);
 	const buns = ingredients.filter((item) => item.type === 'bun');
 
 	const otherIngredients = ingredients.filter((item) => item.type !== 'bun');
@@ -58,7 +62,6 @@ const BurgerConstructor = ({ ingredients, show }) => {
 };
 
 BurgerConstructor.propTypes = {
-	ingredients: propTypes.arrayOf(ingredientType).isRequired,
 	show: propTypes.func.isRequired,
 };
 
