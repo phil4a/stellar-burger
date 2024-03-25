@@ -60,8 +60,8 @@ const App = () => {
 					{state.hasError && 'Произошла ошибка при загрузке данных'}
 					{!state.isLoading && !state.hasError && (
 						<>
-							<BurgerIngredients ingredients={ingredients} show={handleOpenModal} />
-							<BurgerConstructor ingredients={ingredients} show={handleOpenModal} />
+							<BurgerIngredients show={handleOpenModal} />
+							<BurgerConstructor show={handleOpenModal} />
 						</>
 					)}
 					{state.isShowModal && (

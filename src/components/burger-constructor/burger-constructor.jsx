@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useReducer, useEffect } from 'react';
 import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderTotalPrice from './order-total-price/order-total-price';
 
@@ -8,13 +8,27 @@ import styles from './burger-constructor.module.css';
 
 import propTypes from 'prop-types';
 
+function totalReducer(state, action) {
+	switch (action.type) {
+		case 'calculate':
+			const total = action.payload.reduce((acc, item) => acc + item.price, 0) + action.bunPrice * 2;
+			return { total };
+		default:
+			throw new Error(`Unhandled action type: ${action.type}`);
+	}
+}
+
 const BurgerConstructor = ({ show }) => {
 	const { ingredients } = useContext(IngredientsContext);
 	const buns = ingredients.filter((item) => item.type === 'bun');
-
 	const otherIngredients = ingredients.filter((item) => item.type !== 'bun');
-
 	const bun = buns[0];
+
+	const [{ total }, dispatch] = useReducer(totalReducer, { total: 0 });
+
+	useEffect(() => {
+		dispatch({ type: 'calculate', payload: otherIngredients, bunPrice: bun.price });
+	}, [ingredients]);
 
 	return (
 		<section className={`${styles.section} pt-25 pl-4 pr-4`}>
@@ -45,7 +59,7 @@ const BurgerConstructor = ({ show }) => {
 			/>
 
 			<div className={`${styles.actions} mt-4`}>
-				<OrderTotalPrice />
+				<OrderTotalPrice total={total} />
 				<Button
 					htmlType="button"
 					type="primary"
