@@ -18,13 +18,21 @@ function totalReducer(state, action) {
 	}
 }
 
-const BurgerConstructor = ({ show }) => {
+const BurgerConstructor = ({ sendOrder }) => {
 	const { ingredients } = useContext(IngredientsContext);
 	const buns = ingredients.filter((item) => item.type === 'bun');
 	const otherIngredients = ingredients.filter((item) => item.type !== 'bun');
 	const bun = buns[0];
 
 	const [{ total }, dispatch] = useReducer(totalReducer, { total: 0 });
+
+	const handleOrderClick = () => {
+		const ingredientIds = [bun._id, ...otherIngredients].map(
+			(ingredient) => ingredient._id,
+			bun._id,
+		);
+		sendOrder(ingredientIds);
+	};
 
 	useEffect(() => {
 		dispatch({ type: 'calculate', payload: otherIngredients, bunPrice: bun.price });
@@ -65,9 +73,7 @@ const BurgerConstructor = ({ show }) => {
 					type="primary"
 					size="large"
 					extraClass="ml-10"
-					onClick={() => {
-						show('orderDetails');
-					}}>
+					onClick={handleOrderClick}>
 					Оформить заказ
 				</Button>
 			</div>
@@ -76,7 +82,7 @@ const BurgerConstructor = ({ show }) => {
 };
 
 BurgerConstructor.propTypes = {
-	show: propTypes.func.isRequired,
+	sendOrder: propTypes.func.isRequired,
 };
 
 export default BurgerConstructor;

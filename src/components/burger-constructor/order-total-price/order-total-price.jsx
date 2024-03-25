@@ -1,4 +1,5 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import propTypes from 'prop-types';
 
 const OrderTotalPrice = ({ total }) => {
 	return (
@@ -7,6 +8,10 @@ const OrderTotalPrice = ({ total }) => {
 			<CurrencyIcon type="primary" />
 		</div>
 	);
+};
+
+OrderTotalPrice.propTypes = {
+	total: propTypes.number.isRequired,
 };
 
 export default OrderTotalPrice;
