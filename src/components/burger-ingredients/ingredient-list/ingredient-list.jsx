@@ -1,10 +1,12 @@
+import React, { useContext } from 'react';
 import IngredientItem from '../ingredient-item/ingredient-item';
 import styles from './ingredient-list.module.css';
 
 import propTypes from 'prop-types';
-import { ingredientType } from '../../../utils/types';
+import { IngredientsContext } from '../../../services/ingredients-context';
 
-const IngredientList = ({ ingredients, show }) => {
+const IngredientList = ({ show }) => {
+	const { ingredients } = useContext(IngredientsContext);
 	const groupedIngredients = ingredients.reduce((acc, item) => {
 		if (!acc[item.type]) acc[item.type] = [];
 		acc[item.type].push(item);
@@ -41,7 +43,6 @@ const IngredientList = ({ ingredients, show }) => {
 };
 
 IngredientList.propTypes = {
-	ingredients: propTypes.arrayOf(ingredientType).isRequired,
 	show: propTypes.func.isRequired,
 };
 
