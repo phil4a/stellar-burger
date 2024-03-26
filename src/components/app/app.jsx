@@ -24,28 +24,33 @@ const App = () => {
 	const [ingredients, setIngredients] = useState([]);
 	const [orderNumber, setOrderNumber] = useState(null);
 
-	const sendOrder = async (ingredientIds) => {
-		try {
-			const response = await fetch(`${API_URL}/orders`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ ingredients: ingredientIds }),
-			});
-			if (!response.ok) {
-				throw new Error('Ошибка сервера');
-			}
-			const data = await response.json();
-			if (data.success) {
-				setOrderNumber(data.order.number);
-				handleOpenModal('orderDetails');
-			} else {
-				throw new Error('Ошибка получения заказа');
-			}
-		} catch (error) {
-			console.error(error);
+	const requestOrder = async (ingredientIds) => {
+		const response = await fetch(`${API_URL}/orders`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ ingredients: ingredientIds }),
+		});
+		if (!response.ok) {
+			throw new Error('Ошибка сервера');
 		}
+		return await response.json();
+	};
+
+	const sendOrder = (ingredientIds) => {
+		requestOrder(ingredientIds)
+			.then((data) => {
+				if (data.success) {
+					setOrderNumber(data.order.number);
+					handleOpenModal('orderDetails');
+				} else {
+					throw new Error('Ошибка получения заказа');
+				}
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 	};
 
 	useEffect(() => {
@@ -78,27 +83,27 @@ const App = () => {
 	};
 	return (
 		<>
-			<IngredientsContext.Provider value={{ ingredients }}>
-				<AppHeader></AppHeader>
-				<main className={appStyles.container}>
-					{state.isLoading && 'Загрузка данных...'}
-					{state.hasError && 'Произошла ошибка при загрузке данных'}
-					{!state.isLoading && !state.hasError && (
+			<AppHeader></AppHeader>
+			<main className={appStyles.container}>
+				{state.isLoading && 'Загрузка данных...'}
+				{state.hasError && 'Произошла ошибка при загрузке данных'}
+				{!state.isLoading && !state.hasError && (
+					<IngredientsContext.Provider value={{ ingredients }}>
 						<>
 							<BurgerIngredients show={handleOpenModal} />
 							<BurgerConstructor sendOrder={sendOrder} />
 						</>
-					)}
-					{state.isShowModal && (
-						<Modal hide={handleCloseModal}>
-							{state.currentModal === 'orderDetails' && <OrderDetails orderNumber={orderNumber} />}
-							{state.currentModal === 'ingredientDetails' && (
-								<IngredientDetails props={state.currentIngredient} />
-							)}
-						</Modal>
-					)}
-				</main>
-			</IngredientsContext.Provider>
+					</IngredientsContext.Provider>
+				)}
+				{state.isShowModal && (
+					<Modal hide={handleCloseModal}>
+						{state.currentModal === 'orderDetails' && <OrderDetails orderNumber={orderNumber} />}
+						{state.currentModal === 'ingredientDetails' && (
+							<IngredientDetails props={state.currentIngredient} />
+						)}
+					</Modal>
+				)}
+			</main>
 		</>
 	);
 };
