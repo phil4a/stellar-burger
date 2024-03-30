@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 
 import { IngredientsContext } from '../../services/ingredients-context';
+import { setCurrentIngredient } from '../../services/currentIngredientSlice';
 
 import Modal from '../modals/modal/modal';
 import IngredientDetails from '../modals/ingredient-details/ingredient-details';
@@ -19,8 +21,8 @@ const App = () => {
 		hasError: false,
 		isShowModal: false,
 		currentModal: null,
-		currentIngredient: {},
 	});
+	const dispatch = useDispatch();
 	const [ingredients, setIngredients] = useState([]);
 	const [orderNumber, setOrderNumber] = useState(null);
 
@@ -75,11 +77,12 @@ const App = () => {
 			...state,
 			isShowModal: true,
 			currentModal: modalType,
-			currentIngredient: ingredient,
 		});
+		dispatch(setCurrentIngredient(ingredient));
 	};
 	const handleCloseModal = () => {
-		setState({ ...state, isShowModal: false, currentModal: null, currentIngredient: {} });
+		setState({ ...state, isShowModal: false, currentModal: null });
+		dispatch(setCurrentIngredient({}));
 	};
 	return (
 		<>
@@ -98,9 +101,7 @@ const App = () => {
 				{state.isShowModal && (
 					<Modal hide={handleCloseModal}>
 						{state.currentModal === 'orderDetails' && <OrderDetails orderNumber={orderNumber} />}
-						{state.currentModal === 'ingredientDetails' && (
-							<IngredientDetails props={state.currentIngredient} />
-						)}
+						{state.currentModal === 'ingredientDetails' && <IngredientDetails />}
 					</Modal>
 				)}
 			</main>
