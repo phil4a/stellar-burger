@@ -3,7 +3,6 @@ import styles from './ingredient-details.module.css';
 
 const IngredientDetails = () => {
 	const ingredient = useSelector((state) => state.currentIngredient.ingredient);
-
 	return (
 		<div className={styles.body}>
 			<h2 className={`${styles.title} text text_type_main-large`}>Детали ингредиента</h2>

@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import IngredientItem from '../ingredient-item/ingredient-item';
 import styles from './ingredient-list.module.css';
 
 import propTypes from 'prop-types';
-import { IngredientsContext } from '../../../services/ingredients-context';
 
 const IngredientList = ({ show }) => {
-	const { ingredients } = useContext(IngredientsContext);
+	const { ingredients } = useSelector((store) => store.ingredients);
 	const groupedIngredients = ingredients.reduce((acc, item) => {
 		if (!acc[item.type]) acc[item.type] = [];
 		acc[item.type].push(item);

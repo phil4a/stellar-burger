@@ -1,8 +1,7 @@
-import { useContext, useReducer, useEffect } from 'react';
+import { useReducer, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderTotalPrice from './order-total-price/order-total-price';
-
-import { IngredientsContext } from '../../services/ingredients-context';
 
 import styles from './burger-constructor.module.css';
 
@@ -19,7 +18,7 @@ function totalReducer(state, action) {
 }
 
 const BurgerConstructor = ({ sendOrder }) => {
-	const { ingredients } = useContext(IngredientsContext);
+	const { ingredients } = useSelector((store) => store.ingredients);
 	const buns = ingredients.filter((item) => item.type === 'bun');
 	const otherIngredients = ingredients.filter((item) => item.type !== 'bun');
 	const bun = buns[0];
