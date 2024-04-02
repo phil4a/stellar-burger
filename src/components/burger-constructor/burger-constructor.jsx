@@ -23,7 +23,7 @@ function totalReducer(state, action) {
 const BurgerConstructor = ({ show }) => {
 	const dispatch = useDispatch();
 	const { ingredients } = useSelector((store) => store.ingredients);
-	const { orderStatus } = useSelector((store) => store.currentOrder);
+
 	const buns = ingredients.filter((item) => item.type === 'bun');
 	const otherIngredients = ingredients.filter((item) => item.type !== 'bun');
 	const bun = buns[0];
@@ -35,7 +35,6 @@ const BurgerConstructor = ({ show }) => {
 			(ingredient) => ingredient._id,
 			bun._id,
 		);
-
 		dispatch(sendOrder(ingredientIds));
 		show('orderDetails');
 	};

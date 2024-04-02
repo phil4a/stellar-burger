@@ -53,7 +53,6 @@ const App = () => {
 		isShowModal: false,
 		currentModal: null,
 	});
-	const orderNumber = useSelector((state) => state.currentOrder.orderNumber);
 
 	useEffect(() => {
 		if (ingredientsStatus === 'idle') {
