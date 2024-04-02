@@ -31,6 +31,4 @@ export const getIngredientsFromServer = createAsyncThunk('ingredients/fetch', as
 	return await response.json();
 });
 
-export const { setIngredients } = ingredientsSlice.actions;
-
 export default ingredientsSlice.reducer;

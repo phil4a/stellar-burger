@@ -1,5 +1,8 @@
 import { useReducer, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { sendOrder } from '../../services/order-slice';
+
 import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderTotalPrice from './order-total-price/order-total-price';
 
@@ -17,25 +20,27 @@ function totalReducer(state, action) {
 	}
 }
 
-const BurgerConstructor = ({ sendOrder }) => {
+const BurgerConstructor = () => {
+	const dispatch = useDispatch();
 	const { ingredients } = useSelector((store) => store.ingredients);
 	const buns = ingredients.filter((item) => item.type === 'bun');
 	const otherIngredients = ingredients.filter((item) => item.type !== 'bun');
 	const bun = buns[0];
 
-	const [{ total }, dispatch] = useReducer(totalReducer, { total: 0 });
+	// const [{ total }, dispatch] = useReducer(totalReducer, { total: 0 });
 
 	const handleOrderClick = () => {
 		const ingredientIds = [bun._id, ...otherIngredients].map(
 			(ingredient) => ingredient._id,
 			bun._id,
 		);
-		sendOrder(ingredientIds);
+		dispatch(sendOrder(ingredientIds));
+		// sendOrder(ingredientIds);
 	};
 
-	useEffect(() => {
-		dispatch({ type: 'calculate', payload: otherIngredients, bunPrice: bun.price });
-	}, [ingredients]);
+	// useEffect(() => {
+	// 	dispatch({ type: 'calculate', payload: otherIngredients, bunPrice: bun.price });
+	// }, [ingredients]);
 
 	return (
 		<section className={`${styles.section} pt-25 pl-4 pr-4`}>
@@ -66,7 +71,7 @@ const BurgerConstructor = ({ sendOrder }) => {
 			/>
 
 			<div className={`${styles.actions} mt-4`}>
-				<OrderTotalPrice total={total} />
+				<OrderTotalPrice />
 				<Button
 					htmlType="button"
 					type="primary"
@@ -78,10 +83,6 @@ const BurgerConstructor = ({ sendOrder }) => {
 			</div>
 		</section>
 	);
-};
-
-BurgerConstructor.propTypes = {
-	sendOrder: propTypes.func.isRequired,
 };
 
 export default BurgerConstructor;
