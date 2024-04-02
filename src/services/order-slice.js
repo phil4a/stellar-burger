@@ -10,7 +10,11 @@ const initialState = {
 export const orderSlice = createSlice({
 	name: 'currentOrder',
 	initialState,
-	reducers: {},
+	reducers: {
+		clearCurrentOrder: (state) => {
+			state.orderNumber = null;
+		},
+	},
 	extraReducers(builder) {
 		builder
 			.addCase(sendOrder.pending, (state, action) => {
@@ -40,6 +44,8 @@ export const sendOrder = createAsyncThunk('currentOrder/send', async (ingredient
 	}
 	return await response.json();
 });
+
+export const { clearCurrentOrder } = orderSlice.actions;
 
 export default orderSlice.reducer;
 

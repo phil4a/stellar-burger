@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { setCurrentIngredient } from '../../services/current-ingredient-slice';
 import { getIngredientsFromServer } from '../../services/ingredients-slice';
+import { clearCurrentOrder } from '../../services/order-slice';
 
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
@@ -52,37 +53,7 @@ const App = () => {
 		isShowModal: false,
 		currentModal: null,
 	});
-
-	const [orderNumber, setOrderNumber] = useState(null);
-
-	// const requestOrder = async (ingredientIds) => {
-	// 	const response = await fetch(`${API_URL}/orders`, {
-	// 		method: 'POST',
-	// 		headers: {
-	// 			'Content-Type': 'application/json',
-	// 		},
-	// 		body: JSON.stringify({ ingredients: ingredientIds }),
-	// 	});
-	// 	if (!response.ok) {
-	// 		throw new Error('Ошибка сервера');
-	// 	}
-	// 	return await response.json();
-	// };
-
-	// const sendOrder = (ingredientIds) => {
-	// 	requestOrder(ingredientIds)
-	// 		.then((data) => {
-	// 			if (data.success) {
-	// 				setOrderNumber(data.order.number);
-	// 				handleOpenModal('orderDetails');
-	// 			} else {
-	// 				throw new Error('Ошибка получения заказа');
-	// 			}
-	// 		})
-	// 		.catch((error) => {
-	// 			console.error(error);
-	// 		});
-	// };
+	const orderNumber = useSelector((state) => state.currentOrder.orderNumber);
 
 	useEffect(() => {
 		if (ingredientsStatus === 'idle') {
@@ -101,6 +72,7 @@ const App = () => {
 	const handleCloseModal = () => {
 		setState({ ...state, isShowModal: false, currentModal: null });
 		dispatch(setCurrentIngredient({}));
+		dispatch(clearCurrentOrder());
 	};
 	return (
 		<>
@@ -111,13 +83,12 @@ const App = () => {
 				{ingredientsStatus === 'succeeded' && (
 					<>
 						<BurgerIngredients show={handleOpenModal} />
-						{/* <BurgerConstructor sendOrder={sendOrder} /> */}
-						<BurgerConstructor />
+						<BurgerConstructor show={handleOpenModal} />
 					</>
 				)}
 				{state.isShowModal && (
 					<Modal hide={handleCloseModal}>
-						{state.currentModal === 'orderDetails' && <OrderDetails orderNumber={orderNumber} />}
+						{state.currentModal === 'orderDetails' && <OrderDetails />}
 						{state.currentModal === 'ingredientDetails' && <IngredientDetails />}
 					</Modal>
 				)}
