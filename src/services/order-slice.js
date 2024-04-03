@@ -48,32 +48,3 @@ export const sendOrder = createAsyncThunk('currentOrder/send', async (ingredient
 export const { clearCurrentOrder } = orderSlice.actions;
 
 export default orderSlice.reducer;
-
-// const requestOrder = async (ingredientIds) => {
-// 	const response = await fetch(`${API_URL}/orders`, {
-// 		method: 'POST',
-// 		headers: {
-// 			'Content-Type': 'application/json',
-// 		},
-// 		body: JSON.stringify({ ingredients: ingredientIds }),
-// 	});
-// 	if (!response.ok) {
-// 		throw new Error('Ошибка сервера');
-// 	}
-// 	return await response.json();
-// };
-
-// const sendOrder = (ingredientIds) => {
-// 	requestOrder(ingredientIds)
-// 		.then((data) => {
-// 			if (data.success) {
-// 				setOrderNumber(data.order.number);
-// 				handleOpenModal('orderDetails');
-// 			} else {
-// 				throw new Error('Ошибка получения заказа');
-// 			}
-// 		})
-// 		.catch((error) => {
-// 			console.error(error);
-// 		});
-// };
