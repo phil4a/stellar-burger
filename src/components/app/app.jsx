@@ -5,6 +5,9 @@ import { setCurrentIngredient } from '../../services/current-ingredient-slice';
 import { getIngredientsFromServer } from '../../services/ingredients-slice';
 import { clearCurrentOrder } from '../../services/order-slice';
 
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
@@ -16,8 +19,7 @@ import OrderDetails from '../modals/order-details/order-details';
 import appStyles from './app.module.css';
 
 //TODO
-// 1. Создадим хранилище заказа
-// 2. Перенести фукнционал создания заказа
+
 // 3. Переключение табов:
 // - использовать getboundingclientrect. Создать несколько 4 рефов. Одну ссылку привязать к контейнеру оборачивающие табы.
 // 3 остальных привязать к заголовкам подгруппы. В обработчике события скролла (onScroll), с помощью getboundingclientrect расчитать растояние
@@ -80,10 +82,12 @@ const App = () => {
 				{ingredientsStatus === 'loading' && 'Загрузка данных...'}
 				{ingredientsStatus === 'failed' && `Произошла ошибка при загрузке данных: ${error}`}
 				{ingredientsStatus === 'succeeded' && (
-					<>
-						<BurgerIngredients show={handleOpenModal} />
-						<BurgerConstructor show={handleOpenModal} />
-					</>
+					<DndProvider backend={HTML5Backend}>
+						<>
+							<BurgerIngredients show={handleOpenModal} />
+							<BurgerConstructor show={handleOpenModal} />
+						</>
+					</DndProvider>
 				)}
 				{state.isShowModal && (
 					<Modal hide={handleCloseModal}>

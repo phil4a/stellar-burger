@@ -1,14 +1,26 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDrag } from 'react-dnd';
 import styles from './ingredient-item.module.css';
 
 import propTypes from 'prop-types';
 import { ingredientType } from '../../../utils/types';
 
 const IngredientItem = ({ show, ingredient }) => {
+	const [{ isDragging }, dragRef] = useDrag({
+		type: ingredient.type === 'bun' ? 'bun' : 'ingredient',
+		item: ingredient,
+		collect: (monitor) => ({
+			isDragging: monitor.isDragging(),
+		}),
+	});
+
+	const opacity = isDragging ? 0.3 : 1;
 	return (
 		<li
+			ref={dragRef}
 			onClick={() => show('ingredientDetails', ingredient)}
 			className={styles.item}
+			style={{ opacity }}
 			{...ingredient}>
 			<img className="pl-4 pr-4" src={ingredient.image} alt={ingredient.name} />
 			<div className={`${styles.price} text text_type_digits-default pt-1 pb-1`}>
