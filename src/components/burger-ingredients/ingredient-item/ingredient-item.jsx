@@ -1,7 +1,8 @@
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
-import styles from './ingredient-item.module.css';
+import { UseSelector } from 'react-redux';
 
+import styles from './ingredient-item.module.css';
 import propTypes from 'prop-types';
 import { ingredientType } from '../../../utils/types';
 
@@ -28,6 +29,7 @@ const IngredientItem = ({ show, ingredient }) => {
 				<CurrencyIcon type="primary" />
 			</div>
 			<p className="text text_type_main-default pl-2 pr-2">{ingredient.name}</p>
+			{ingredient.count > 0 && <Counter count={ingredient.count} size="default" />}
 		</li>
 	);
 };

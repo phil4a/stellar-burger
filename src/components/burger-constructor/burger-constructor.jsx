@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 
 import { setIngredients, setBun, deleteIngredient } from '../../services/constructor-slice';
+import { increaseIngredientsCounter } from '../../services/ingredients-slice';
 
 import { sendOrder } from '../../services/order-slice';
 import DraggedIngredient from './dragged-ingredient';
@@ -34,8 +35,10 @@ const BurgerConstructor = ({ show }) => {
 		drop(item) {
 			if (item.type === 'bun') {
 				dispatch(setBun(item));
+				dispatch(increaseIngredientsCounter(item));
 			} else {
 				dispatch(setIngredients(item));
+				dispatch(increaseIngredientsCounter(item));
 			}
 		},
 		collect: (monitor) => ({

@@ -35,9 +35,11 @@
 }
 .mainPlaceholder {
 	border-radius: var(--common-border-radius-s);
+	margin-left: 22px;
 }
 .bun {
 	border: 1px dashed;
+	margin-left: 22px;
 }
 
 .topBunPlaceholder {
