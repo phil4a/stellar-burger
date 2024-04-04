@@ -1,11 +1,16 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useDrop } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 
 import { setIngredients, setBun, deleteIngredient } from '../../services/constructor-slice';
 
 import { sendOrder } from '../../services/order-slice';
+import DraggedIngredient from './dragged-ingredient';
 
-import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import {
+	ConstructorElement,
+	Button,
+	DragIcon,
+} from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderTotalPrice from './order-total-price/order-total-price';
 
 import styles from './burger-constructor.module.css';
@@ -63,13 +68,12 @@ const BurgerConstructor = ({ show }) => {
 
 			<div className={styles.ingredients} style={{ borderColor: borderColorIngredients }}>
 				{ingredients.length ? (
-					ingredients.map((ingredient) => (
-						<ConstructorElement
-							key={ingredient.uuid}
-							text={ingredient.name}
-							price={ingredient.price}
-							thumbnail={ingredient.image_mobile}
-							handleClose={() => dispatch(deleteIngredient(ingredient.uuid))}
+					ingredients.map((ingredient, index) => (
+						<DraggedIngredient
+							key={ingredient.nanoid}
+							ingredient={ingredient}
+							id={ingredient.nanoid}
+							index={index}
 						/>
 					))
 				) : (

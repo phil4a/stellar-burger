@@ -1,5 +1,4 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { v4 as uuid } from 'uuid';
+import { createSlice, createSelector, nanoid } from '@reduxjs/toolkit';
 
 const initialState = {
 	bun: null,
@@ -14,10 +13,18 @@ export const constructorSlice = createSlice({
 			state.bun = action.payload;
 		},
 		setIngredients(state, action) {
-			state.ingredients = [...state.ingredients, { ...action.payload, uuid: uuid() }];
+			state.ingredients = [...state.ingredients, { ...action.payload, nanoid: nanoid() }];
+		},
+		moveIngredients(state, action) {
+			const { dragIndex, hoverIndex } = action.payload;
+			const dragIngredient = state.ingredients[dragIndex];
+			const newIngredients = [...state.ingredients];
+			newIngredients.splice(dragIndex, 1);
+			newIngredients.splice(hoverIndex, 0, dragIngredient);
+			state.ingredients = newIngredients;
 		},
 		deleteIngredient(state, action) {
-			state.ingredients = state.ingredients.filter((item) => item.uuid !== action.payload);
+			state.ingredients = state.ingredients.filter((item) => item.nanoid !== action.payload);
 		},
 	},
 });
@@ -30,6 +37,7 @@ export const totalPriceSelector = createSelector(
 	},
 );
 
-export const { setBun, setIngredients, deleteIngredient } = constructorSlice.actions;
+export const { setBun, setIngredients, deleteIngredient, moveIngredients } =
+	constructorSlice.actions;
 
 export default constructorSlice.reducer;
