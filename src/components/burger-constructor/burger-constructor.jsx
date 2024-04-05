@@ -1,18 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useDrag, useDrop } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 
-import { setIngredients, setBun, deleteIngredient } from '../../services/constructor-slice';
+import { setIngredients, setBun } from '../../services/constructor-slice';
 import { increaseIngredientsCounter } from '../../services/ingredients-slice';
 
 import { sendOrder } from '../../services/order-slice';
-import DraggedIngredient from './dragged-ingredient';
 
-import {
-	ConstructorElement,
-	Button,
-	DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import DraggedIngredient from './dragged-ingredient/dragged-ingredient';
 import OrderTotalPrice from './order-total-price/order-total-price';
+import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './burger-constructor.module.css';
 

@@ -1,26 +1,20 @@
-import { useState, useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './ingredient-tabs.module.css';
 
-const IngredientTabs = () => {
-	const [current, setCurrent] = useState('Булки');
-	const tabsContainerRef = useRef(null);
-
+const IngredientTabs = ({ activeTab, onTabClick }) => {
 	return (
-		<>
-			<div ref={tabsContainerRef} className={`${styles.tabs}`}>
-				<Tab value="Булки" active={current === 'Булки'}>
-					Булки
-				</Tab>
-				<Tab value="Начинки" active={current === 'Начинки'}>
-					Начинки
-				</Tab>
-				<Tab value="Соусы" active={current === 'Соусы'}>
-					Соусы
-				</Tab>
-			</div>
-		</>
+		<div className={styles.tabs}>
+			<Tab value="Булки" active={activeTab === 'Булки'} onClick={() => onTabClick('Булки')}>
+				Булки
+			</Tab>
+			<Tab value="Соусы" active={activeTab === 'Соусы'} onClick={() => onTabClick('Соусы')}>
+				Соусы
+			</Tab>
+			<Tab value="Начинки" active={activeTab === 'Начинки'} onClick={() => onTabClick('Начинки')}>
+				Начинки
+			</Tab>
+		</div>
 	);
 };
 

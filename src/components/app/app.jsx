@@ -18,33 +18,6 @@ import OrderDetails from '../modals/order-details/order-details';
 
 import appStyles from './app.module.css';
 
-//TODO
-
-// 3. Переключение табов:
-// - использовать getboundingclientrect. Создать несколько 4 рефов. Одну ссылку привязать к контейнеру оборачивающие табы.
-// 3 остальных привязать к заголовкам подгруппы. В обработчике события скролла (onScroll), с помощью getboundingclientrect расчитать растояние
-// между нижней границей табов и верхней границей каждого из заголовков. Делать активным таб, чья подгруппа ближе всего к верхней части
-// 4. Перетаскивание:
-// - добавить плейсхолдеры для булок сверху и снизу - одна булка по сути. И для начинки
-// - добавить счетчик ингридиентов на блок с игридиентами
-// {
-// 	id1: count1
-// 	id2: count2
-// }
-// - сделать возможность перетаскивать несколько одинаковых ингридиентов - подключить библиотеку для генерации уникальных ключей uuid
-// 5. Создать хранилище для конструктора в виде:
-//  {
-// bun: null,
-// ingredient: []
-// }
-// -изменять массив ингридиентов при сортировке перетаскиванием можно с помощью метода splice
-// const ingredients = [...state.ingredients];
-// ingredients.splice(toIndex, 0, ingredients.splice(fromIndex, 1)[0]);
-// 6. Расчет полной своимости и счетчиков ингридиентов лучше реализовать в useMemo или createSelector
-// - const totalPrice = useMemo(()=> {
-// 	return **расчет стоимости **
-// }, burgersData)
-
 const App = () => {
 	const dispatch = useDispatch();
 	const ingredientsStatus = useSelector((state) => state.ingredients.status);

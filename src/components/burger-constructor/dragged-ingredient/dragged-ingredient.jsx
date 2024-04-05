@@ -2,10 +2,13 @@ import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { decreaseIngredientsCounter } from '../../services/ingredients-slice';
+import { decreaseIngredientsCounter } from '../../../services/ingredients-slice';
 
-import { deleteIngredient, moveIngredients } from '../../services/constructor-slice';
-import styles from './burger-constructor.module.css';
+import { deleteIngredient, moveIngredients } from '../../../services/constructor-slice';
+import styles from '../burger-constructor.module.css';
+
+import propTypes from 'prop-types';
+import { ingredientType } from '../../../utils/types';
 
 const DraggedIngredient = ({ ingredient, id, index }) => {
 	const ref = useRef(null);
@@ -70,6 +73,12 @@ const DraggedIngredient = ({ ingredient, id, index }) => {
 			/>
 		</div>
 	);
+};
+
+DraggedIngredient.propTypes = {
+	ingredient: ingredientType.isRequired,
+	id: propTypes.string.isRequired,
+	index: propTypes.number.isRequired,
 };
 
 export default DraggedIngredient;

@@ -1,6 +1,5 @@
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag } from 'react-dnd';
-import { UseSelector } from 'react-redux';
 
 import styles from './ingredient-item.module.css';
 import propTypes from 'prop-types';
