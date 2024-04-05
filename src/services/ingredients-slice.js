@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { API_URL } from './constants';
+import { request } from '../utils/request.js';
 
 const initialState = {
 	ingredients: [],
@@ -62,8 +62,7 @@ export const ingredientsSlice = createSlice({
 export const { increaseIngredientsCounter, decreaseIngredientsCounter } = ingredientsSlice.actions;
 
 export const getIngredientsFromServer = createAsyncThunk('ingredients/fetch', async () => {
-	const response = await fetch(`${API_URL}/ingredients`);
-	return await response.json();
+	return await request('ingredients');
 });
 
 export default ingredientsSlice.reducer;

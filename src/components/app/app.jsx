@@ -23,8 +23,6 @@ const App = () => {
 	const ingredientsStatus = useSelector((state) => state.ingredients.status);
 	const error = useSelector((state) => state.ingredients.error);
 	const [state, setState] = useState({
-		isLoading: true,
-		hasError: false,
 		isShowModal: false,
 		currentModal: null,
 	});
@@ -50,16 +48,14 @@ const App = () => {
 	};
 	return (
 		<>
-			<AppHeader></AppHeader>
+			<AppHeader />
 			<main className={appStyles.container}>
 				{ingredientsStatus === 'loading' && 'Загрузка данных...'}
 				{ingredientsStatus === 'failed' && `Произошла ошибка при загрузке данных: ${error}`}
 				{ingredientsStatus === 'succeeded' && (
 					<DndProvider backend={HTML5Backend}>
-						<>
-							<BurgerIngredients show={handleOpenModal} />
-							<BurgerConstructor show={handleOpenModal} />
-						</>
+						<BurgerIngredients show={handleOpenModal} />
+						<BurgerConstructor show={handleOpenModal} />
 					</DndProvider>
 				)}
 				{state.isShowModal && (

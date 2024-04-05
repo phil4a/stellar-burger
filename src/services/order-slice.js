@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { API_URL } from './constants';
+
+import { request } from '../utils/request';
 
 const initialState = {
 	orderNumber: null,
@@ -32,17 +33,14 @@ export const orderSlice = createSlice({
 });
 
 export const sendOrder = createAsyncThunk('currentOrder/send', async (ingredientIds) => {
-	const response = await fetch(`${API_URL}/orders`, {
+	const response = await request('orders', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({ ingredients: ingredientIds }),
 	});
-	if (!response.ok) {
-		throw new Error('Ошибка сервера');
-	}
-	return await response.json();
+	return response;
 });
 
 export const { clearCurrentOrder } = orderSlice.actions;

@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 
-import { setIngredients, setBun } from '../../services/constructor-slice';
+import { setIngredients, setBun, clearIngredients } from '../../services/constructor-slice';
 import { increaseIngredientsCounter } from '../../services/ingredients-slice';
 
 import { sendOrder } from '../../services/order-slice';
@@ -16,14 +17,15 @@ import propTypes from 'prop-types';
 
 const BurgerConstructor = ({ show }) => {
 	const dispatch = useDispatch();
-
 	const ingredients = useSelector((store) => store.burgerConstructor.ingredients);
 	const bun = useSelector((store) => store.burgerConstructor.bun);
 
 	const handleOrderClick = () => {
 		const ingredientIds = [bun, ingredients].map((ingredient) => ingredient._id, bun._id);
-		dispatch(sendOrder(ingredientIds));
-		show('orderDetails');
+		dispatch(sendOrder(ingredientIds)).then(() => {
+			show('orderDetails');
+			dispatch(clearIngredients());
+		});
 	};
 
 	const [{ canDrop, itemType }, dropRef] = useDrop({
@@ -107,7 +109,8 @@ const BurgerConstructor = ({ show }) => {
 					type="primary"
 					size="large"
 					extraClass="ml-10"
-					onClick={handleOrderClick}>
+					onClick={handleOrderClick}
+					disabled={!bun || !ingredients.length}>
 					Оформить заказ
 				</Button>
 			</div>

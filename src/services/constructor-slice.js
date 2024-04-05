@@ -26,6 +26,10 @@ export const constructorSlice = createSlice({
 		deleteIngredient(state, action) {
 			state.ingredients = state.ingredients.filter((item) => item.nanoid !== action.payload);
 		},
+		clearIngredients(state) {
+			state.bun = null;
+			state.ingredients = [];
+		},
 	},
 });
 export const totalPriceSelector = createSelector(
@@ -37,7 +41,7 @@ export const totalPriceSelector = createSelector(
 	},
 );
 
-export const { setBun, setIngredients, deleteIngredient, moveIngredients } =
+export const { setBun, setIngredients, deleteIngredient, moveIngredients, clearIngredients } =
 	constructorSlice.actions;
 
 export default constructorSlice.reducer;
