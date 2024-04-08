@@ -1,4 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { setCurrentIngredient } from '../../services/current-ingredient-slice';
+import { getIngredientsFromServer } from '../../services/ingredients-slice';
+import { clearCurrentOrder } from '../../services/order-slice';
+
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
@@ -10,66 +18,50 @@ import OrderDetails from '../modals/order-details/order-details';
 
 import appStyles from './app.module.css';
 
-import { useEffect } from 'react';
-
-//Todo
-//! Улучшить быстродействие, добавить мемоизацию
 const App = () => {
-	const API_URL = 'https://norma.nomoreparties.space/api';
+	const dispatch = useDispatch();
+	const ingredientsStatus = useSelector((state) => state.ingredients.status);
+	const error = useSelector((state) => state.ingredients.error);
 	const [state, setState] = useState({
-		isLoading: true,
-		hasError: false,
-		ingredients: [],
 		isShowModal: false,
 		currentModal: null,
-		currentIngredient: {},
 	});
 
 	useEffect(() => {
-		const getIngredientsFromServer = async () => {
-			try {
-				const response = await fetch(`${API_URL}/ingredients`);
-				if (!response.ok) {
-					return Promise.reject(`Ошибка ${response.status}`);
-				}
-				const data = await response.json();
-				setState({ ...state, ingredients: data.data, isLoading: false });
-			} catch (error) {
-				setState({ ...state, hasError: true, isLoading: false });
-			}
-		};
-		getIngredientsFromServer();
-	}, []);
+		if (ingredientsStatus === 'idle') {
+			dispatch(getIngredientsFromServer());
+		}
+	}, [ingredientsStatus, dispatch]);
 
 	const handleOpenModal = (modalType, ingredient = {}) => {
 		setState({
 			...state,
 			isShowModal: true,
 			currentModal: modalType,
-			currentIngredient: ingredient,
 		});
+		dispatch(setCurrentIngredient(ingredient));
 	};
 	const handleCloseModal = () => {
-		setState({ ...state, isShowModal: false, currentModal: null, currentIngredient: {} });
+		setState({ ...state, isShowModal: false, currentModal: null });
+		dispatch(setCurrentIngredient({}));
+		dispatch(clearCurrentOrder());
 	};
 	return (
 		<>
-			<AppHeader></AppHeader>
+			<AppHeader />
 			<main className={appStyles.container}>
-				{state.isLoading && 'Загрузка данных...'}
-				{state.hasError && 'Произошла ошибка при загрузке данных'}
-				{!state.isLoading && !state.hasError && (
-					<>
-						<BurgerIngredients ingredients={state.ingredients} show={handleOpenModal} />
-						<BurgerConstructor ingredients={state.ingredients} show={handleOpenModal} />
-					</>
+				{ingredientsStatus === 'loading' && 'Загрузка данных...'}
+				{ingredientsStatus === 'failed' && `Произошла ошибка при загрузке данных: ${error}`}
+				{ingredientsStatus === 'succeeded' && (
+					<DndProvider backend={HTML5Backend}>
+						<BurgerIngredients show={handleOpenModal} />
+						<BurgerConstructor show={handleOpenModal} />
+					</DndProvider>
 				)}
 				{state.isShowModal && (
 					<Modal hide={handleCloseModal}>
 						{state.currentModal === 'orderDetails' && <OrderDetails />}
-						{state.currentModal === 'ingredientDetails' && (
-							<IngredientDetails props={state.currentIngredient} />
-						)}
+						{state.currentModal === 'ingredientDetails' && <IngredientDetails />}
 					</Modal>
 				)}
 			</main>

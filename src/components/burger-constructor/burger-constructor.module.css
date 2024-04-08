@@ -11,6 +11,42 @@
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+	box-sizing: border-box;
+	border: 1px dashed;
+	border-radius: var(--common-border-radius-s);
+}
+.ingredient {
+	display: flex;
+	align-items: center;
+}
+.dragPlaceholder {
+	padding: 16px 24px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--background-element);
+	width: 100%;
+	min-height: 80px;
+	max-width: 536px;
+	font-size: 16px;
+	line-height: 24px;
+	color: #f2f2f3;
+	flex-grow: 1;
+}
+.mainPlaceholder {
+	border-radius: var(--common-border-radius-s);
+	margin-left: 22px;
+}
+.bun {
+	border: 1px dashed;
+	margin-left: 22px;
+}
+
+.topBunPlaceholder {
+	border-radius: var(--top-constructor-item-border-radius);
+}
+.bottomBunPlaceholder {
+	border-radius: var(--bottom-constructor-item-border-radius);
 }
 
 .actions {

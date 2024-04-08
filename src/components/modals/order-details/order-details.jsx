@@ -1,10 +1,15 @@
+import { useSelector } from 'react-redux';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './order-details.module.css';
 
 const OrderDetails = () => {
+	const orderNumber = useSelector((state) => state.currentOrder.orderNumber);
+	const getOrderStatus = useSelector((state) => state.currentOrder.status);
 	return (
 		<div className={styles.body}>
-			<h2 className={`${styles.title} text text_type_digits-large mb-8`}>034536</h2>
+			<h2 className={`${styles.title} text text_type_digits-large mb-8`}>
+				{getOrderStatus === 'loading' ? '...' : getOrderStatus === 'failed' ? '😩' : orderNumber}
+			</h2>
 			<h3 className="text text_type_main-medium">идентификатор заказа</h3>
 			<div className={styles.check}>
 				<CheckMarkIcon />
