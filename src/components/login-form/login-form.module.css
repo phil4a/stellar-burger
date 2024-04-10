@@ -1,0 +1,23 @@
+.login {
+	margin: 0 auto;
+	padding-top: 180px;
+	max-width: 480px;
+}
+.form {
+	text-align: center;
+}
+
+.line {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+}
+.link {
+	color: #4c4cff;
+	text-decoration: none;
+	transition: color 0.3s ease 0s;
+}
+.link:hover {
+	color: #a1a1fd;
+}
