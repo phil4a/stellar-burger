@@ -1,11 +1,13 @@
-import { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { authorization } from '../../../services/auth/authorization-slice';
-import { Link } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../../services/auth/auth-slice';
+import { Link, useNavigate } from 'react-router-dom';
 import { Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login-form.module.css';
 
 const LoginForm = () => {
+	const navigate = useNavigate();
+	const { isLoggedIn } = useSelector((state) => state.auth);
 	const dispatch = useDispatch();
 	const [value, setValue] = useState('');
 	const onChange = (e) => {
@@ -21,8 +23,16 @@ const LoginForm = () => {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		dispatch(authorization({ email: value, password: passwordValue }));
+		const accessToken = localStorage.getItem('accessToken');
+		dispatch(login({ accessToken, email: value, password: passwordValue }));
 	};
+
+	useEffect(() => {
+		if (isLoggedIn) {
+			navigate('/', { replace: true });
+		}
+	}, [isLoggedIn, navigate]);
+
 	return (
 		<div className={styles.login}>
 			<form className={styles.form}>

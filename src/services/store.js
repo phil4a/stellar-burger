@@ -3,8 +3,8 @@ import currentIngredientSlice from './current-ingredient-slice';
 import ingredientsSlice from './ingredients-slice';
 import constructorSlice from './constructor-slice';
 import orderSlice from './order-slice';
-import registerSlice from './auth/register-slice';
-import authorizationSlice from './auth/authorization-slice';
+
+import authSlice from './auth/auth-slice';
 
 export const store = configureStore({
 	reducer: {
@@ -12,7 +12,6 @@ export const store = configureStore({
 		ingredients: ingredientsSlice,
 		currentOrder: orderSlice,
 		burgerConstructor: constructorSlice,
-		register: registerSlice,
-		authorization: authorizationSlice,
+		auth: authSlice,
 	},
 });
