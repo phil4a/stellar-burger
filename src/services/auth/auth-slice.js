@@ -82,15 +82,14 @@ export const registration = createAsyncThunk('register/register', async (data) =
 	});
 });
 export const login = createAsyncThunk('auth/login', async (data) => {
-	const { accessToken } = data;
-	const body = JSON.stringify(data);
+	const { accessToken, email, password } = data;
 	const response = await request('auth/login', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: accessToken,
 		},
-		body,
+		body: JSON.stringify({ email, password }),
 	});
 	return response;
 });
