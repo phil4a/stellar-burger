@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { request } from '../../../utils/request';
+import { request } from '../../../utils/api';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './forgot-password-form.module.css';
 
@@ -26,7 +26,7 @@ const ForgotPasswordForm = () => {
 
 			if (response.success) {
 				console.log(emailValue);
-				navigate('/reset-password', { state: { from: 'forgot-password' } });
+				// navigate('/reset-password', { state: { from: 'forgot-password' } });
 				console.log(response);
 			}
 		} catch (error) {

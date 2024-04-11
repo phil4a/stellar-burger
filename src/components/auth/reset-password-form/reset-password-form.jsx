@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { request } from '../../../utils/request';
+import { request } from '../../../utils/api';
 import { Link } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './reset-password-form.module.css';

@@ -1,9 +1,13 @@
 import { useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { registration } from '../../../services/auth/register-slice';
 import { Link } from 'react-router-dom';
 import { Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './register-form.module.css';
 
 const RegisterForm = () => {
+	const dispatch = useDispatch();
+
 	const [emailValue, setEmailValue] = useState('');
 	const [nameValue, setNameValue] = useState('');
 	const [passwordValue, setPasswordValue] = useState('');
@@ -19,6 +23,11 @@ const RegisterForm = () => {
 		setIsPasswordVisible(!isPasswordVisible);
 		setTimeout(() => inputRef.current.focus(), 0);
 	};
+	const onSubmit = (e) => {
+		e.preventDefault();
+		dispatch(registration({ name: nameValue, email: emailValue, password: passwordValue }));
+	};
+
 	return (
 		<div className={styles.register}>
 			<form className={styles.form}>
@@ -56,7 +65,7 @@ const RegisterForm = () => {
 					size={'default'}
 					extraClass="mb-6"
 				/>
-				<Button htmlType="button" type="primary" size="medium" extraClass="">
+				<Button htmlType="button" type="primary" size="medium" extraClass="" onClick={onSubmit}>
 					Зарегистрироваться
 				</Button>
 			</form>

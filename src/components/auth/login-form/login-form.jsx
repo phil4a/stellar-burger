@@ -1,9 +1,12 @@
 import { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { authorization } from '../../../services/auth/authorization-slice';
 import { Link } from 'react-router-dom';
 import { Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login-form.module.css';
 
 const LoginForm = () => {
+	const dispatch = useDispatch();
 	const [value, setValue] = useState('');
 	const onChange = (e) => {
 		setValue(e.target.value);
@@ -14,6 +17,11 @@ const LoginForm = () => {
 	const onIconClick = () => {
 		setIsPasswordVisible(!isPasswordVisible);
 		setTimeout(() => inputRef.current.focus(), 0);
+	};
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+		dispatch(authorization({ email: value, password: passwordValue }));
 	};
 	return (
 		<div className={styles.login}>
@@ -40,7 +48,7 @@ const LoginForm = () => {
 					size={'default'}
 					extraClass="mb-6"
 				/>
-				<Button htmlType="button" type="primary" size="medium" extraClass="">
+				<Button htmlType="button" type="primary" size="medium" extraClass="" onClick={onSubmit}>
 					Войти
 				</Button>
 			</form>
