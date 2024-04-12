@@ -1,0 +1,8 @@
+.profile {
+	padding-top: 120px;
+	display: flex;
+}
+.actions {
+	max-width: 320px;
+	margin-right: 60px;
+}

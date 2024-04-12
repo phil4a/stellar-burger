@@ -81,6 +81,7 @@ export const registration = createAsyncThunk('register/register', async (data) =
 		body,
 	});
 });
+
 export const login = createAsyncThunk('auth/login', async (data) => {
 	const { accessToken, email, password } = data;
 	const response = await request('auth/login', {

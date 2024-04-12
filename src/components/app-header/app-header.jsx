@@ -13,6 +13,7 @@ const AppHeader = () => {
 				<Link to="/">
 					<Logo />
 				</Link>
+
 				<HeaderProfileButton />
 			</div>
 		</header>
