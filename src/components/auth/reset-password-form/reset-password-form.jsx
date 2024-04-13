@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { request } from '../../../utils/api';
+import { fetchResetPassword } from '../../../utils/api';
 import { Link } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './reset-password-form.module.css';
@@ -16,10 +16,18 @@ const ResetPasswordForm = () => {
 		setIsPasswordVisible(!isPasswordVisible);
 		setTimeout(() => passwordRef.current.focus(), 0);
 	};
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		await fetchResetPassword(passwordValue, codeValue).then((response) => {
+			if (response.success) {
+				console.log('password has been changed');
+			}
+		});
+	};
 
 	return (
 		<div className={styles.resetPassword}>
-			<form className={styles.form}>
+			<form className={styles.form} onSubmit={handleSubmit}>
 				<h1 className="text text_type_main-medium mb-6">Восстановление пароля</h1>
 				<Input
 					type={isPasswordVisible ? 'text' : 'password'}
@@ -48,7 +56,7 @@ const ResetPasswordForm = () => {
 					size={'default'}
 					extraClass="mb-6"
 				/>
-				<Button htmlType="button" type="primary" size="medium" extraClass="">
+				<Button htmlType="submit" type="primary" size="medium" extraClass="">
 					Восстановить
 				</Button>
 			</form>

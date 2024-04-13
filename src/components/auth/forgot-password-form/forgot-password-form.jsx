@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { request } from '../../../utils/api';
+import { fetchForgotPassword } from '../../../utils/api';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './forgot-password-form.module.css';
 
@@ -17,23 +17,13 @@ const ForgotPasswordForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
-
-		try {
-			const response = await request('password-reset', {
-				method: 'POST',
-				body: JSON.stringify({ email: emailValue }),
-			});
-
+		fetchForgotPassword(emailValue).then((response) => {
 			if (response.success) {
-				console.log(emailValue);
-				// navigate('/reset-password', { state: { from: 'forgot-password' } });
-				console.log(response);
+				console.log('password has been sent');
+				navigate('/reset-password', { state: { from: 'forgot-password' } });
 			}
-		} catch (error) {
-			alert('Произошла ошибка при отправке запроса. Попробуйте повторить попытку позже.');
-		} finally {
 			setIsLoading(false);
-		}
+		});
 	};
 
 	return (
