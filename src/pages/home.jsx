@@ -19,47 +19,51 @@ const Home = () => {
 	const dispatch = useDispatch();
 	const ingredientsStatus = useSelector((state) => state.ingredients.status);
 	const error = useSelector((state) => state.ingredients.error);
-	const [state, setState] = useState({
-		isShowModal: false,
-		currentModal: null,
-	});
+	// const [state, setState] = useState({
+	// 	isShowModal: false,
+	// 	currentModal: null,
+	// });
 
-	useEffect(() => {
-		if (ingredientsStatus === 'idle') {
-			dispatch(getIngredientsFromServer());
-		}
-	}, [ingredientsStatus, dispatch]);
+	// useEffect(() => {
+	// 	if (ingredientsStatus === 'idle') {
+	// 		dispatch(getIngredientsFromServer());
+	// 	}
+	// }, [ingredientsStatus, dispatch]);
 
-	const handleOpenModal = (modalType, ingredient = {}) => {
-		setState({
-			...state,
-			isShowModal: true,
-			currentModal: modalType,
-		});
-		dispatch(setCurrentIngredient(ingredient));
-	};
-	const handleCloseModal = () => {
-		setState({ ...state, isShowModal: false, currentModal: null });
-		dispatch(setCurrentIngredient({}));
-		dispatch(clearCurrentOrder());
-	};
+	// const handleOpenModal = (modalType, ingredient = {}) => {
+	// 	setState({
+	// 		...state,
+	// 		isShowModal: true,
+	// 		currentModal: modalType,
+	// 	});
+	// 	dispatch(setCurrentIngredient(ingredient));
+	// };
+	// const handleCloseModal = () => {
+	// 	setState({ ...state, isShowModal: false, currentModal: null });
+	// 	dispatch(setCurrentIngredient({}));
+	// 	dispatch(clearCurrentOrder());
+	// };
 
 	return (
 		<>
-			{ingredientsStatus === 'loading' && 'Загрузка данных...'}
+			{/* {ingredientsStatus === 'loading' && 'Загрузка данных...'}
 			{ingredientsStatus === 'failed' && `Произошла ошибка при загрузке данных: ${error}`}
-			{ingredientsStatus === 'succeeded' && (
-				<DndProvider backend={HTML5Backend}>
-					<BurgerIngredients show={handleOpenModal} />
-					<BurgerConstructor show={handleOpenModal} />
-				</DndProvider>
-			)}
-			{state.isShowModal && (
+			{ingredientsStatus === 'succeeded' && ( */}
+			<DndProvider backend={HTML5Backend}>
+				<BurgerIngredients
+				// show={handleOpenModal}
+				/>
+				<BurgerConstructor
+				// show={handleOpenModal}
+				/>
+			</DndProvider>
+			{/* )} */}
+			{/* {state.isShowModal && (
 				<Modal hide={handleCloseModal}>
 					{state.currentModal === 'orderDetails' && <OrderDetails />}
 					{state.currentModal === 'ingredientDetails' && <IngredientDetails />}
 				</Modal>
-			)}
+			)} */}
 		</>
 	);
 };

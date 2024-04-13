@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIngredientsFromServer } from '../../services/ingredients-slice';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import {
@@ -21,6 +24,14 @@ const App = () => {
 	const navigate = useNavigate();
 	const background = location.state && location.state.background;
 
+	const dispatch = useDispatch();
+	const ingredientsStatus = useSelector((state) => state.ingredients.status);
+
+	useEffect(() => {
+		if (ingredientsStatus === 'idle') {
+			dispatch(getIngredientsFromServer());
+		}
+	}, [dispatch, ingredientsStatus]);
 	return (
 		<>
 			<AppHeader />
