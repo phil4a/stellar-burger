@@ -1,15 +1,27 @@
 import { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../services/auth/auth-slice';
+import { useSelector } from 'react-redux';
+import { refreshUser } from '../../services/auth/auth-slice';
+
 import {
 	Input,
 	EmailInput,
 	PasswordInput,
+	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import styles from './profile.module.css';
 
 const Profile = () => {
-	const [nameValue, setNameValue] = useState('');
-	const [emailValue, setEmailValue] = useState('bob@example.com');
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
+	const { user } = useSelector((state) => state.auth);
+
+	// const [nameValue, setNameValue] = useState('');
+	// const [emailValue, setEmailValue] = useState('bob@example.com');
 	const nameInputRef = useRef(null);
 
 	const onNameIconClick = () => {
@@ -18,12 +30,20 @@ const Profile = () => {
 	};
 
 	const onChangeEmail = (e) => {
-		setEmailValue(e.target.value);
+		// setEmailValue(e.target.value);
 	};
 
-	const [passwordValue, setPaswordValue] = useState('password');
+	// const [passwordValue, setPaswordValue] = useState('password');
 	const onPasswordChange = (e) => {
-		setPaswordValue(e.target.value);
+		// setPaswordValue(e.target.value);
+	};
+
+	const handleLogoutClick = () => {
+		dispatch(logout());
+		navigate('/', { replace: true });
+	};
+	const handleRefreshUserClick = () => {
+		dispatch(refreshUser({ name: user.name, email: user.email }));
 	};
 
 	return (
@@ -31,7 +51,9 @@ const Profile = () => {
 			<ul className={styles.actions}>
 				<li className="text text_type_main-medium pt-2 pb-4">Профиль</li>
 				<li className="text text_type_main-medium pt-2 pb-4">История заказов</li>
-				<li className="text text_type_main-medium pt-2 pb-4">Выход</li>
+				<li onClick={handleLogoutClick} className="text text_type_main-medium pt-2 pb-4">
+					Выход
+				</li>
 				<p className="text text_type_main-default text_color_inactive pt-20">
 					В этом разделе вы можете изменить свои персональные данные
 				</p>
@@ -40,9 +62,9 @@ const Profile = () => {
 				<Input
 					type={'text'}
 					placeholder={'Имя'}
-					onChange={(e) => setNameValue(e.target.value)}
+					// onChange={}
 					icon={'EditIcon'}
-					value={nameValue}
+					value={user.name}
 					name={'name'}
 					error={false}
 					ref={nameInputRef}
@@ -54,7 +76,7 @@ const Profile = () => {
 				/>
 				<EmailInput
 					onChange={onChangeEmail}
-					value={emailValue}
+					value={user.email}
 					name={'email'}
 					placeholder="Логин"
 					isIcon={true}
@@ -62,10 +84,18 @@ const Profile = () => {
 				/>
 				<PasswordInput
 					onChange={onPasswordChange}
-					value={passwordValue}
+					// value={passwordValue}
 					name={'password'}
 					icon="EditIcon"
 				/>
+				<div className={styles.buttons}>
+					<Button type="secondary" size="medium">
+						Отмена
+					</Button>
+					<Button onClick={handleRefreshUserClick} type="primary" size="medium">
+						Сохранить
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

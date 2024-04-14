@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { request } from '../utils/api';
+import { fetchWithRefresh } from '../utils/api';
 
 const initialState = {
 	orderNumber: null,
@@ -33,7 +33,7 @@ export const orderSlice = createSlice({
 });
 
 export const sendOrder = createAsyncThunk('currentOrder/send', async (ingredientIds) => {
-	const response = await request('orders', {
+	const response = await fetchWithRefresh('orders', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

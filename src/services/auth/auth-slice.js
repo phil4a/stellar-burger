@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { request } from '../../utils/api';
+import { fetchWithRefresh } from '../../utils/api';
 
 const initialState = {
 	user: {
@@ -37,20 +37,6 @@ export const authSlice = createSlice({
 			});
 
 		builder
-			.addCase(refreshToken.pending, (state, action) => {
-				state.error = null;
-				state.status = 'loading';
-			})
-			.addCase(refreshToken.fulfilled, (state, action) => {
-				state.status = 'succeeded';
-				state.accessToken = action.payload.accessToken;
-				localStorage.setItem('accessToken', action.payload.accessToken);
-			})
-			.addCase(refreshToken.rejected, (state, action) => {
-				state.status = 'failed';
-				state.error = action.error.message;
-			});
-		builder
 			.addCase(registration.pending, (state, action) => {
 				state.status = 'loading';
 			})
@@ -64,16 +50,33 @@ export const authSlice = createSlice({
 				state.status = 'failed';
 				state.error = action.error.message;
 			});
+		builder
+			.addCase(logout.fulfilled, (state, action) => {
+				localStorage.removeItem('accessToken');
+				localStorage.removeItem('refreshToken');
+				state.isLoggedIn = false;
+				state.accessToken = null;
+				state.refreshToken = null;
+				state.status = 'idle';
+				state.user = { name: '', email: '' };
+			})
+			.addCase(logout.rejected, (state, action) => {
+				state.status = 'failed';
+				state.error = action.error.message;
+			})
+			.addCase(logout.pending, (state, action) => {
+				state.status = 'loading';
+			});
 	},
 });
 
-export const registration = createAsyncThunk('register/register', async (data) => {
+export const registration = createAsyncThunk('register/register', (data) => {
 	const body = JSON.stringify({
 		email: data.email,
 		password: data.password,
 		name: data.name,
 	});
-	return await request('auth/register', {
+	return fetchWithRefresh('auth/register', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -82,9 +85,9 @@ export const registration = createAsyncThunk('register/register', async (data) =
 	});
 });
 
-export const login = createAsyncThunk('auth/login', async (data) => {
+export const login = createAsyncThunk('auth/login', (data) => {
 	const { accessToken, email, password } = data;
-	const response = await request('auth/login', {
+	const response = fetchWithRefresh('auth/login', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -95,16 +98,27 @@ export const login = createAsyncThunk('auth/login', async (data) => {
 	return response;
 });
 
-export const refreshToken = createAsyncThunk('auth/refreshToken', async (refreshToken) => {
-	const body = JSON.stringify({ token: refreshToken });
-	const response = await request('auth/token', {
+export const logout = createAsyncThunk('auth/logout', () => {
+	return fetchWithRefresh('auth/logout', {
 		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
+	});
+});
+
+export const refreshUser = createAsyncThunk('auth/refresh', async (data) => {
+	const body = JSON.stringify({
+		email: data.email,
+		name: data.name,
+	});
+	return fetchWithRefresh('auth/user', {
+		method: 'PATCH',
 		headers: {
 			'Content-Type': 'application/json',
 		},
 		body,
 	});
-	return response;
 });
-
 export default authSlice.reducer;
