@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredientsFromServer } from '../../services/ingredients-slice';
+import { checkAuth } from '../../services/auth/auth-slice';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import {
@@ -21,13 +22,13 @@ import AppHeader from '../app-header/app-header';
 
 //TODO
 //* 1. переделать роутинг: логин
-//* 2. сделать логику логаута в профиле
+
 //* 3. сделать логику изменения данных в профиле
 //* 4. Сделать всю логику переадресации между экранами
 //* 5. Сделать обработку ошибок
 //* 6. Сделать прелоадер и вывод уведомлений в случае ошибок
 //* 7. Сделать защищенные маршруты
-//* 8. оптимизировать модальное окно и переделать окно
+//* 8. оптимизировать модальное окно и переделать окно заказа
 const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -37,6 +38,7 @@ const App = () => {
 	const ingredientsStatus = useSelector((state) => state.ingredients.status);
 
 	useEffect(() => {
+		dispatch(checkAuth());
 		if (ingredientsStatus === 'idle') {
 			dispatch(getIngredientsFromServer());
 		}

@@ -67,6 +67,43 @@ export const authSlice = createSlice({
 			.addCase(logout.pending, (state, action) => {
 				state.status = 'loading';
 			});
+		builder
+			.addCase(refreshUser.pending, (state, action) => {
+				state.status = 'loading';
+			})
+			.addCase(refreshUser.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.isLoggedIn = true;
+				state.user = action.payload.user;
+				state.accessToken = action.payload.accessToken;
+				state.refreshToken = action.payload.refreshToken;
+			})
+			.addCase(refreshUser.rejected, (state, action) => {
+				state.status = 'failed';
+				state.error = action.error.message;
+				localStorage.removeItem('accessToken');
+				localStorage.removeItem('refreshToken');
+			});
+		builder
+			.addCase(checkAuth.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.isLoggedIn = true;
+				state.user = action.payload.user;
+				state.accessToken = action.payload.accessToken;
+				state.refreshToken = action.payload.refreshToken;
+			})
+			.addCase(checkAuth.rejected, (state, action) => {
+				state.status = 'failed';
+				state.isLoggedIn = false;
+				state.error = action.error.message || 'Failed to authenticate';
+				localStorage.removeItem('accessToken');
+				localStorage.removeItem('refreshToken');
+				state.accessToken = null;
+				state.refreshToken = null;
+			})
+			.addCase(checkAuth.pending, (state, action) => {
+				state.status = 'loading';
+			});
 	},
 });
 
@@ -105,6 +142,20 @@ export const logout = createAsyncThunk('auth/logout', () => {
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({ token: localStorage.getItem('refreshToken') }),
+	});
+});
+
+export const checkAuth = createAsyncThunk('auth/check', async () => {
+	const accessToken = localStorage.getItem('accessToken');
+	if (!accessToken) {
+		return Promise.reject('No access token available');
+	}
+	return fetchWithRefresh('auth/user', {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: accessToken,
+		},
 	});
 });
 
