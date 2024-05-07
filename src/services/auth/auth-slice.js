@@ -6,7 +6,8 @@ const initialState = {
 		name: '',
 		email: '',
 	},
-	isLoggedIn: false,
+
+	isAuthChecked: false,
 	status: 'idle',
 	error: null,
 	accessToken: localStorage.getItem('accessToken'),
@@ -24,7 +25,7 @@ export const authSlice = createSlice({
 			})
 			.addCase(login.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				state.isLoggedIn = true;
+				state.isAuthChecked = true;
 				state.user = action.payload.user;
 				state.accessToken = action.payload.accessToken;
 				state.refreshToken = action.payload.refreshToken;
@@ -33,6 +34,7 @@ export const authSlice = createSlice({
 			})
 			.addCase(login.rejected, (state, action) => {
 				state.status = 'failed';
+				state.isAuthChecked = false;
 				state.error = action.error.message;
 			});
 
@@ -54,7 +56,7 @@ export const authSlice = createSlice({
 			.addCase(logout.fulfilled, (state, action) => {
 				localStorage.removeItem('accessToken');
 				localStorage.removeItem('refreshToken');
-				state.isLoggedIn = false;
+				state.isAuthChecked = false;
 				state.accessToken = null;
 				state.refreshToken = null;
 				state.status = 'idle';
@@ -73,7 +75,7 @@ export const authSlice = createSlice({
 			})
 			.addCase(refreshUser.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				state.isLoggedIn = true;
+				state.isAuthChecked = true;
 				state.user = action.payload.user;
 				state.accessToken = action.payload.accessToken;
 				state.refreshToken = action.payload.refreshToken;
@@ -87,7 +89,7 @@ export const authSlice = createSlice({
 		builder
 			.addCase(checkAuth.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				state.isLoggedIn = true;
+				state.isAuthChecked = true;
 				state.user = action.payload.user;
 				state.accessToken = action.payload.accessToken;
 				state.refreshToken = action.payload.refreshToken;
@@ -160,6 +162,7 @@ export const checkAuth = createAsyncThunk('auth/check', async () => {
 });
 
 export const refreshUser = createAsyncThunk('auth/refresh', async (data) => {
+	const accessToken = localStorage.getItem('accessToken');
 	const body = JSON.stringify({
 		email: data.email,
 		name: data.name,
@@ -168,6 +171,7 @@ export const refreshUser = createAsyncThunk('auth/refresh', async (data) => {
 		method: 'PATCH',
 		headers: {
 			'Content-Type': 'application/json',
+			Authorization: accessToken,
 		},
 		body,
 	});

@@ -7,7 +7,7 @@ import styles from './login-form.module.css';
 
 const LoginForm = () => {
 	const navigate = useNavigate();
-	const { isLoggedIn } = useSelector((state) => state.auth);
+	const { isAuthChecked } = useSelector((state) => state.auth);
 	const dispatch = useDispatch();
 	const [value, setValue] = useState('');
 	const onChange = (e) => {
@@ -28,10 +28,10 @@ const LoginForm = () => {
 	};
 
 	useEffect(() => {
-		if (isLoggedIn) {
+		if (isAuthChecked) {
 			navigate('/', { replace: true });
 		}
-	}, [isLoggedIn, navigate]);
+	}, [isAuthChecked, navigate]);
 
 	return (
 		<div className={styles.login}>

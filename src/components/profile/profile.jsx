@@ -1,16 +1,11 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../services/auth/auth-slice';
 import { useSelector } from 'react-redux';
 import { refreshUser } from '../../services/auth/auth-slice';
 
-import {
-	Input,
-	EmailInput,
-	PasswordInput,
-	Button,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './profile.module.css';
 
@@ -20,30 +15,43 @@ const Profile = () => {
 
 	const { user } = useSelector((state) => state.auth);
 
-	// const [nameValue, setNameValue] = useState('');
-	// const [emailValue, setEmailValue] = useState('bob@example.com');
+	const [nameValue, setNameValue] = useState(user.name);
+	const [emailValue, setEmailValue] = useState(user.email);
+	const [passwordValue, setPasswordValue] = useState('');
+	const [nameDisabled, setNameDisabled] = useState(true);
+	const [emailDisabled, setEmailDisabled] = useState(true);
+	const [passwordDisabled, setPasswordDisabled] = useState(true);
+
 	const nameInputRef = useRef(null);
+	const emailInputRef = useRef(null);
+	const passwordInputRef = useRef(null);
 
 	const onNameIconClick = () => {
+		setNameDisabled(false);
 		setTimeout(() => nameInputRef.current.focus(), 0);
-		alert('Name Icon Click Callback');
 	};
 
-	const onChangeEmail = (e) => {
-		// setEmailValue(e.target.value);
+	const onEmailIconClick = () => {
+		setEmailDisabled(false);
+		setTimeout(() => emailInputRef.current.focus(), 0);
 	};
-
-	// const [passwordValue, setPaswordValue] = useState('password');
-	const onPasswordChange = (e) => {
-		// setPaswordValue(e.target.value);
+	const onPasswordIconClick = () => {
+		setPasswordDisabled(false);
+		setTimeout(() => passwordInputRef.current.focus(), 0);
 	};
 
 	const handleLogoutClick = () => {
 		dispatch(logout());
 		navigate('/', { replace: true });
 	};
+
+	const handleCancelClick = () => {
+		setNameValue(user.name);
+		setEmailValue(user.email);
+		setPasswordValue('');
+	};
 	const handleRefreshUserClick = () => {
-		dispatch(refreshUser({ name: user.name, email: user.email }));
+		dispatch(refreshUser({ name: nameValue, email: emailValue }));
 	};
 
 	return (
@@ -62,37 +70,61 @@ const Profile = () => {
 				<Input
 					type={'text'}
 					placeholder={'Имя'}
-					// onChange={}
+					onChange={(e) => setNameValue(e.target.value)}
 					icon={'EditIcon'}
-					value={user.name}
+					value={nameValue}
 					name={'name'}
 					error={false}
 					ref={nameInputRef}
+					onBlur={() => setNameDisabled(true)}
 					onIconClick={onNameIconClick}
 					errorText={'Ошибка'}
 					size={'default'}
-					disabled
+					disabled={nameDisabled}
 					extraClass="mb-6"
 				/>
-				<EmailInput
-					onChange={onChangeEmail}
-					value={user.email}
+				<Input
+					type={'email'}
+					placeholder={'Email'}
+					onChange={(e) => setEmailValue(e.target.value)}
+					icon={'EditIcon'}
+					value={emailValue}
 					name={'email'}
-					placeholder="Логин"
-					isIcon={true}
+					error={false}
+					ref={emailInputRef}
+					onBlur={() => setEmailDisabled(true)}
+					onIconClick={onEmailIconClick}
+					errorText={'Ошибка'}
+					size={'default'}
+					disabled={emailDisabled}
 					extraClass="mb-6"
 				/>
-				<PasswordInput
-					onChange={onPasswordChange}
-					// value={passwordValue}
+				<Input
+					type={'password'}
+					placeholder={'Password'}
+					onChange={(e) => setPasswordValue(e.target.value)}
+					icon={'EditIcon'}
+					value={passwordValue}
 					name={'password'}
-					icon="EditIcon"
+					error={false}
+					ref={passwordInputRef}
+					onBlur={() => setPasswordDisabled(true)}
+					onIconClick={onPasswordIconClick}
+					errorText={'Ошибка'}
+					size={'default'}
+					disabled={passwordDisabled}
+					extraClass="mb-6"
 				/>
+
 				<div className={styles.buttons}>
-					<Button type="secondary" size="medium">
+					<Button onClick={handleCancelClick} type="secondary" size="medium">
 						Отмена
 					</Button>
-					<Button onClick={handleRefreshUserClick} type="primary" size="medium">
+					<Button
+						disabled={nameValue === user.name && emailValue === user.email}
+						onClick={handleRefreshUserClick}
+						type="primary"
+						size="medium">
 						Сохранить
 					</Button>
 				</div>

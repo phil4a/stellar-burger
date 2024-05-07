@@ -13,6 +13,8 @@ import {
 	ResetPassword,
 	ProfilePage,
 } from '../../pages';
+import { OnlyAuth, OnlyUnAuth } from '../protected-route';
+
 import Layout from '../layout/layout';
 
 import IngredientDetails from '../modals/ingredient-details/ingredient-details';
@@ -21,8 +23,6 @@ import Modal from '../modals/modal/modal';
 import AppHeader from '../app-header/app-header';
 
 //TODO
-//* 1. переделать роутинг: логин
-
 //* 3. сделать логику изменения данных в профиле
 //* 4. Сделать всю логику переадресации между экранами
 //* 5. Сделать обработку ошибок
@@ -50,11 +50,11 @@ const App = () => {
 				<Route element={<Layout />}>
 					<Route path="/" element={<Home />} />
 					<Route path="/ingredients/:id" element={<IngredientDetails />} />
-					<Route path="/register" element={<Register />} />
-					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
+					<Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
 					<Route path="/forgot-password" element={<ForgotPassword />} />
 					<Route path="/reset-password" element={<ResetPassword />} />
-					<Route path="/profile" element={<ProfilePage />} />
+					<Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
 					<Route path="*" element={<NotFound />} />
 				</Route>
 			</Routes>
