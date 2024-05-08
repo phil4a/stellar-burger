@@ -1,10 +1,15 @@
 import { useState, useRef } from 'react';
 import { fetchResetPassword } from '../../../utils/api';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setForgotPassword } from '../../../services/auth/auth-slice';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './reset-password-form.module.css';
 
 const ResetPasswordForm = () => {
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
 	const [passwordValue, setPasswordValue] = useState('');
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const [codeValue, setCodeValue] = useState('');
@@ -20,7 +25,8 @@ const ResetPasswordForm = () => {
 		e.preventDefault();
 		await fetchResetPassword(passwordValue, codeValue).then((response) => {
 			if (response.success) {
-				console.log('password has been changed');
+				dispatch(setForgotPassword(false));
+				navigate('/login', { replace: true });
 			}
 		});
 	};

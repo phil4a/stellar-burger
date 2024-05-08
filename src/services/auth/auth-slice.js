@@ -6,7 +6,7 @@ const initialState = {
 		name: '',
 		email: '',
 	},
-
+	isForgotPassword: false,
 	isAuthChecked: false,
 	status: 'idle',
 	error: null,
@@ -17,7 +17,11 @@ const initialState = {
 export const authSlice = createSlice({
 	name: 'auth',
 	initialState,
-	reducers: {},
+	reducers: {
+		setForgotPassword: (state, action) => {
+			state.isForgotPassword = action.payload;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(login.pending, (state, action) => {
@@ -176,4 +180,7 @@ export const refreshUser = createAsyncThunk('auth/refresh', async (data) => {
 		body,
 	});
 });
+
+export const { setForgotPassword } = authSlice.actions;
+
 export default authSlice.reducer;

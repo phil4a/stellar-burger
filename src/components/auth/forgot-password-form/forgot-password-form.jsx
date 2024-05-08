@@ -1,10 +1,17 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchForgotPassword } from '../../../utils/api';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { setForgotPassword } from '../../../services/auth/auth-slice';
+
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './forgot-password-form.module.css';
 
 const ForgotPasswordForm = () => {
+	const dispatch = useDispatch();
+	const { isForgotPassword } = useSelector((state) => state.auth);
+
 	const [emailValue, setEmailValue] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -17,9 +24,9 @@ const ForgotPasswordForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
+		dispatch(setForgotPassword(true));
 		fetchForgotPassword(emailValue).then((response) => {
 			if (response.success) {
-				console.log('password has been sent');
 				navigate('/reset-password', { state: { from: 'forgot-password' } });
 			}
 			setIsLoading(false);

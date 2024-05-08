@@ -8,10 +8,7 @@ import styles from './ingredient-item.module.css';
 import propTypes from 'prop-types';
 import { ingredientType } from '../../../utils/types';
 
-const IngredientItem = ({
-	// show,
-	ingredient,
-}) => {
+const IngredientItem = ({ ingredient }) => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const ingredientId = ingredient._id;
@@ -49,7 +46,6 @@ const IngredientItem = ({
 };
 IngredientItem.propTypes = {
 	ingredient: ingredientType.isRequired,
-	show: propTypes.func.isRequired,
 };
 
 export default IngredientItem;

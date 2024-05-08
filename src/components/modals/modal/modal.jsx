@@ -9,15 +9,15 @@ import propTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './modal.module.css';
 
-const Modal = ({ children }) => {
+const Modal = ({ children, onClose }) => {
 	const { ingredientId } = useParams();
 	const ingredients = useSelector((state) => state.ingredients.ingredients);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const handleCloseModal = () => {
+		onClose();
 		dispatch(setCurrentIngredient({}));
-		navigate(-1);
 	};
 
 	useEffect(() => {
@@ -30,7 +30,7 @@ const Modal = ({ children }) => {
 		return () => {
 			document.removeEventListener('keydown', handleEsc);
 		};
-	}, []);
+	}, [onClose]);
 
 	useEffect(() => {
 		if (ingredientId) {
@@ -51,14 +51,14 @@ const Modal = ({ children }) => {
 				</button>
 				{children}
 			</div>
-			<ModalOverlay hide={handleCloseModal} />
+			<ModalOverlay onClose={handleCloseModal} />
 		</>,
 		modalRoot,
 	);
 };
 Modal.propTypes = {
 	children: propTypes.node.isRequired,
-	hide: propTypes.func.isRequired,
+	onClose: propTypes.func.isRequired,
 };
 
 export default Modal;

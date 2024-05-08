@@ -23,7 +23,7 @@ import Modal from '../modals/modal/modal';
 import AppHeader from '../app-header/app-header';
 
 //TODO
-//* 3. сделать логику изменения данных в профиле
+
 //* 4. Сделать всю логику переадресации между экранами
 //* 5. Сделать обработку ошибок
 //* 6. Сделать прелоадер и вывод уведомлений в случае ошибок
@@ -63,7 +63,7 @@ const App = () => {
 					<Route
 						path="/ingredients/:ingredientId"
 						element={
-							<Modal>
+							<Modal onClose={() => navigate(-1)}>
 								<IngredientDetails />
 							</Modal>
 						}

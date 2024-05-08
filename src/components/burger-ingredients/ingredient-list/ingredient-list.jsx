@@ -5,13 +5,7 @@ import IngredientTabs from '../ingredient-tabs/ingredient-tabs';
 
 import styles from './ingredient-list.module.css';
 
-import propTypes from 'prop-types';
-
-const IngredientList = (
-	{
-		// show
-	},
-) => {
+const IngredientList = ({}) => {
 	const wrapperRef = useRef(null);
 	const [activeTab, setActiveTab] = useState('Булки');
 
@@ -80,10 +74,6 @@ const IngredientList = (
 			</div>
 		</>
 	);
-};
-
-IngredientList.propTypes = {
-	show: propTypes.func.isRequired,
 };
 
 export default IngredientList;
