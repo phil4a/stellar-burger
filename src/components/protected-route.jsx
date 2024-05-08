@@ -1,41 +1,44 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 
-const Protected = ({ onlyUnAuth = false, component }) => {
-	// isAuthChecked это флаг, показывающий что проверка токена произведена
-	// при этом результат этой проверки не имеет значения, важно только,
-	// что сам факт проверки имел место.
-	const { isAuthChecked, user } = useSelector((store) => store.auth);
-
+const ProtectedRoute = ({
+	component,
+	onlyUnAuth = false,
+	onlyAfterForgot = false,
+	allowUnauthAccess = false,
+}) => {
+	const { isAuthChecked, user, isForgotPassword } = useSelector((store) => store.auth);
 	const location = useLocation();
 
-	//Разобраться
-	// if (!isAuthChecked) {
-	// 	// Запрос еще выполняется
-	// 	// Выводим прелоадер в ПР
-	// 	// Здесь возвращается просто null для экономии времени
-
-	// 	return null;
-	// }
+	if (!isAuthChecked) {
+		// Если проверка авторизации еще не завершена
+		return null;
+	}
 
 	if (onlyUnAuth && user.name) {
-		// Пользователь авторизован, но роут предназначен для неавторизованного пользователя
-		// Делаем редирект на главную страницу или на тот адрес, что записан в location.state.from
-		console.log('пользователь авторизован и роут для неавторизованного пользователя');
+		// Если пользователь авторизован, но маршрут только для неавторизованных
 		const { from } = location.state || { from: { pathname: '/' } };
 		return <Navigate to={from} />;
 	}
 
-	if (!onlyUnAuth && user.name === '') {
-		// Пользователь не авторизован, но роут предназначен для авторизованного пользователя
-		return <Navigate to="/login" state={{ from: location }} />;
-		console.log('пользователь не авторизован и роут для авторизованного пользователя');
+	if (onlyAfterForgot && !isForgotPassword) {
+		// Если пользователь пытается перейти на reset-password без прохождения через forgot-password
+		return <Navigate to="/forgot-password" />;
 	}
 
-	// !onlyUnAuth && user Пользователь авторизован и роут для авторизованного пользователя
+	if (!onlyUnAuth && !allowUnauthAccess && user.name === '') {
+		// Если маршрут для авторизованных, но пользователь не авторизован
+		return <Navigate to="/login" state={{ from: location }} />;
+	}
+
+	// Возвращаем компонент, если все проверки пройдены
 	return component;
-	console.log('Пользователь авторизован и роут для авторизованного пользователя');
 };
 
-export const OnlyAuth = Protected;
-export const OnlyUnAuth = ({ component }) => <Protected onlyUnAuth={true} component={component} />;
+export const OnlyAuth = ({ component }) => <ProtectedRoute component={component} />;
+export const OnlyUnAuth = ({ component }) => (
+	<ProtectedRoute onlyUnAuth={true} component={component} />
+);
+export const OnlyAfterForgot = ({ component }) => (
+	<ProtectedRoute onlyAfterForgot={true} allowUnauthAccess={true} component={component} />
+);

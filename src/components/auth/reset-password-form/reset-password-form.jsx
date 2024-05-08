@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { fetchResetPassword } from '../../../utils/api';
 import { useDispatch } from 'react-redux';
 import { setForgotPassword } from '../../../services/auth/auth-slice';
+
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './reset-password-form.module.css';
@@ -23,9 +24,10 @@ const ResetPasswordForm = () => {
 	};
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		dispatch(setForgotPassword(false));
 		await fetchResetPassword(passwordValue, codeValue).then((response) => {
 			if (response.success) {
-				dispatch(setForgotPassword(false));
 				navigate('/login', { replace: true });
 			}
 		});

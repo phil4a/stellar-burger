@@ -13,7 +13,7 @@ import {
 	ResetPassword,
 	ProfilePage,
 } from '../../pages';
-import { OnlyAuth, OnlyUnAuth } from '../protected-route';
+import { OnlyAuth, OnlyUnAuth, OnlyAfterForgot } from '../protected-route';
 
 import Layout from '../layout/layout';
 
@@ -28,7 +28,6 @@ import AppHeader from '../app-header/app-header';
 //* 5. Сделать обработку ошибок
 //* 6. Сделать прелоадер и вывод уведомлений в случае ошибок
 //* 7. Сделать защищенные маршруты
-//* 8. оптимизировать модальное окно и переделать окно заказа
 const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -53,7 +52,11 @@ const App = () => {
 					<Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
 					<Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
 					<Route path="/forgot-password" element={<ForgotPassword />} />
-					<Route path="/reset-password" element={<ResetPassword />} />
+					<Route
+						path="/reset-password"
+						element={<OnlyAfterForgot component={<ResetPassword />} />}
+					/>
+					{/* <Route path="/reset-password" element={<ResetPassword />} /> */}
 					<Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
 					<Route path="*" element={<NotFound />} />
 				</Route>

@@ -6,7 +6,8 @@ const initialState = {
 		name: '',
 		email: '',
 	},
-	isForgotPassword: false,
+
+	isForgotPassword: JSON.parse(localStorage.getItem('isForgotPassword')),
 	isAuthChecked: false,
 	status: 'idle',
 	error: null,
@@ -18,8 +19,9 @@ export const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
-		setForgotPassword: (state, action) => {
+		setForgotPassword(state, action) {
 			state.isForgotPassword = action.payload;
+			localStorage.setItem('isForgotPassword', JSON.stringify(action.payload));
 		},
 	},
 	extraReducers: (builder) => {
@@ -94,6 +96,7 @@ export const authSlice = createSlice({
 			.addCase(checkAuth.fulfilled, (state, action) => {
 				state.status = 'succeeded';
 				state.isAuthChecked = true;
+
 				state.user = action.payload.user;
 				state.accessToken = action.payload.accessToken;
 				state.refreshToken = action.payload.refreshToken;
@@ -108,6 +111,7 @@ export const authSlice = createSlice({
 				state.refreshToken = null;
 			})
 			.addCase(checkAuth.pending, (state, action) => {
+				state.isForgotPassword = JSON.parse(localStorage.getItem('isForgotPassword'));
 				state.status = 'loading';
 			});
 	},
@@ -153,6 +157,7 @@ export const logout = createAsyncThunk('auth/logout', () => {
 
 export const checkAuth = createAsyncThunk('auth/check', async () => {
 	const accessToken = localStorage.getItem('accessToken');
+	console.log('auth is checked');
 	if (!accessToken) {
 		return Promise.reject('No access token available');
 	}
