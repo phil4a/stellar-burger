@@ -21,18 +21,20 @@ const Protected = ({ onlyUnAuth = false, component }) => {
 	if (onlyUnAuth && user.name) {
 		// Пользователь авторизован, но роут предназначен для неавторизованного пользователя
 		// Делаем редирект на главную страницу или на тот адрес, что записан в location.state.from
+		console.log('пользователь авторизован и роут для неавторизованного пользователя');
 		const { from } = location.state || { from: { pathname: '/' } };
-
 		return <Navigate to={from} />;
 	}
 
 	if (!onlyUnAuth && user.name === '') {
 		// Пользователь не авторизован, но роут предназначен для авторизованного пользователя
 		return <Navigate to="/login" state={{ from: location }} />;
+		console.log('пользователь не авторизован и роут для авторизованного пользователя');
 	}
 
 	// !onlyUnAuth && user Пользователь авторизован и роут для авторизованного пользователя
 	return component;
+	console.log('Пользователь авторизован и роут для авторизованного пользователя');
 };
 
 export const OnlyAuth = Protected;

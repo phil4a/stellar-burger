@@ -25,13 +25,14 @@ const LoginForm = () => {
 		e.preventDefault();
 		const accessToken = localStorage.getItem('accessToken');
 		dispatch(login({ accessToken, email: value, password: passwordValue }));
+		navigate('/', { replace: true });
 	};
 
-	useEffect(() => {
-		if (isAuthChecked) {
-			navigate('/', { replace: true });
-		}
-	}, [isAuthChecked, navigate]);
+	// useEffect(() => {
+	// 	if (isAuthChecked) {
+	// 		navigate('/', { replace: true });
+	// 	}
+	// }, [isAuthChecked, navigate]);
 
 	return (
 		<div className={styles.login}>

@@ -33,9 +33,11 @@ export const orderSlice = createSlice({
 });
 
 export const sendOrder = createAsyncThunk('currentOrder/send', async (ingredientIds) => {
+	const accessToken = localStorage.getItem('accessToken');
 	const response = await fetchWithRefresh('orders', {
 		method: 'POST',
 		headers: {
+			Authorization: accessToken,
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({ ingredients: ingredientIds }),

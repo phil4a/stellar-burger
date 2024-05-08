@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import { setIngredients, setBun, clearIngredients } from '../../services/constructor-slice';
 import { increaseIngredientsCounter } from '../../services/ingredients-slice';
@@ -15,17 +16,23 @@ import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = () => {
+	const navigate = useNavigate();
+	const { user, isAuthChecked } = useSelector((store) => store.auth);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const dispatch = useDispatch();
 	const ingredients = useSelector((store) => store.burgerConstructor.ingredients);
 	const bun = useSelector((store) => store.burgerConstructor.bun);
 
 	const handleOrderClick = () => {
-		setIsModalOpen(true);
-		const ingredientIds = [bun, ingredients].map((ingredient) => ingredient._id, bun._id);
-		dispatch(sendOrder(ingredientIds)).then(() => {
-			dispatch(clearIngredients());
-		});
+		if (!user.name && isAuthChecked) {
+			navigate('/login');
+		} else {
+			setIsModalOpen(true);
+			const ingredientIds = [bun, ingredients].map((ingredient) => ingredient._id, bun._id);
+			dispatch(sendOrder(ingredientIds)).then(() => {
+				dispatch(clearIngredients());
+			});
+		}
 	};
 
 	const [{ canDrop, itemType }, dropRef] = useDrop({

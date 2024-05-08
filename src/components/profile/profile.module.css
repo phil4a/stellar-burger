@@ -5,6 +5,7 @@
 .actions {
 	max-width: 320px;
 	margin-right: 60px;
+	cursor: pointer;
 }
 .buttons {
 	display: flex;

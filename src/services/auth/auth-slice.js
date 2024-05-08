@@ -38,7 +38,7 @@ export const authSlice = createSlice({
 			})
 			.addCase(login.rejected, (state, action) => {
 				state.status = 'failed';
-				state.isAuthChecked = false;
+				state.isAuthChecked = true;
 				state.error = action.error.message;
 			});
 
@@ -60,7 +60,7 @@ export const authSlice = createSlice({
 			.addCase(logout.fulfilled, (state, action) => {
 				localStorage.removeItem('accessToken');
 				localStorage.removeItem('refreshToken');
-				state.isAuthChecked = false;
+				state.isAuthChecked = true;
 				state.accessToken = null;
 				state.refreshToken = null;
 				state.status = 'idle';
@@ -100,7 +100,7 @@ export const authSlice = createSlice({
 			})
 			.addCase(checkAuth.rejected, (state, action) => {
 				state.status = 'failed';
-				state.isLoggedIn = false;
+				state.isAuthChecked = true;
 				state.error = action.error.message || 'Failed to authenticate';
 				localStorage.removeItem('accessToken');
 				localStorage.removeItem('refreshToken');
