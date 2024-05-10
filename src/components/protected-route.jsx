@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
+import Preloader from '../components/preloader/preloader';
 
 const ProtectedRoute = ({
 	component,
@@ -12,7 +13,7 @@ const ProtectedRoute = ({
 
 	if (!isAuthChecked) {
 		// Если проверка авторизации еще не завершена
-		return null;
+		<Preloader />;
 	}
 
 	if (onlyUnAuth && user.name) {

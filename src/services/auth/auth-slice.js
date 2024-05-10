@@ -6,7 +6,7 @@ const initialState = {
 		name: '',
 		email: '',
 	},
-
+	isFetchingUser: false,
 	isForgotPassword: JSON.parse(localStorage.getItem('isForgotPassword')),
 	isAuthChecked: false,
 	status: 'idle',
@@ -28,9 +28,11 @@ export const authSlice = createSlice({
 		builder
 			.addCase(login.pending, (state, action) => {
 				state.status = 'loading';
+				state.isFetchingUser = true;
 			})
 			.addCase(login.fulfilled, (state, action) => {
 				state.status = 'succeeded';
+				state.isFetchingUser = false;
 				state.isAuthChecked = true;
 				state.user = action.payload.user;
 				state.accessToken = action.payload.accessToken;
@@ -40,6 +42,7 @@ export const authSlice = createSlice({
 			})
 			.addCase(login.rejected, (state, action) => {
 				state.status = 'failed';
+				state.isFetchingUser = false;
 				state.isAuthChecked = true;
 				state.error = action.error.message;
 			});
@@ -47,15 +50,18 @@ export const authSlice = createSlice({
 		builder
 			.addCase(registration.pending, (state, action) => {
 				state.status = 'loading';
+				state.isFetchingUser = true;
 			})
 			.addCase(registration.fulfilled, (state, action) => {
 				state.status = 'succeeded';
+				state.isFetchingUser = false;
 				const { accessToken, refreshToken } = action.payload;
 				localStorage.setItem('accessToken', accessToken);
 				localStorage.setItem('refreshToken', refreshToken);
 			})
 			.addCase(registration.rejected, (state, action) => {
 				state.status = 'failed';
+				state.isFetchingUser = false;
 				state.error = action.error.message;
 			});
 		builder
@@ -65,22 +71,27 @@ export const authSlice = createSlice({
 				state.isAuthChecked = true;
 				state.accessToken = null;
 				state.refreshToken = null;
+				state.isFetchingUser = false;
 				state.status = 'idle';
 				state.user = { name: '', email: '' };
 			})
 			.addCase(logout.rejected, (state, action) => {
 				state.status = 'failed';
+				state.isFetchingUser = false;
 				state.error = action.error.message;
 			})
 			.addCase(logout.pending, (state, action) => {
 				state.status = 'loading';
+				state.isFetchingUser = true;
 			});
 		builder
 			.addCase(refreshUser.pending, (state, action) => {
 				state.status = 'loading';
+				state.isFetchingUser = true;
 			})
 			.addCase(refreshUser.fulfilled, (state, action) => {
 				state.status = 'succeeded';
+				state.isFetchingUser = false;
 				state.isAuthChecked = true;
 				state.user = action.payload.user;
 				state.accessToken = action.payload.accessToken;
@@ -88,6 +99,7 @@ export const authSlice = createSlice({
 			})
 			.addCase(refreshUser.rejected, (state, action) => {
 				state.status = 'failed';
+				state.isFetchingUser = false;
 				state.error = action.error.message;
 				localStorage.removeItem('accessToken');
 				localStorage.removeItem('refreshToken');
@@ -95,6 +107,7 @@ export const authSlice = createSlice({
 		builder
 			.addCase(checkAuth.fulfilled, (state, action) => {
 				state.status = 'succeeded';
+				state.isFetchingUser = false;
 				state.isAuthChecked = true;
 
 				state.user = action.payload.user;
@@ -103,6 +116,7 @@ export const authSlice = createSlice({
 			})
 			.addCase(checkAuth.rejected, (state, action) => {
 				state.status = 'failed';
+				state.isFetchingUser = false;
 				state.isAuthChecked = true;
 				state.error = action.error.message || 'Failed to authenticate';
 				localStorage.removeItem('accessToken');
@@ -112,6 +126,7 @@ export const authSlice = createSlice({
 			})
 			.addCase(checkAuth.pending, (state, action) => {
 				state.isForgotPassword = JSON.parse(localStorage.getItem('isForgotPassword'));
+				state.isFetchingUser = true;
 				state.status = 'loading';
 			});
 	},

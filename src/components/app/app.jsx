@@ -13,10 +13,10 @@ import {
 	ResetPassword,
 	ProfilePage,
 } from '../../pages';
+
 import { OnlyAuth, OnlyUnAuth, OnlyAfterForgot } from '../protected-route';
-
 import Layout from '../layout/layout';
-
+import Preloader from '../preloader/preloader';
 import IngredientDetails from '../modals/ingredient-details/ingredient-details';
 import Modal from '../modals/modal/modal';
 
@@ -24,10 +24,9 @@ import AppHeader from '../app-header/app-header';
 
 //TODO
 
-//* 4. Сделать всю логику переадресации между экранами
 //* 5. Сделать обработку ошибок
-//* 6. Сделать прелоадер и вывод уведомлений в случае ошибок
-//* 7. Сделать защищенные маршруты
+//* почистить код
+
 const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -35,14 +34,22 @@ const App = () => {
 
 	const dispatch = useDispatch();
 	const ingredientsStatus = useSelector((state) => state.ingredients.status);
+	const { isAuthChecked } = useSelector((state) => state.auth);
+	const { isFetchingUser } = useSelector((state) => state.auth);
+	const { isFetchingIngredients } = useSelector((state) => state.ingredients);
 
 	useEffect(() => {
-		dispatch(checkAuth());
+		if (!isAuthChecked) {
+			dispatch(checkAuth());
+		}
 		if (ingredientsStatus === 'idle') {
 			dispatch(getIngredientsFromServer());
 		}
-	}, [dispatch, ingredientsStatus]);
-	return (
+	}, [dispatch, ingredientsStatus, isAuthChecked]);
+
+	return isFetchingIngredients || isFetchingUser ? (
+		<Preloader />
+	) : (
 		<>
 			<AppHeader />
 			<Routes location={background || location}>
@@ -51,12 +58,11 @@ const App = () => {
 					<Route path="/ingredients/:id" element={<IngredientDetails />} />
 					<Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
 					<Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
-					<Route path="/forgot-password" element={<ForgotPassword />} />
+					<Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword />} />} />
 					<Route
 						path="/reset-password"
 						element={<OnlyAfterForgot component={<ResetPassword />} />}
 					/>
-					{/* <Route path="/reset-password" element={<ResetPassword />} /> */}
 					<Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
 					<Route path="*" element={<NotFound />} />
 				</Route>

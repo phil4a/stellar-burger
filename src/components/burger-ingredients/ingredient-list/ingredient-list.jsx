@@ -5,7 +5,7 @@ import IngredientTabs from '../ingredient-tabs/ingredient-tabs';
 
 import styles from './ingredient-list.module.css';
 
-const IngredientList = ({}) => {
+const IngredientList = () => {
 	const wrapperRef = useRef(null);
 	const [activeTab, setActiveTab] = useState('Булки');
 

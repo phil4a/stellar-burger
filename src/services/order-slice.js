@@ -6,6 +6,7 @@ const initialState = {
 	orderNumber: null,
 	status: 'idle',
 	error: null,
+	isSendingOrder: false,
 };
 
 export const orderSlice = createSlice({
@@ -20,13 +21,16 @@ export const orderSlice = createSlice({
 		builder
 			.addCase(sendOrder.pending, (state, action) => {
 				state.status = 'loading';
+				state.isSendingOrder = true;
 			})
 			.addCase(sendOrder.fulfilled, (state, action) => {
 				state.status = 'succeeded';
+				state.isSendingOrder = false;
 				state.orderNumber = action.payload.order.number;
 			})
 			.addCase(sendOrder.rejected, (state, action) => {
 				state.status = 'failed';
+				state.isSendingOrder = false;
 				state.error = action.error.message;
 			});
 	},
