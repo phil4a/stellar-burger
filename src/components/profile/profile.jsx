@@ -117,10 +117,11 @@ const Profile = () => {
 				/>
 
 				<div className={styles.buttons}>
-					<Button onClick={handleCancelClick} type="secondary" size="medium">
+					<Button htmlType="button" onClick={handleCancelClick} type="secondary" size="medium">
 						Отмена
 					</Button>
 					<Button
+						htmlType="button"
 						disabled={nameValue === user.name && emailValue === user.email}
 						onClick={handleRefreshUserClick}
 						type="primary"

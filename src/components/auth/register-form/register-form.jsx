@@ -30,7 +30,7 @@ const RegisterForm = () => {
 
 	return (
 		<div className={styles.register}>
-			<form className={styles.form}>
+			<form className={styles.form} onSubmit={onSubmit}>
 				<h1 className="text text_type_main-medium mb-6">Регистрация</h1>
 				<Input
 					type={'text'}
@@ -65,7 +65,7 @@ const RegisterForm = () => {
 					size={'default'}
 					extraClass="mb-6"
 				/>
-				<Button htmlType="button" type="primary" size="medium" extraClass="" onClick={onSubmit}>
+				<Button htmlType="submit" type="primary" size="medium" extraClass="">
 					Зарегистрироваться
 				</Button>
 			</form>

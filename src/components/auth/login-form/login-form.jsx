@@ -7,6 +7,7 @@ import styles from './login-form.module.css';
 
 const LoginForm = () => {
 	const navigate = useNavigate();
+
 	const dispatch = useDispatch();
 	const [value, setValue] = useState('');
 	const onChange = (e) => {
@@ -20,16 +21,15 @@ const LoginForm = () => {
 		setTimeout(() => inputRef.current.focus(), 0);
 	};
 
-	const onSubmit = (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
-		const accessToken = localStorage.getItem('accessToken');
-		dispatch(login({ accessToken, email: value, password: passwordValue }));
+		dispatch(login({ email: value, password: passwordValue }));
 		navigate('/', { replace: true });
 	};
 
 	return (
 		<div className={styles.login}>
-			<form className={styles.form}>
+			<form className={styles.form} onSubmit={handleSubmit}>
 				<h1 className="text text_type_main-medium mb-6">Вход</h1>
 				<EmailInput
 					onChange={onChange}
@@ -52,7 +52,7 @@ const LoginForm = () => {
 					size={'default'}
 					extraClass="mb-6"
 				/>
-				<Button htmlType="button" type="primary" size="medium" extraClass="" onClick={onSubmit}>
+				<Button htmlType="submit" type="primary" size="medium" extraClass="">
 					Войти
 				</Button>
 			</form>

@@ -27,7 +27,6 @@ const ForgotPasswordForm = () => {
 		fetchForgotPassword(emailValue).then((response) => {
 			if (response.success) {
 				dispatch(setForgotPassword(true));
-				console.log('response success', response);
 				navigate('/reset-password', { state: { from: 'forgot-password' } });
 			}
 			setIsLoading(false);

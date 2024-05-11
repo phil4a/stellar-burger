@@ -148,7 +148,8 @@ export const registration = createAsyncThunk('register/register', (data) => {
 });
 
 export const login = createAsyncThunk('auth/login', (data) => {
-	const { accessToken, email, password } = data;
+	const accessToken = localStorage.getItem('accessToken');
+	const { email, password } = data;
 	const response = fetchWithRefresh('auth/login', {
 		method: 'POST',
 		headers: {
@@ -172,7 +173,6 @@ export const logout = createAsyncThunk('auth/logout', () => {
 
 export const checkAuth = createAsyncThunk('auth/check', async () => {
 	const accessToken = localStorage.getItem('accessToken');
-	console.log('auth is checked');
 	if (!accessToken) {
 		return Promise.reject('No access token available');
 	}
