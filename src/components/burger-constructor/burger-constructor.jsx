@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
-import { setIngredients, setBun, clearIngredients } from '../../services/constructor-slice';
+import { addIngredient, setBun, clearIngredients } from '../../services/constructor-slice';
 import { increaseIngredientsCounter } from '../../services/ingredients-slice';
 
 import { sendOrder } from '../../services/order-slice';
@@ -42,7 +42,7 @@ const BurgerConstructor = () => {
 				dispatch(setBun(item));
 				dispatch(increaseIngredientsCounter(item));
 			} else {
-				dispatch(setIngredients(item));
+				dispatch(addIngredient(item));
 				dispatch(increaseIngredientsCounter(item));
 			}
 		},
