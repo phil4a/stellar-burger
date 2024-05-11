@@ -2,6 +2,8 @@ import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import Preloader from '../components/preloader/preloader';
 
+import propTypes from 'prop-types';
+
 const ProtectedRoute = ({
 	component,
 	onlyUnAuth = false,
@@ -34,6 +36,13 @@ const ProtectedRoute = ({
 
 	// Возвращаем компонент, если все проверки пройдены
 	return component;
+};
+
+ProtectedRoute.propTypes = {
+	component: propTypes.node.isRequired,
+	onlyUnAuth: propTypes.bool,
+	onlyAfterForgot: propTypes.bool,
+	allowUnauthAccess: propTypes.bool,
 };
 
 export const OnlyAuth = ({ component }) => <ProtectedRoute component={component} />;

@@ -22,11 +22,6 @@ import Modal from '../modals/modal/modal';
 
 import AppHeader from '../app-header/app-header';
 
-//TODO
-
-//* 5. Сделать обработку ошибок
-//* почистить код
-
 const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();

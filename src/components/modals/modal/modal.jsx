@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { setCurrentIngredient } from '../../../services/current-ingredient-slice';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import propTypes from 'prop-types';
@@ -13,7 +13,6 @@ const Modal = ({ children, onClose }) => {
 	const { ingredientId } = useParams();
 	const ingredients = useSelector((state) => state.ingredients.ingredients);
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 
 	const handleCloseModal = () => {
 		onClose();
