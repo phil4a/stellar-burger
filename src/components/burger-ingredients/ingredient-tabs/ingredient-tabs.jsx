@@ -1,4 +1,5 @@
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import propTypes from 'prop-types';
 
 import styles from './ingredient-tabs.module.css';
 
@@ -18,4 +19,8 @@ const IngredientTabs = ({ activeTab, onTabClick }) => {
 	);
 };
 
+IngredientTabs.propTypes = {
+	activeTab: propTypes.string.isRequired,
+	onTabClick: propTypes.func.isRequired,
+};
 export default IngredientTabs;

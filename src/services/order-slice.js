@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { request } from '../utils/request';
+import { fetchWithRefresh } from '../utils/api';
 
 const initialState = {
 	orderNumber: null,
 	status: 'idle',
 	error: null,
+	isSendingOrder: false,
 };
 
 export const orderSlice = createSlice({
@@ -20,22 +21,27 @@ export const orderSlice = createSlice({
 		builder
 			.addCase(sendOrder.pending, (state, action) => {
 				state.status = 'loading';
+				state.isSendingOrder = true;
 			})
 			.addCase(sendOrder.fulfilled, (state, action) => {
 				state.status = 'succeeded';
+				state.isSendingOrder = false;
 				state.orderNumber = action.payload.order.number;
 			})
 			.addCase(sendOrder.rejected, (state, action) => {
 				state.status = 'failed';
+				state.isSendingOrder = false;
 				state.error = action.error.message;
 			});
 	},
 });
 
 export const sendOrder = createAsyncThunk('currentOrder/send', async (ingredientIds) => {
-	const response = await request('orders', {
+	const accessToken = localStorage.getItem('accessToken');
+	const response = await fetchWithRefresh('orders', {
 		method: 'POST',
 		headers: {
+			Authorization: accessToken,
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({ ingredients: ingredientIds }),

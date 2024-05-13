@@ -1,3 +1,4 @@
+import { NavLink, useLocation } from 'react-router-dom';
 import {
 	BurgerIcon,
 	ListIcon,
@@ -5,12 +6,16 @@ import {
 import styles from './header-nav.module.css';
 
 const HeaderNav = () => {
+	const location = useLocation();
+	const homeActive = location.pathname === '/';
 	return (
 		<nav className="text text_type_main-default">
 			<ul className={styles.list}>
-				<li className={styles.item}>
-					<BurgerIcon type="primary" />
-					<span>Конструктор</span>
+				<li className="text text_type_main-default">
+					<NavLink className={styles.item} to={'/'}>
+						<BurgerIcon type={homeActive ? 'primary' : 'secondary'} />
+						<span>Конструктор</span>
+					</NavLink>
 				</li>
 				<li className={`${styles.item} text_color_inactive`}>
 					<ListIcon type="secondary" />

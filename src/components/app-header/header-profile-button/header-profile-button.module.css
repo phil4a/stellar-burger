@@ -1,4 +1,5 @@
 .item {
 	composes: item from '../header-nav/header-nav.module.css';
 	justify-self: flex-end;
+	text-decoration: none;
 }

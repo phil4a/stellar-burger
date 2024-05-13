@@ -12,8 +12,8 @@ export const constructorSlice = createSlice({
 		setBun(state, action) {
 			state.bun = action.payload;
 		},
-		setIngredients(state, action) {
-			state.ingredients = [...state.ingredients, { ...action.payload, nanoid: nanoid() }];
+		addIngredient(state, action) {
+			state.ingredients.push(action.payload);
 		},
 		moveIngredients(state, action) {
 			const { dragIndex, hoverIndex } = action.payload;
@@ -32,6 +32,17 @@ export const constructorSlice = createSlice({
 		},
 	},
 });
+
+export const addIngredient = (ingredient) => {
+	return {
+		type: constructorSlice.actions.addIngredient.type,
+		payload: {
+			...ingredient,
+			nanoid: nanoid(),
+		},
+	};
+};
+
 export const totalPriceSelector = createSelector(
 	[(state) => state.burgerConstructor.ingredients, (state) => state.burgerConstructor.bun],
 	(ingredients, bun) => {

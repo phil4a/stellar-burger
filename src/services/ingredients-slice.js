@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { request } from '../utils/request.js';
+import { fetchWithRefresh } from '../utils/api.js';
 
 const initialState = {
 	ingredients: [],
 	status: 'idle',
 	error: null,
+	isFetchingIngredients: false,
 };
 export const ingredientsSlice = createSlice({
 	name: 'ingredients',
@@ -43,9 +44,11 @@ export const ingredientsSlice = createSlice({
 		builder
 			.addCase(getIngredientsFromServer.pending, (state, action) => {
 				state.status = 'loading';
+				state.isFetchingIngredients = true;
 			})
 			.addCase(getIngredientsFromServer.fulfilled, (state, action) => {
 				state.status = 'succeeded';
+				state.isFetchingIngredients = false;
 				state.ingredients = action.payload.data.map((ingredient) => ({
 					...ingredient,
 					count: ingredient.count || 0,
@@ -54,6 +57,7 @@ export const ingredientsSlice = createSlice({
 
 			.addCase(getIngredientsFromServer.rejected, (state, action) => {
 				state.status = 'failed';
+				state.isFetchingIngredients = false;
 				state.error = action.error.message;
 			});
 	},
@@ -62,7 +66,7 @@ export const ingredientsSlice = createSlice({
 export const { increaseIngredientsCounter, decreaseIngredientsCounter } = ingredientsSlice.actions;
 
 export const getIngredientsFromServer = createAsyncThunk('ingredients/fetch', async () => {
-	return await request('ingredients');
+	return await fetchWithRefresh('ingredients');
 });
 
 export default ingredientsSlice.reducer;
