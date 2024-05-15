@@ -22,23 +22,25 @@ import Modal from '../modals/modal/modal';
 
 import AppHeader from '../app-header/app-header';
 
+import { TODO_ANY } from '../../utils/types';
+
 const App = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const background = location.state && location.state.background;
 
 	const dispatch = useDispatch();
-	const ingredientsStatus = useSelector((state) => state.ingredients.status);
-	const { isAuthChecked } = useSelector((state) => state.auth);
-	const { isFetchingUser } = useSelector((state) => state.auth);
-	const { isFetchingIngredients } = useSelector((state) => state.ingredients);
+	const ingredientsStatus = useSelector((state: TODO_ANY) => state.ingredients.status);
+	const { isAuthChecked } = useSelector((state: TODO_ANY) => state.auth);
+	const { isFetchingUser } = useSelector((state: TODO_ANY) => state.auth);
+	const { isFetchingIngredients } = useSelector((state: TODO_ANY) => state.ingredients);
 
 	useEffect(() => {
 		if (!isAuthChecked) {
-			dispatch(checkAuth());
+			dispatch(checkAuth() as TODO_ANY);
 		}
 		if (ingredientsStatus === 'idle') {
-			dispatch(getIngredientsFromServer());
+			dispatch(getIngredientsFromServer() as TODO_ANY);
 		}
 	}, [dispatch, ingredientsStatus, isAuthChecked]);
 
