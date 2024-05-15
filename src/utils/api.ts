@@ -53,8 +53,12 @@ export const fetchWithRefresh = async (
 				if (!refreshData.success) {
 					return Promise.reject(refreshData);
 				}
-				localStorage.setItem('refreshToken', refreshData.refreshToken || '');
-				localStorage.setItem('accessToken', refreshData.accessToken || '');
+				if (refreshData.refreshToken) {
+					localStorage.setItem('refreshToken', refreshData.refreshToken);
+				}
+				if (refreshData.accessToken) {
+					localStorage.setItem('accessToken', refreshData.accessToken);
+				}
 				options.headers = options.headers || {}; // Проверка инициализации headers
 				options.headers.authorization = refreshData.accessToken || ''; // Обновляем токен в заголовке
 				const res = await fetch(url, options); // Повторный запрос с новым токеном
