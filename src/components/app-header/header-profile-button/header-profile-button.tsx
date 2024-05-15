@@ -3,8 +3,10 @@ import { useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import styles from './header-profile-button.module.css';
 
-const HeaderProfileButton = () => {
-	const { name } = useSelector((state) => state.auth.user);
+import { TODO_ANY } from '../../../utils/types';
+
+const HeaderProfileButton: React.FC = () => {
+	const { name } = useSelector((state: TODO_ANY) => state.auth.user);
 	const location = useLocation();
 	const profileActive = location.pathname.includes('/profile');
 

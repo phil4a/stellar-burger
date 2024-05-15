@@ -5,7 +5,7 @@ import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import HeaderNav from './header-nav/header-nav';
 import HeaderProfileButton from './header-profile-button/header-profile-button';
 
-const AppHeader = () => {
+const AppHeader: React.FC = () => {
 	return (
 		<header className={headerStyles.header}>
 			<div className={headerStyles.container}>

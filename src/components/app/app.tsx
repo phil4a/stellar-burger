@@ -24,7 +24,7 @@ import AppHeader from '../app-header/app-header';
 
 import { TODO_ANY } from '../../utils/types';
 
-const App = () => {
+const App: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const background = location.state && location.state.background;

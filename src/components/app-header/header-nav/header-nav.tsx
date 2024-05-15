@@ -5,7 +5,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons';
 import styles from './header-nav.module.css';
 
-const HeaderNav = () => {
+const HeaderNav: React.FC = () => {
 	const location = useLocation();
 	const homeActive = location.pathname === '/';
 	return (
