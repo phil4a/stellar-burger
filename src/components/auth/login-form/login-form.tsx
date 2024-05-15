@@ -5,25 +5,33 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login-form.module.css';
 
-const LoginForm = () => {
+import { TODO_ANY } from '../../../utils/types';
+
+const LoginForm: React.FC = () => {
 	const navigate = useNavigate();
 
 	const dispatch = useDispatch();
-	const [value, setValue] = useState('');
-	const onChange = (e) => {
+	const [value, setValue] = useState<string>('');
+	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(e.target.value);
 	};
 	const [passwordValue, setPasswordValue] = useState('');
-	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 	const inputRef = useRef(null);
 	const onIconClick = () => {
 		setIsPasswordVisible(!isPasswordVisible);
-		setTimeout(() => inputRef.current.focus(), 0);
+		if (inputRef.current) {
+			if (inputRef.current) {
+				//@ts-ignore
+				setTimeout(() => inputRef.current.focus(), 0);
+			}
+		}
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		dispatch(login({ email: value, password: passwordValue }));
+		//@ts-ignore
+		dispatch(login({ email: value, password: passwordValue }) as TODO_ANY);
 		navigate('/', { replace: true });
 	};
 
