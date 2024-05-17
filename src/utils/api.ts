@@ -11,8 +11,11 @@ interface IForgotPasswordResponse extends Partial<IRefreshResponse> {
 }
 
 interface FetchOptions extends RequestInit {
+	method: string;
 	headers: {
-		[key: string]: string;
+		// [key: string]: string;
+		'Content-Type': string;
+		Authorization?: string;
 	};
 }
 
@@ -51,7 +54,7 @@ export const fetchWithRefresh = async (endpoint: string, options: FetchOptions):
 	} catch (err) {
 		if (err instanceof Error) {
 			if (err.message === 'jwt expired') {
-				const refreshData = await refreshToken();
+				const refreshData: IRefreshResponse = await refreshToken();
 				if (!refreshData.success) {
 					return Promise.reject(refreshData);
 				}
@@ -61,8 +64,7 @@ export const fetchWithRefresh = async (endpoint: string, options: FetchOptions):
 				if (refreshData.accessToken) {
 					localStorage.setItem('accessToken', refreshData.accessToken);
 				}
-				options.headers = options.headers || {}; // Проверка инициализации headers
-				options.headers.authorization = refreshData.accessToken || ''; // Обновляем токен в заголовке
+				options.headers.Authorization = refreshData.accessToken; // Обновляем токен в заголовке
 				const res = await fetch(url, options); // Повторный запрос с новым токеном
 				return await checkResponse(res);
 			} else {
@@ -78,7 +80,7 @@ export const fetchForgotPassword = (email: string): Promise<IForgotPasswordRespo
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json;charset=utf-8',
-			authorization: localStorage.getItem('accessToken') || '',
+			Authorization: localStorage.getItem('accessToken') || '',
 		},
 		body: JSON.stringify(request),
 	}).then((res) => res.json()) as Promise<IForgotPasswordResponse>;
@@ -90,7 +92,7 @@ export const fetchResetPassword = (password: string, token: string): Promise<unk
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json;charset=utf-8',
-			authorization: localStorage.getItem('accessToken') || '',
+			Authorization: localStorage.getItem('accessToken') || '',
 		},
 		body: JSON.stringify(request),
 	});

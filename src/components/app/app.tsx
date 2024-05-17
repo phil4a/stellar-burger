@@ -32,11 +32,12 @@ const App: React.FC = () => {
 	const dispatch = useDispatch();
 	const ingredientsStatus = useSelector((state: TODO_ANY) => state.ingredients.status);
 	const { isAuthChecked } = useSelector((state: TODO_ANY) => state.auth);
+	const { accessToken } = useSelector((state: TODO_ANY) => state.auth);
 	const { isFetchingUser } = useSelector((state: TODO_ANY) => state.auth);
 	const { isFetchingIngredients } = useSelector((state: TODO_ANY) => state.ingredients);
 
 	useEffect(() => {
-		if (!isAuthChecked) {
+		if (!isAuthChecked && accessToken) {
 			dispatch(checkAuth() as TODO_ANY);
 		}
 		if (ingredientsStatus === 'idle') {
