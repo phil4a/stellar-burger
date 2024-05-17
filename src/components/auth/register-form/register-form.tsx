@@ -1,30 +1,31 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { registration } from '../../../services/auth/auth-slice';
 import { Link } from 'react-router-dom';
 import { Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './register-form.module.css';
 
-const RegisterForm = () => {
+const RegisterForm: React.FC = () => {
 	const dispatch = useDispatch();
 
-	const [emailValue, setEmailValue] = useState('');
-	const [nameValue, setNameValue] = useState('');
-	const [passwordValue, setPasswordValue] = useState('');
-	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	const [emailValue, setEmailValue] = useState<string>('');
+	const [nameValue, setNameValue] = useState<string>('');
+	const [passwordValue, setPasswordValue] = useState<string>('');
+	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
-	const nameRef = useRef(null);
-	const inputRef = useRef(null);
+	const nameRef = useRef<HTMLInputElement>(null);
+	const inputRef = useRef<HTMLInputElement>(null);
 
-	const onChangeEmail = (e) => {
+	const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setEmailValue(e.target.value);
 	};
 	const onIconClick = () => {
 		setIsPasswordVisible(!isPasswordVisible);
-		setTimeout(() => inputRef.current.focus(), 0);
+		setTimeout(() => inputRef.current?.focus(), 0);
 	};
-	const onSubmit = (e) => {
+	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		//@ts-ignore
 		dispatch(registration({ name: nameValue, email: emailValue, password: passwordValue }));
 	};
 
