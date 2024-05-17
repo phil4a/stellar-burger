@@ -6,6 +6,10 @@ interface IRefreshResponse {
 	accessToken?: string;
 }
 
+interface IForgotPasswordResponse extends Partial<IRefreshResponse> {
+	message?: string;
+}
+
 interface FetchOptions extends RequestInit {
 	headers: {
 		[key: string]: string;
@@ -25,8 +29,8 @@ export function checkResponse<T>(res: Response): Promise<T> {
 	return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 }
 
-export const refreshToken = (): Promise<IRefreshResponse> => {
-	return fetch(`${API_URL}/auth/token`, {
+export const refreshToken = async (): Promise<IRefreshResponse> => {
+	const res = await fetch(`${API_URL}/auth/token`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json;charset=utf-8',
@@ -34,7 +38,8 @@ export const refreshToken = (): Promise<IRefreshResponse> => {
 		body: JSON.stringify({
 			token: localStorage.getItem('refreshToken'),
 		}),
-	}).then(checkResponse<IRefreshResponse>);
+	});
+	return checkResponse<IRefreshResponse>(res);
 };
 
 export const fetchWithRefresh = async (endpoint: string, options: FetchOptions): Promise<any> => {
@@ -67,7 +72,7 @@ export const fetchWithRefresh = async (endpoint: string, options: FetchOptions):
 	}
 };
 
-export const fetchForgotPassword = (email: string): Promise<unknown> => {
+export const fetchForgotPassword = (email: string): Promise<IForgotPasswordResponse> => {
 	const request: IForgotPasswordRequest = { email };
 	return fetchWithRefresh('password-reset', {
 		method: 'POST',
@@ -76,7 +81,7 @@ export const fetchForgotPassword = (email: string): Promise<unknown> => {
 			authorization: localStorage.getItem('accessToken') || '',
 		},
 		body: JSON.stringify(request),
-	});
+	}).then((res) => res.json()) as Promise<IForgotPasswordResponse>;
 };
 
 export const fetchResetPassword = (password: string, token: string): Promise<unknown> => {

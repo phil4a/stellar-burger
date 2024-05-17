@@ -17,13 +17,12 @@ const LoginForm: React.FC = () => {
 	};
 	const [passwordValue, setPasswordValue] = useState('');
 	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-	const inputRef = useRef(null);
+	const inputRef = useRef<HTMLInputElement>(null);
 	const onIconClick = () => {
 		setIsPasswordVisible(!isPasswordVisible);
 		if (inputRef.current) {
 			if (inputRef.current) {
-				//@ts-ignore
-				setTimeout(() => inputRef.current.focus(), 0);
+				setTimeout(() => inputRef.current?.focus(), 0);
 			}
 		}
 	};

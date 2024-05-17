@@ -25,7 +25,6 @@ const ForgotPasswordForm: React.FC = () => {
 		setIsLoading(true);
 
 		fetchForgotPassword(emailValue).then((response) => {
-			//@ts-ignore
 			if (response.success) {
 				dispatch(setForgotPassword(true));
 				navigate('/reset-password', { state: { from: 'forgot-password' } });
