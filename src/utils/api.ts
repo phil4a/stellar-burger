@@ -37,10 +37,7 @@ export const refreshToken = (): Promise<IRefreshResponse> => {
 	}).then(checkResponse<IRefreshResponse>);
 };
 
-export const fetchWithRefresh = async (
-	endpoint: string,
-	options: FetchOptions,
-): Promise<unknown> => {
+export const fetchWithRefresh = async (endpoint: string, options: FetchOptions): Promise<any> => {
 	const url = `${API_URL}/${endpoint}`;
 	try {
 		const res = await fetch(url, options);
