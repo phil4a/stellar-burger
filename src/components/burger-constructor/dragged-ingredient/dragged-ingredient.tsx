@@ -7,14 +7,17 @@ import { decreaseIngredientsCounter } from '../../../services/ingredients-slice'
 import { deleteIngredient, moveIngredients } from '../../../services/constructor-slice';
 import styles from '../burger-constructor.module.css';
 
-import propTypes from 'prop-types';
-import { ingredientType } from '../../../utils/types';
+import { IDraggedIngredient } from '../../../utils/types';
 
-const DraggedIngredient = ({ ingredient, id, index }) => {
-	const ref = useRef(null);
+const DraggedIngredient: React.FC<IDraggedIngredient> = ({
+	ingredient,
+	id,
+	index,
+}): JSX.Element => {
+	const ref = useRef<HTMLDivElement>(null);
 	const dispatch = useDispatch();
 
-	const [, drop] = useDrop({
+	const [, drop] = useDrop<{ index: number }>({
 		accept: 'card',
 		hover(item, monitor) {
 			if (!ref.current) {
@@ -29,7 +32,7 @@ const DraggedIngredient = ({ ingredient, id, index }) => {
 			const hoverBoundingRect = ref.current?.getBoundingClientRect();
 			const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 			const clientOffset = monitor.getClientOffset();
-			const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+			const hoverClientY = clientOffset!.y - hoverBoundingRect.top;
 
 			if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
 				return;
@@ -73,12 +76,6 @@ const DraggedIngredient = ({ ingredient, id, index }) => {
 			/>
 		</div>
 	);
-};
-
-DraggedIngredient.propTypes = {
-	ingredient: ingredientType.isRequired,
-	id: propTypes.string.isRequired,
-	index: propTypes.number.isRequired,
 };
 
 export default DraggedIngredient;

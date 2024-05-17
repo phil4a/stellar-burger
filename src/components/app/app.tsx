@@ -24,6 +24,7 @@ import AppHeader from '../app-header/app-header';
 
 import { TODO_ANY } from '../../utils/types';
 
+//TODO Разобраться с цепочкой авторизации при просроченном refreshtoken падает ошибка в экшене checkAuth
 const App: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
