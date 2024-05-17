@@ -86,7 +86,10 @@ export const fetchForgotPassword = (email: string): Promise<IForgotPasswordRespo
 	}).then((res) => res.json()) as Promise<IForgotPasswordResponse>;
 };
 
-export const fetchResetPassword = (password: string, token: string): Promise<unknown> => {
+export const fetchResetPassword = (
+	password: string,
+	token: string,
+): Promise<IForgotPasswordResponse> => {
 	const request: IResetPasswordRequest = { password, token };
 	return fetchWithRefresh('password-reset/reset', {
 		method: 'POST',

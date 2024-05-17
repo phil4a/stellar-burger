@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { fetchResetPassword } from '../../../utils/api';
 import { useDispatch } from 'react-redux';
 import { setForgotPassword } from '../../../services/auth/auth-slice';
@@ -7,22 +7,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './reset-password-form.module.css';
 
-const ResetPasswordForm = () => {
+const ResetPasswordForm: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const [passwordValue, setPasswordValue] = useState('');
-	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-	const [codeValue, setCodeValue] = useState('');
+	const [passwordValue, setPasswordValue] = useState<string>('');
+	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+	const [codeValue, setCodeValue] = useState<string>('');
 
-	const passwordRef = useRef(null);
+	const passwordRef = useRef<HTMLInputElement>(null);
 	const codeRef = useRef(null);
 
 	const onIconClick = () => {
 		setIsPasswordVisible(!isPasswordVisible);
-		setTimeout(() => passwordRef.current.focus(), 0);
+		setTimeout(() => passwordRef.current?.focus(), 0);
 	};
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		dispatch(setForgotPassword(false));
