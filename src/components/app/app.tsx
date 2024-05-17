@@ -24,7 +24,8 @@ import AppHeader from '../app-header/app-header';
 
 import { TODO_ANY } from '../../utils/types';
 
-//TODO Разобраться с цепочкой авторизации при просроченном refreshtoken падает ошибка в экшене checkAuth
+//TODO 1. Разобраться с цепочкой авторизации при просроченном refreshtoken падает ошибка в экшене checkAuth
+//TODO 2. Подумать как исправить типизацию draggedingredient в файле burger-constructor
 const App: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();

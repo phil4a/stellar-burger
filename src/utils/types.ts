@@ -1,12 +1,15 @@
 export type TODO_ANY = any;
 
+export interface IIngredientType {
+	type: 'bun' | 'sauce' | 'main';
+}
 export interface IIngredient {
 	_id: string;
 	nanoid: string;
 	name: string;
 	image: string;
 	image_mobile: string;
-	type: string;
+	type: IIngredientType;
 	price: number;
 	proteins: number;
 	fat: number;

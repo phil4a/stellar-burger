@@ -7,7 +7,7 @@ import { decreaseIngredientsCounter } from '../../../services/ingredients-slice'
 import { deleteIngredient, moveIngredients } from '../../../services/constructor-slice';
 import styles from '../burger-constructor.module.css';
 
-import { IDraggedIngredient } from '../../../utils/types';
+import { IDraggedIngredient, IIngredient } from '../../../utils/types';
 
 const DraggedIngredient: React.FC<IDraggedIngredient> = ({
 	ingredient,
@@ -17,9 +17,9 @@ const DraggedIngredient: React.FC<IDraggedIngredient> = ({
 	const ref = useRef<HTMLDivElement>(null);
 	const dispatch = useDispatch();
 
-	const [, drop] = useDrop<{ index: number }>({
+	const [, drop] = useDrop({
 		accept: 'card',
-		hover(item, monitor) {
+		hover(item: IDraggedIngredient, monitor) {
 			if (!ref.current) {
 				return;
 			}
