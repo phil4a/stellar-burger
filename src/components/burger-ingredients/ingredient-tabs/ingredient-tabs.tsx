@@ -1,9 +1,14 @@
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import propTypes from 'prop-types';
 
 import styles from './ingredient-tabs.module.css';
 
-const IngredientTabs = ({ activeTab, onTabClick }) => {
+const IngredientTabs = ({
+	activeTab,
+	onTabClick,
+}: {
+	activeTab: string;
+	onTabClick: (tabName: string) => void;
+}): JSX.Element => {
 	return (
 		<div className={styles.tabs}>
 			<Tab value="Булки" active={activeTab === 'Булки'} onClick={() => onTabClick('Булки')}>
@@ -19,8 +24,4 @@ const IngredientTabs = ({ activeTab, onTabClick }) => {
 	);
 };
 
-IngredientTabs.propTypes = {
-	activeTab: propTypes.string.isRequired,
-	onTabClick: propTypes.func.isRequired,
-};
 export default IngredientTabs;

@@ -49,11 +49,6 @@ const IngredientList: React.FC = (): JSX.Element => {
 		setActiveTab(getIngredientType(closest.type));
 	};
 
-	/**
-	 * Handles the click event on a tab.
-	 *
-	 * @param tabName - The name of the clicked tab.
-	 */
 	const onTabClick = (tabName: string): void => {
 		const type = tabName.toLowerCase();
 		const refKey = type === 'булки' ? 'bun' : type === 'соусы' ? 'sauce' : 'main';
