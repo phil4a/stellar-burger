@@ -4,7 +4,7 @@ import Spinner from '../../images/spinner.svg';
 
 const preloaderRoot = document.querySelector('#preloader');
 
-const Preloader = (): React.ReactPortal => {
+const Preloader: React.FC = (): React.ReactPortal => {
 	return ReactDOM.createPortal(
 		<div className={styles.preloader}>
 			<img src={Spinner} className={styles.spinner} alt="Loading" />

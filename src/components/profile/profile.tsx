@@ -9,48 +9,53 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 
 import styles from './profile.module.css';
 
-const Profile = () => {
+import { TODO_ANY } from '../../utils/types';
+
+const Profile: React.FC = (): React.ReactElement => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const { user } = useSelector((state) => state.auth);
+	const { user } = useSelector((state: TODO_ANY) => state.auth);
 
-	const [nameValue, setNameValue] = useState(user.name);
-	const [emailValue, setEmailValue] = useState(user.email);
-	const [passwordValue, setPasswordValue] = useState('');
-	const [nameDisabled, setNameDisabled] = useState(true);
-	const [emailDisabled, setEmailDisabled] = useState(true);
-	const [passwordDisabled, setPasswordDisabled] = useState(true);
+	const [nameValue, setNameValue] = useState<string>(user.name);
+	const [emailValue, setEmailValue] = useState<string>(user.email);
+	const [passwordValue, setPasswordValue] = useState<string>('');
+	const [nameDisabled, setNameDisabled] = useState<boolean>(true);
+	const [emailDisabled, setEmailDisabled] = useState<boolean>(true);
+	const [passwordDisabled, setPasswordDisabled] = useState<boolean>(true);
 
-	const nameInputRef = useRef(null);
-	const emailInputRef = useRef(null);
-	const passwordInputRef = useRef(null);
+	const nameInputRef = useRef<HTMLInputElement>(null);
+	const emailInputRef = useRef<HTMLInputElement>(null);
+	const passwordInputRef = useRef<HTMLInputElement>(null);
 
-	const onNameIconClick = () => {
+	const onNameIconClick = (): void => {
 		setNameDisabled(false);
-		setTimeout(() => nameInputRef.current.focus(), 0);
+		setTimeout(() => nameInputRef.current?.focus(), 0);
 	};
 
-	const onEmailIconClick = () => {
+	const onEmailIconClick = (): void => {
 		setEmailDisabled(false);
-		setTimeout(() => emailInputRef.current.focus(), 0);
-	};
-	const onPasswordIconClick = () => {
-		setPasswordDisabled(false);
-		setTimeout(() => passwordInputRef.current.focus(), 0);
+		setTimeout(() => emailInputRef.current?.focus(), 0);
 	};
 
-	const handleLogoutClick = () => {
-		dispatch(logout());
+	const onPasswordIconClick = (): void => {
+		setPasswordDisabled(false);
+		setTimeout(() => passwordInputRef.current?.focus(), 0);
+	};
+
+	const handleLogoutClick = (): void => {
+		dispatch(logout() as TODO_ANY);
 		navigate('/', { replace: true });
 	};
 
-	const handleCancelClick = () => {
+	const handleCancelClick = (): void => {
 		setNameValue(user.name);
 		setEmailValue(user.email);
 		setPasswordValue('');
 	};
-	const handleRefreshUserClick = () => {
+
+	const handleRefreshUserClick = (): void => {
+		//@ts-ignore
 		dispatch(refreshUser({ name: nameValue, email: emailValue }));
 	};
 
