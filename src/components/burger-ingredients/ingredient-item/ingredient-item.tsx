@@ -7,7 +7,7 @@ import { Link, useLocation } from 'react-router-dom';
 import styles from './ingredient-item.module.css';
 import { IIngredient } from '../../../utils/types';
 
-const IngredientItem: React.FC<{ ingredient: IIngredient; count: number }> = ({ ingredient }) => {
+const IngredientItem: React.FC<{ ingredient: IIngredient; count?: number }> = ({ ingredient }) => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const ingredientId = ingredient._id;
