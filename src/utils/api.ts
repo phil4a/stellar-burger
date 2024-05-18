@@ -52,24 +52,22 @@ export const fetchWithRefresh = async (endpoint: string, options: FetchOptions):
 		const data = await checkResponse(res);
 		return data;
 	} catch (err) {
-		if (err instanceof Error) {
-			if (err.message === 'jwt expired') {
-				const refreshData: IRefreshResponse = await refreshToken();
-				if (!refreshData.success) {
-					return Promise.reject(refreshData);
-				}
-				if (refreshData.refreshToken) {
-					localStorage.setItem('refreshToken', refreshData.refreshToken);
-				}
-				if (refreshData.accessToken) {
-					localStorage.setItem('accessToken', refreshData.accessToken);
-				}
-				options.headers.Authorization = refreshData.accessToken; // Обновляем токен в заголовке
-				const res = await fetch(url, options); // Повторный запрос с новым токеном
-				return await checkResponse(res);
-			} else {
-				return Promise.reject(err);
+		if (err === 'jwt expired') {
+			const refreshData: IRefreshResponse = await refreshToken();
+			if (!refreshData.success) {
+				return Promise.reject(refreshData);
 			}
+			if (refreshData.refreshToken) {
+				localStorage.setItem('refreshToken', refreshData.refreshToken);
+			}
+			if (refreshData.accessToken) {
+				localStorage.setItem('accessToken', refreshData.accessToken);
+			}
+			options.headers.Authorization = refreshData.accessToken; // Обновляем токен в заголовке
+			const res = await fetch(url, options); // Повторный запрос с новым токеном
+			return await checkResponse(res);
+		} else {
+			return Promise.reject(err);
 		}
 	}
 };
