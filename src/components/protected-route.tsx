@@ -22,7 +22,7 @@ const ProtectedRoute: React.FC<IProtectedRouteProps> = ({
 
 	if (!isAuthChecked) {
 		// Если проверка авторизации еще не завершена
-		return <Preloader />;
+		<Preloader />;
 	}
 
 	if (onlyUnAuth && user.name) {
