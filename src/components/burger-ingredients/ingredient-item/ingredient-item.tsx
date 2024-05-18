@@ -5,10 +5,9 @@ import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 
 import styles from './ingredient-item.module.css';
-import propTypes from 'prop-types';
-import { ingredientType } from '../../../utils/types';
+import { IIngredient } from '../../../utils/types';
 
-const IngredientItem = ({ ingredient }) => {
+const IngredientItem: React.FC<{ ingredient: IIngredient; count: number }> = ({ ingredient }) => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 	const ingredientId = ingredient._id;
@@ -43,9 +42,6 @@ const IngredientItem = ({ ingredient }) => {
 			</Link>
 		</li>
 	);
-};
-IngredientItem.propTypes = {
-	ingredient: ingredientType.isRequired,
 };
 
 export default IngredientItem;

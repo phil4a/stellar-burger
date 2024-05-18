@@ -9,7 +9,7 @@ import styles from '../burger-constructor.module.css';
 
 import { IDraggedIngredient, IIngredient } from '../../../utils/types';
 
-const DraggedIngredient: React.FC<IDraggedIngredient> = ({
+const DraggedIngredient: React.FC<{ ingredient: IIngredient; id: string; index: number }> = ({
 	ingredient,
 	id,
 	index,

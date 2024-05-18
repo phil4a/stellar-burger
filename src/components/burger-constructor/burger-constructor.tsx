@@ -15,7 +15,7 @@ import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger
 
 import styles from './burger-constructor.module.css';
 
-import { TODO_ANY, IIngredient, IIngredientType } from '../../utils/types';
+import { TODO_ANY, IIngredient } from '../../utils/types';
 
 const BurgerConstructor: React.FC = (): JSX.Element => {
 	const navigate = useNavigate();
@@ -40,7 +40,7 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 
 	const [{ canDrop, itemType }, dropRef] = useDrop({
 		accept: ['ingredient', 'bun'],
-		drop(item: IIngredientType) {
+		drop(item: IIngredient) {
 			if (item.type === 'bun') {
 				dispatch(setBun(item));
 				dispatch(increaseIngredientsCounter(item));
@@ -80,7 +80,6 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 			<div className={styles.ingredients} style={{ borderColor: borderColorIngredients }}>
 				{ingredients.length ? (
 					ingredients.map((ingredient: IIngredient, index: number) => (
-						//@ts-ignore
 						<DraggedIngredient
 							key={ingredient.nanoid}
 							ingredient={ingredient}
