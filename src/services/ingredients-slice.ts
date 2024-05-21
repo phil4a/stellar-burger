@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { fetchWithRefresh } from '../utils/api';
+import { fetchWithRefresh, fetchIngredients } from '../utils/api';
 import { IIngredient } from '../utils/types';
 
 interface IIngredientsState {
@@ -75,9 +75,11 @@ export const ingredientsSlice = createSlice({
 
 export const { increaseIngredientsCounter, decreaseIngredientsCounter } = ingredientsSlice.actions;
 
-export const getIngredientsFromServer = createAsyncThunk('ingredients/fetch', async () => {
-	//@ts-ignore
-	return await fetchWithRefresh('ingredients');
-});
+export const getIngredientsFromServer = createAsyncThunk<{ data: IIngredient[] }>(
+	'ingredients/fetch',
+	async () => {
+		return await fetchIngredients('ingredients');
+	},
+);
 
 export default ingredientsSlice.reducer;

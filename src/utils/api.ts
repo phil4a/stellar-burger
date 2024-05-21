@@ -1,3 +1,5 @@
+import { IIngredient } from '../utils/types';
+
 const API_URL = 'https://norma.nomoreparties.space/api';
 
 interface IRefreshResponse {
@@ -31,6 +33,13 @@ export function checkResponse<T>(res: Response): Promise<T> {
 	return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 }
 
+export const fetchIngredients = async (
+	url: string,
+): Promise<{ data: IIngredient[]; success: boolean }> => {
+	const res = await fetch(`${API_URL}/${url}`);
+	return checkResponse(res);
+};
+
 export const refreshToken = async (): Promise<IRefreshResponse> => {
 	const res = await fetch(`${API_URL}/auth/token`, {
 		method: 'POST',
@@ -62,9 +71,7 @@ export const fetchWithRefresh = async (endpoint: string, options: FetchOptions):
 			if (refreshData.accessToken) {
 				localStorage.setItem('accessToken', refreshData.accessToken);
 			}
-			if (refreshData.accessToken !== undefined) {
-				options.headers.Authorization = refreshData.accessToken; // Обновляем токен в заголовке
-			}
+			options.headers.Authorization = refreshData.accessToken; // Обновляем токен в заголовке
 			const res = await fetch(url, options); // Повторный запрос с новым токеном
 			return await checkResponse(res);
 		} else {
