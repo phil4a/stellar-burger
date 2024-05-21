@@ -24,8 +24,10 @@ import AppHeader from '../app-header/app-header';
 
 import { TODO_ANY } from '../../utils/types';
 
-//TODO 1. Разобраться с цепочкой авторизации при просроченном refreshtoken падает ошибка в экшене checkAuth
-//TODO 2. Подумать как исправить типизацию draggedingredient в файле burger-constructor
+//TODO 1. Понять почему запрос на создание заказа проходит без перехода на страницу логина. И почему отправляется запрос
+//TODO 2. Типизировать createAsyntThunk в слайсах
+//TODO 3. Типизировать useDispatch и useSelect
+
 const App: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
