@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../../services/store';
 import { registration } from '../../../services/auth/auth-slice';
 import { Link } from 'react-router-dom';
 import { Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './register-form.module.css';
 
 const RegisterForm: React.FC = () => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const [emailValue, setEmailValue] = useState<string>('');
 	const [nameValue, setNameValue] = useState<string>('');
@@ -25,7 +25,7 @@ const RegisterForm: React.FC = () => {
 	};
 	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		//@ts-ignore
+
 		dispatch(registration({ name: nameValue, email: emailValue, password: passwordValue }));
 	};
 

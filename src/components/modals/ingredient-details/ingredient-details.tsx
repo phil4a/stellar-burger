@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../../services/store';
 import { setCurrentIngredient } from '../../../services/current-ingredient-slice';
 import styles from './ingredient-details.module.css';
 
@@ -8,7 +9,7 @@ import { TODO_ANY, IIngredient } from '../../../utils/types';
 
 const IngredientDetails: React.FC = (): JSX.Element | null => {
 	const { id } = useParams<{ id: string }>();
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const ingredient = useSelector((state: TODO_ANY) => state.currentIngredient.ingredient);
 	const ingredients = useSelector((state: TODO_ANY) => state.ingredients.ingredients);
 

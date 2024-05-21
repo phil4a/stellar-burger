@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../../services/store';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { decreaseIngredientsCounter } from '../../../services/ingredients-slice';
 
@@ -15,7 +15,7 @@ const DraggedIngredient: React.FC<{ ingredient: IIngredient; id: string; index: 
 	index,
 }): JSX.Element => {
 	const ref = useRef<HTMLDivElement>(null);
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const [, drop] = useDrop({
 		accept: 'card',

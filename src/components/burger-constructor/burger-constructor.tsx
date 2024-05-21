@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import { addIngredient, setBun, clearIngredients } from '../../services/constructor-slice';
@@ -19,9 +20,9 @@ import { TODO_ANY, IIngredient } from '../../utils/types';
 
 const BurgerConstructor: React.FC = (): JSX.Element => {
 	const navigate = useNavigate();
-	const { user, isAuthChecked } = useSelector((store: TODO_ANY) => store.auth);
+	const { user } = useSelector((store: TODO_ANY) => store.auth);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const ingredients = useSelector((store: TODO_ANY) => store.burgerConstructor.ingredients);
 	const bun = useSelector((store: TODO_ANY) => store.burgerConstructor.bun);
 
@@ -31,7 +32,6 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 		} else {
 			setIsModalOpen(true);
 			const ingredientIds = [bun, ingredients].map((ingredient) => ingredient._id, bun._id);
-			//@ts-ignore
 			dispatch(sendOrder(ingredientIds)).then(() => {
 				dispatch(clearIngredients());
 			});

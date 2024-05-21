@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../services/auth/auth-slice';
 import { useSelector } from 'react-redux';
@@ -12,7 +12,7 @@ import styles from './profile.module.css';
 import { TODO_ANY } from '../../utils/types';
 
 const Profile: React.FC = (): React.ReactElement => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	const { user } = useSelector((state: TODO_ANY) => state.auth);
@@ -44,7 +44,7 @@ const Profile: React.FC = (): React.ReactElement => {
 	};
 
 	const handleLogoutClick = (): void => {
-		dispatch(logout() as TODO_ANY);
+		dispatch(logout());
 		navigate('/', { replace: true });
 	};
 
@@ -55,7 +55,6 @@ const Profile: React.FC = (): React.ReactElement => {
 	};
 
 	const handleRefreshUserClick = (): void => {
-		//@ts-ignore
 		dispatch(refreshUser({ name: nameValue, email: emailValue }));
 	};
 

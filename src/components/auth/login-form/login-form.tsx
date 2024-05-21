@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch } from '../../../services/store';
 import { login } from '../../../services/auth/auth-slice';
 import { Link, useNavigate } from 'react-router-dom';
 import { Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -10,7 +10,7 @@ import { TODO_ANY } from '../../../utils/types';
 const LoginForm: React.FC = () => {
 	const navigate = useNavigate();
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const [value, setValue] = useState<string>('');
 	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(e.target.value);
@@ -29,7 +29,6 @@ const LoginForm: React.FC = () => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		//@ts-ignore
 		dispatch(login({ email: value, password: passwordValue }) as TODO_ANY);
 		navigate('/', { replace: true });
 	};

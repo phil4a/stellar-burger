@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../services/store';
 import { getIngredientsFromServer } from '../../services/ingredients-slice';
 import { checkAuth } from '../../services/auth/auth-slice';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
@@ -33,7 +34,7 @@ const App: React.FC = () => {
 	const navigate = useNavigate();
 	const background = location.state && location.state.background;
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const ingredientsStatus = useSelector((state: TODO_ANY) => state.ingredients.status);
 	const { isAuthChecked } = useSelector((state: TODO_ANY) => state.auth);
 	const { accessToken } = useSelector((state: TODO_ANY) => state.auth);
@@ -41,11 +42,15 @@ const App: React.FC = () => {
 	const { isFetchingIngredients } = useSelector((state: TODO_ANY) => state.ingredients);
 
 	useEffect(() => {
+		dispatch({
+			type: 'asdad',
+			payload: 'azcdfsdad',
+		});
 		if (!isAuthChecked && accessToken) {
-			dispatch(checkAuth() as TODO_ANY);
+			dispatch(checkAuth());
 		}
 		if (ingredientsStatus === 'idle') {
-			dispatch(getIngredientsFromServer() as TODO_ANY);
+			dispatch(getIngredientsFromServer());
 		}
 	}, [dispatch, ingredientsStatus, isAuthChecked]);
 
