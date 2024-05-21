@@ -2,11 +2,11 @@ import { useSelector } from 'react-redux';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Spinner from '../../../images/spinner.svg';
 import styles from './order-details.module.css';
-import { TODO_ANY } from '../../../utils/types';
+import { RootState } from '../../../services/store';
 
 const OrderDetails = (): JSX.Element => {
-	const orderNumber = useSelector((state: TODO_ANY): string => state.currentOrder.orderNumber);
-	const getOrderStatus = useSelector((state: TODO_ANY): string => state.currentOrder.status);
+	const orderNumber = useSelector((state: RootState): string => state.currentOrder.orderNumber);
+	const getOrderStatus = useSelector((state: RootState): string => state.currentOrder.status);
 
 	return (
 		<div className={styles.body}>

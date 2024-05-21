@@ -1,11 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useAppDispatch } from '../../../services/store';
 import { login } from '../../../services/auth/auth-slice';
 import { Link, useNavigate } from 'react-router-dom';
 import { Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './login-form.module.css';
-
-import { TODO_ANY } from '../../../utils/types';
 
 const LoginForm: React.FC = () => {
 	const navigate = useNavigate();
@@ -29,7 +27,7 @@ const LoginForm: React.FC = () => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		dispatch(login({ email: value, password: passwordValue }) as TODO_ANY);
+		dispatch(login({ email: value, password: passwordValue }));
 		navigate('/', { replace: true });
 	};
 

@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useAppDispatch } from '../../services/store';
+import { RootState, useAppDispatch } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../services/auth/auth-slice';
 import { useSelector } from 'react-redux';
@@ -9,13 +9,11 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 
 import styles from './profile.module.css';
 
-import { TODO_ANY } from '../../utils/types';
-
 const Profile: React.FC = (): React.ReactElement => {
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	const { user } = useSelector((state: TODO_ANY) => state.auth);
+	const { user } = useSelector((state: RootState) => state.auth);
 
 	const [nameValue, setNameValue] = useState<string>(user.name);
 	const [emailValue, setEmailValue] = useState<string>(user.email);

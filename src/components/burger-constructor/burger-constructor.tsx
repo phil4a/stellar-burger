@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../services/store';
+import { RootState, useAppDispatch } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import { addIngredient, setBun, clearIngredients } from '../../services/constructor-slice';
@@ -16,15 +16,17 @@ import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger
 
 import styles from './burger-constructor.module.css';
 
-import { TODO_ANY, IIngredient } from '../../utils/types';
+import { IIngredient } from '../../utils/types';
 
 const BurgerConstructor: React.FC = (): JSX.Element => {
 	const navigate = useNavigate();
-	const { user } = useSelector((store: TODO_ANY) => store.auth);
-	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	const dispatch = useAppDispatch();
-	const ingredients = useSelector((store: TODO_ANY) => store.burgerConstructor.ingredients);
-	const bun = useSelector((store: TODO_ANY) => store.burgerConstructor.bun);
+	const { user } = useSelector((store: RootState) => store.auth);
+	const ingredients = useSelector((store: RootState) => store.burgerConstructor.ingredients);
+	const bun = useSelector((store: RootState) => store.burgerConstructor.bun);
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const handleOrderClick = () => {
 		if (!user.name) {

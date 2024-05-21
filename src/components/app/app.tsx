@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../services/store';
+import { RootState, useAppDispatch } from '../../services/store';
 import { getIngredientsFromServer } from '../../services/ingredients-slice';
 import { checkAuth } from '../../services/auth/auth-slice';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
@@ -23,11 +23,7 @@ import Modal from '../modals/modal/modal';
 
 import AppHeader from '../app-header/app-header';
 
-import { TODO_ANY } from '../../utils/types';
-
-//TODO 1. Понять почему запрос на создание заказа проходит без перехода на страницу логина. И почему отправляется запрос
-//TODO 2. Типизировать createAsyncThunk в слайсах
-//TODO 3. Типизировать useDispatch и useSelect
+//TODO 1. исправить ошибки в useSelector
 
 const App: React.FC = () => {
 	const location = useLocation();
@@ -35,11 +31,11 @@ const App: React.FC = () => {
 	const background = location.state && location.state.background;
 
 	const dispatch = useAppDispatch();
-	const ingredientsStatus = useSelector((state: TODO_ANY) => state.ingredients.status);
-	const { isAuthChecked } = useSelector((state: TODO_ANY) => state.auth);
-	const { accessToken } = useSelector((state: TODO_ANY) => state.auth);
-	const { isFetchingUser } = useSelector((state: TODO_ANY) => state.auth);
-	const { isFetchingIngredients } = useSelector((state: TODO_ANY) => state.ingredients);
+	const ingredientsStatus = useSelector((state: RootState) => state.ingredients.status);
+	const { isAuthChecked, accessToken, isFetchingUser } = useSelector(
+		(state: RootState) => state.auth,
+	);
+	const { isFetchingIngredients } = useSelector((state: RootState) => state.ingredients);
 
 	useEffect(() => {
 		dispatch({

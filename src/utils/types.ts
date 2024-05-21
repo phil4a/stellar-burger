@@ -1,12 +1,15 @@
-export type TODO_ANY = any;
-
+export enum IngredientType {
+	BUN = 'bun',
+	SAUCE = 'sauce',
+	MAIN = 'main',
+}
 export interface IIngredient {
 	_id: string;
 	nanoid: string;
 	name: string;
 	image: string;
 	image_mobile: string;
-	type: 'bun' | 'sauce' | 'main';
+	type: IngredientType;
 	price: number;
 	proteins: number;
 	fat: number;
