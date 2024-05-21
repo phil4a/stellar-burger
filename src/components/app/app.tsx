@@ -25,7 +25,7 @@ import AppHeader from '../app-header/app-header';
 import { TODO_ANY } from '../../utils/types';
 
 //TODO 1. Понять почему запрос на создание заказа проходит без перехода на страницу логина. И почему отправляется запрос
-//TODO 2. Типизировать createAsyntThunk в слайсах
+//TODO 2. Типизировать createAsyncThunk в слайсах
 //TODO 3. Типизировать useDispatch и useSelect
 
 const App: React.FC = () => {

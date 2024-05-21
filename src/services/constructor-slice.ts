@@ -1,5 +1,6 @@
 import { createSlice, createSelector, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { IIngredient } from '../utils/types';
+import { RootState } from './store';
 
 interface IConstructorState {
 	bun: IIngredient | null;
@@ -50,7 +51,10 @@ export const addIngredient = (ingredient: IIngredient) => {
 };
 
 export const totalPriceSelector = createSelector(
-	[(state) => state.burgerConstructor.ingredients, (state) => state.burgerConstructor.bun],
+	[
+		(state: RootState) => state.burgerConstructor.ingredients,
+		(state: RootState) => state.burgerConstructor.bun,
+	],
 	(ingredients, bun) => {
 		const ingredientsCost = ingredients.reduce(
 			(total: number, item: IIngredient) => total + item.price,

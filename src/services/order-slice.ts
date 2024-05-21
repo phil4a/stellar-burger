@@ -9,6 +9,12 @@ interface IOrderState {
 	isSendingOrder: boolean;
 }
 
+interface IOrderResponse {
+	order: {
+		number: number;
+	};
+}
+
 const initialState: IOrderState = {
 	orderNumber: null,
 	status: 'idle',
@@ -26,7 +32,7 @@ export const orderSlice = createSlice({
 	},
 	extraReducers(builder) {
 		builder
-			.addCase(sendOrder.pending, (state, action) => {
+			.addCase(sendOrder.pending, (state) => {
 				state.status = 'loading';
 				state.isSendingOrder = true;
 			})
@@ -45,19 +51,22 @@ export const orderSlice = createSlice({
 	},
 });
 
-export const sendOrder = createAsyncThunk('currentOrder/send', async (ingredientIds) => {
-	const accessToken = localStorage.getItem('accessToken');
+export const sendOrder = createAsyncThunk<IOrderResponse, number[]>(
+	'currentOrder/send',
+	async (ingredientIds) => {
+		const accessToken = localStorage.getItem('accessToken');
 
-	const response = await fetchWithRefresh('orders', {
-		method: 'POST',
-		headers: {
-			Authorization: accessToken || undefined,
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({ ingredients: ingredientIds }),
-	});
-	return response;
-});
+		const response = await fetchWithRefresh('orders', {
+			method: 'POST',
+			headers: {
+				Authorization: accessToken || undefined,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ ingredients: ingredientIds }),
+		});
+		return response.json() as Promise<IOrderResponse>;
+	},
+);
 
 export const { clearCurrentOrder } = orderSlice.actions;
 
