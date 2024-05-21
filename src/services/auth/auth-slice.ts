@@ -223,7 +223,7 @@ export const logout = createAsyncThunk<void>('auth/logout', () => {
 	});
 });
 
-export const checkAuth = createAsyncThunk('auth/check', async () => {
+export const checkAuth = createAsyncThunk<IResponse>('auth/check', async () => {
 	const accessToken = localStorage.getItem('accessToken');
 
 	return fetchWithRefresh('auth/user', {
@@ -235,22 +235,25 @@ export const checkAuth = createAsyncThunk('auth/check', async () => {
 	});
 });
 
-export const refreshUser = createAsyncThunk('auth/refresh', async (data: IFetchUserData) => {
-	const accessToken = localStorage.getItem('accessToken');
+export const refreshUser = createAsyncThunk<IResponse, IFetchUserData>(
+	'auth/refresh',
+	async (data) => {
+		const accessToken = localStorage.getItem('accessToken');
 
-	const body = JSON.stringify({
-		email: data.email,
-		name: data.name,
-	});
-	return fetchWithRefresh('auth/user', {
-		method: 'PATCH',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: accessToken || undefined,
-		},
-		body,
-	});
-});
+		const body = JSON.stringify({
+			email: data.email,
+			name: data.name,
+		});
+		return fetchWithRefresh('auth/user', {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: accessToken || undefined,
+			},
+			body,
+		});
+	},
+);
 
 export const { setForgotPassword } = authSlice.actions;
 
