@@ -1,13 +1,30 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchWithRefresh } from '../../utils/api';
 
-const initialState = {
+interface IAuthState {
+	user: {
+		name: string;
+		email: string;
+	};
+	isFetchingUser: boolean;
+	isForgotPassword: boolean;
+	isAuthChecked: boolean;
+	status: 'idle' | 'loading' | 'succeeded' | 'failed';
+	error: string | null;
+	accessToken: string | null;
+	refreshToken: string | null;
+}
+
+const initialState: IAuthState = {
 	user: {
 		name: '',
 		email: '',
 	},
 	isFetchingUser: false,
-	isForgotPassword: JSON.parse(localStorage.getItem('isForgotPassword')),
+	isForgotPassword:
+		localStorage.getItem('isForgotPassword') !== null
+			? JSON.parse(localStorage.getItem('isForgotPassword')!)
+			: false,
 	isAuthChecked: false,
 	status: 'idle',
 	error: null,
@@ -26,7 +43,7 @@ export const authSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			.addCase(login.pending, (state, action) => {
+			.addCase(login.pending, (state) => {
 				state.status = 'loading';
 				state.isFetchingUser = true;
 			})
@@ -44,7 +61,9 @@ export const authSlice = createSlice({
 				state.status = 'failed';
 				state.isFetchingUser = false;
 				state.isAuthChecked = true;
-				state.error = action.error.message;
+				if (action.error.message !== undefined) {
+					state.error = action.error.message;
+				}
 			});
 
 		builder
@@ -62,7 +81,9 @@ export const authSlice = createSlice({
 			.addCase(registration.rejected, (state, action) => {
 				state.status = 'failed';
 				state.isFetchingUser = false;
-				state.error = action.error.message;
+				if (action.error.message !== undefined) {
+					state.error = action.error.message;
+				}
 			});
 		builder
 			.addCase(logout.fulfilled, (state, action) => {
@@ -78,7 +99,9 @@ export const authSlice = createSlice({
 			.addCase(logout.rejected, (state, action) => {
 				state.status = 'failed';
 				state.isFetchingUser = false;
-				state.error = action.error.message;
+				if (action.error.message !== undefined) {
+					state.error = action.error.message;
+				}
 			})
 			.addCase(logout.pending, (state, action) => {
 				state.status = 'loading';
@@ -100,7 +123,9 @@ export const authSlice = createSlice({
 			.addCase(refreshUser.rejected, (state, action) => {
 				state.status = 'failed';
 				state.isFetchingUser = false;
-				state.error = action.error.message;
+				if (action.error.message !== undefined) {
+					state.error = action.error.message;
+				}
 				localStorage.removeItem('accessToken');
 				localStorage.removeItem('refreshToken');
 			});
@@ -124,14 +149,23 @@ export const authSlice = createSlice({
 				state.refreshToken = null;
 			})
 			.addCase(checkAuth.pending, (state, action) => {
-				state.isForgotPassword = JSON.parse(localStorage.getItem('isForgotPassword'));
+				state.isForgotPassword =
+					localStorage.getItem('isForgotPassword') !== null
+						? JSON.parse(localStorage.getItem('isForgotPassword')!)
+						: false;
 				state.isFetchingUser = true;
 				state.status = 'loading';
 			});
 	},
 });
 
-export const registration = createAsyncThunk('register/register', (data) => {
+interface IFetchUserData {
+	email: string;
+	password?: string;
+	name?: string;
+}
+
+export const registration = createAsyncThunk('register/register', (data: IFetchUserData) => {
 	const body = JSON.stringify({
 		email: data.email,
 		password: data.password,
@@ -146,14 +180,15 @@ export const registration = createAsyncThunk('register/register', (data) => {
 	});
 });
 
-export const login = createAsyncThunk('auth/login', (data) => {
+export const login = createAsyncThunk('auth/login', (data: IFetchUserData) => {
 	const accessToken = localStorage.getItem('accessToken');
+
 	const { email, password } = data;
 	const response = fetchWithRefresh('auth/login', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: accessToken,
+			Authorization: accessToken || undefined,
 		},
 		body: JSON.stringify({ email, password }),
 	});
@@ -172,20 +207,19 @@ export const logout = createAsyncThunk('auth/logout', () => {
 
 export const checkAuth = createAsyncThunk('auth/check', async () => {
 	const accessToken = localStorage.getItem('accessToken');
-	if (!accessToken) {
-		return Promise.reject('No access token available');
-	}
+
 	return fetchWithRefresh('auth/user', {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: accessToken,
+			Authorization: accessToken || undefined,
 		},
 	});
 });
 
-export const refreshUser = createAsyncThunk('auth/refresh', async (data) => {
+export const refreshUser = createAsyncThunk('auth/refresh', async (data: IFetchUserData) => {
 	const accessToken = localStorage.getItem('accessToken');
+
 	const body = JSON.stringify({
 		email: data.email,
 		name: data.name,
@@ -194,7 +228,7 @@ export const refreshUser = createAsyncThunk('auth/refresh', async (data) => {
 		method: 'PATCH',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: accessToken,
+			Authorization: accessToken || undefined,
 		},
 		body,
 	});

@@ -13,7 +13,6 @@ interface IForgotPasswordResponse extends Partial<IRefreshResponse> {
 interface FetchOptions extends RequestInit {
 	method: string;
 	headers: {
-		// [key: string]: string;
 		'Content-Type': string;
 		Authorization?: string;
 	};
@@ -63,7 +62,9 @@ export const fetchWithRefresh = async (endpoint: string, options: FetchOptions):
 			if (refreshData.accessToken) {
 				localStorage.setItem('accessToken', refreshData.accessToken);
 			}
-			options.headers.Authorization = refreshData.accessToken; // Обновляем токен в заголовке
+			if (refreshData.accessToken !== undefined) {
+				options.headers.Authorization = refreshData.accessToken; // Обновляем токен в заголовке
+			}
 			const res = await fetch(url, options); // Повторный запрос с новым токеном
 			return await checkResponse(res);
 		} else {

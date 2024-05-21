@@ -2,7 +2,14 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { fetchWithRefresh } from '../utils/api';
 
-const initialState = {
+interface IOrderState {
+	orderNumber: number | null;
+	status: 'idle' | 'loading' | 'succeeded' | 'failed';
+	error: string | null;
+	isSendingOrder: boolean;
+}
+
+const initialState: IOrderState = {
 	orderNumber: null,
 	status: 'idle',
 	error: null,
@@ -31,17 +38,20 @@ export const orderSlice = createSlice({
 			.addCase(sendOrder.rejected, (state, action) => {
 				state.status = 'failed';
 				state.isSendingOrder = false;
-				state.error = action.error.message;
+				if (action.error.message !== undefined) {
+					state.error = action.error.message;
+				}
 			});
 	},
 });
 
 export const sendOrder = createAsyncThunk('currentOrder/send', async (ingredientIds) => {
 	const accessToken = localStorage.getItem('accessToken');
+
 	const response = await fetchWithRefresh('orders', {
 		method: 'POST',
 		headers: {
-			Authorization: accessToken,
+			Authorization: accessToken || undefined,
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({ ingredients: ingredientIds }),

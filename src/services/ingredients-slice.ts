@@ -1,7 +1,15 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { fetchWithRefresh } from '../utils/api';
+import { IIngredient } from '../utils/types';
 
-const initialState = {
+interface IIngredientsState {
+	ingredients: IIngredient[];
+	status: 'idle' | 'loading' | 'succeeded' | 'failed';
+	error: string | null;
+	isFetchingIngredients: boolean;
+}
+
+const initialState: IIngredientsState = {
 	ingredients: [],
 	status: 'idle',
 	error: null,
@@ -11,7 +19,7 @@ export const ingredientsSlice = createSlice({
 	name: 'ingredients',
 	initialState,
 	reducers: {
-		increaseIngredientsCounter(state, action) {
+		increaseIngredientsCounter(state, action: PayloadAction<IIngredient>) {
 			const { _id, type } = action.payload;
 			if (type === 'bun') {
 				state.ingredients = state.ingredients.map((ingredient) => {
@@ -30,7 +38,7 @@ export const ingredientsSlice = createSlice({
 				}
 			}
 		},
-		decreaseIngredientsCounter(state, action) {
+		decreaseIngredientsCounter(state, action: PayloadAction<IIngredient>) {
 			const { _id } = action.payload;
 			state.ingredients = state.ingredients.map((ingredient) => {
 				if (ingredient._id === _id) {
@@ -42,14 +50,14 @@ export const ingredientsSlice = createSlice({
 	},
 	extraReducers(builder) {
 		builder
-			.addCase(getIngredientsFromServer.pending, (state, action) => {
+			.addCase(getIngredientsFromServer.pending, (state) => {
 				state.status = 'loading';
 				state.isFetchingIngredients = true;
 			})
 			.addCase(getIngredientsFromServer.fulfilled, (state, action) => {
 				state.status = 'succeeded';
 				state.isFetchingIngredients = false;
-				state.ingredients = action.payload.data.map((ingredient) => ({
+				state.ingredients = action.payload.data.map((ingredient: IIngredient) => ({
 					...ingredient,
 					count: ingredient.count || 0,
 				}));
@@ -58,7 +66,9 @@ export const ingredientsSlice = createSlice({
 			.addCase(getIngredientsFromServer.rejected, (state, action) => {
 				state.status = 'failed';
 				state.isFetchingIngredients = false;
-				state.error = action.error.message;
+				if (action.error.message !== undefined) {
+					state.error = action.error.message;
+				}
 			});
 	},
 });
@@ -66,6 +76,7 @@ export const ingredientsSlice = createSlice({
 export const { increaseIngredientsCounter, decreaseIngredientsCounter } = ingredientsSlice.actions;
 
 export const getIngredientsFromServer = createAsyncThunk('ingredients/fetch', async () => {
+	//@ts-ignore
 	return await fetchWithRefresh('ingredients');
 });
 
