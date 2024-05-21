@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { fetchWithRefresh, fetchIngredients } from '../utils/api';
+import { fetchIngredients } from '../utils/api';
 import { IIngredient } from '../utils/types';
 
 interface IIngredientsState {

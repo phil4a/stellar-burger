@@ -64,7 +64,7 @@ export const sendOrder = createAsyncThunk<IOrderResponse, number[]>(
 			},
 			body: JSON.stringify({ ingredients: ingredientIds }),
 		});
-		return response.json() as Promise<IOrderResponse>;
+		return response as Promise<IOrderResponse>;
 	},
 );
 

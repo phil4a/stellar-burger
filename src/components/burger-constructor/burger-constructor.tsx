@@ -26,7 +26,7 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 	const bun = useSelector((store: TODO_ANY) => store.burgerConstructor.bun);
 
 	const handleOrderClick = () => {
-		if (!user.name && isAuthChecked) {
+		if (!user.name) {
 			navigate('/login');
 		} else {
 			setIsModalOpen(true);
