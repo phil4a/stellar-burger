@@ -8,19 +8,19 @@ import { useDispatch } from 'react-redux';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './forgot-password-form.module.css';
 
-const ForgotPasswordForm = () => {
+const ForgotPasswordForm: React.FC = () => {
 	const dispatch = useDispatch();
 
-	const [emailValue, setEmailValue] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
+	const [emailValue, setEmailValue] = useState<string>('');
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const navigate = useNavigate();
 
-	const onChangeEmail = (e) => {
+	const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		setEmailValue(e.target.value);
 	};
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setIsLoading(true);
 

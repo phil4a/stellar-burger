@@ -15,13 +15,15 @@ import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger
 
 import styles from './burger-constructor.module.css';
 
-const BurgerConstructor = () => {
+import { TODO_ANY, IIngredient } from '../../utils/types';
+
+const BurgerConstructor: React.FC = (): JSX.Element => {
 	const navigate = useNavigate();
-	const { user, isAuthChecked } = useSelector((store) => store.auth);
+	const { user, isAuthChecked } = useSelector((store: TODO_ANY) => store.auth);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const dispatch = useDispatch();
-	const ingredients = useSelector((store) => store.burgerConstructor.ingredients);
-	const bun = useSelector((store) => store.burgerConstructor.bun);
+	const ingredients = useSelector((store: TODO_ANY) => store.burgerConstructor.ingredients);
+	const bun = useSelector((store: TODO_ANY) => store.burgerConstructor.bun);
 
 	const handleOrderClick = () => {
 		if (!user.name && isAuthChecked) {
@@ -29,6 +31,7 @@ const BurgerConstructor = () => {
 		} else {
 			setIsModalOpen(true);
 			const ingredientIds = [bun, ingredients].map((ingredient) => ingredient._id, bun._id);
+			//@ts-ignore
 			dispatch(sendOrder(ingredientIds)).then(() => {
 				dispatch(clearIngredients());
 			});
@@ -37,7 +40,7 @@ const BurgerConstructor = () => {
 
 	const [{ canDrop, itemType }, dropRef] = useDrop({
 		accept: ['ingredient', 'bun'],
-		drop(item) {
+		drop(item: IIngredient) {
 			if (item.type === 'bun') {
 				dispatch(setBun(item));
 				dispatch(increaseIngredientsCounter(item));
@@ -76,7 +79,7 @@ const BurgerConstructor = () => {
 
 			<div className={styles.ingredients} style={{ borderColor: borderColorIngredients }}>
 				{ingredients.length ? (
-					ingredients.map((ingredient, index) => (
+					ingredients.map((ingredient: IIngredient, index: number) => (
 						<DraggedIngredient
 							key={ingredient.nanoid}
 							ingredient={ingredient}

@@ -109,7 +109,6 @@ export const authSlice = createSlice({
 				state.status = 'succeeded';
 				state.isFetchingUser = false;
 				state.isAuthChecked = true;
-
 				state.user = action.payload.user;
 				state.accessToken = action.payload.accessToken;
 				state.refreshToken = action.payload.refreshToken;

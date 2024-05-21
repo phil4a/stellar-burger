@@ -5,19 +5,23 @@ import IngredientTabs from '../ingredient-tabs/ingredient-tabs';
 
 import styles from './ingredient-list.module.css';
 
-const IngredientList = () => {
-	const wrapperRef = useRef(null);
-	const [activeTab, setActiveTab] = useState('Булки');
+import { TODO_ANY, IIngredient } from '../../../utils/types';
 
-	const refs = {
-		bun: useRef(null),
-		sauce: useRef(null),
-		main: useRef(null),
+const IngredientList: React.FC = (): JSX.Element => {
+	const wrapperRef = useRef<HTMLDivElement>(null);
+	const [activeTab, setActiveTab] = useState<string>('Булки');
+
+	const refs: {
+		[key: string]: React.RefObject<HTMLDivElement>;
+	} = {
+		bun: useRef<HTMLDivElement>(null),
+		sauce: useRef<HTMLDivElement>(null),
+		main: useRef<HTMLDivElement>(null),
 	};
 
-	const { ingredients } = useSelector((store) => store.ingredients);
+	const { ingredients } = useSelector((store: TODO_ANY) => store.ingredients);
 
-	const getIngredientType = (type) => {
+	const getIngredientType = (type: string): string => {
 		switch (type) {
 			case 'bun':
 				return 'Булки';
@@ -30,24 +34,27 @@ const IngredientList = () => {
 		}
 	};
 
-	const handleScroll = () => {
+	const handleScroll = (): void => {
+		if (!wrapperRef.current) return;
+
 		const wrapperBounds = wrapperRef.current.getBoundingClientRect();
 		const distances = Object.keys(refs).map((key) => {
-			const bounds = refs[key].current.getBoundingClientRect();
+			const bounds = refs[key].current?.getBoundingClientRect();
 			return {
 				type: key,
-				distance: Math.abs(bounds.top - wrapperBounds.top),
+				distance: bounds ? Math.abs(bounds.top - wrapperBounds.top) : Infinity,
 			};
 		});
 		const closest = distances.reduce((prev, curr) => (prev.distance < curr.distance ? prev : curr));
 		setActiveTab(getIngredientType(closest.type));
 	};
-	const onTabClick = (tabName) => {
+
+	const onTabClick = (tabName: string): void => {
 		const type = tabName.toLowerCase();
 		const refKey = type === 'булки' ? 'bun' : type === 'соусы' ? 'sauce' : 'main';
 		const ref = refs[refKey];
 
-		ref.current.scrollIntoView({ behavior: 'smooth' });
+		ref.current?.scrollIntoView({ behavior: 'smooth' });
 		setActiveTab(tabName);
 	};
 
@@ -60,8 +67,8 @@ const IngredientList = () => {
 						<h2 className="text text_type_main-medium mt-10 mb-6">{getIngredientType(type)}</h2>
 						<ul className={`${styles.list} pl-4`}>
 							{ingredients
-								.filter((ingredient) => ingredient.type === type)
-								.map((ingredient) => (
+								.filter((ingredient: IIngredient) => ingredient.type === type)
+								.map((ingredient: IIngredient) => (
 									<IngredientItem key={ingredient._id} ingredient={ingredient} />
 								))}
 						</ul>

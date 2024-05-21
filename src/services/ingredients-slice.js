@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchWithRefresh } from '../utils/api.js';
+import { fetchWithRefresh } from '../utils/api';
 
 const initialState = {
 	ingredients: [],

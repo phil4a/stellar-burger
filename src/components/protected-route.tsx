@@ -1,16 +1,23 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
-import Preloader from '../components/preloader/preloader';
+import Preloader from './preloader/preloader';
 
-import propTypes from 'prop-types';
+import { TODO_ANY } from '../utils/types';
 
-const ProtectedRoute = ({
+interface IProtectedRouteProps {
+	component: React.ReactNode;
+	onlyUnAuth?: boolean;
+	onlyAfterForgot?: boolean;
+	allowUnauthAccess?: boolean;
+}
+
+const ProtectedRoute: React.FC<IProtectedRouteProps> = ({
 	component,
 	onlyUnAuth = false,
 	onlyAfterForgot = false,
 	allowUnauthAccess = false,
 }) => {
-	const { isAuthChecked, user, isForgotPassword } = useSelector((store) => store.auth);
+	const { isAuthChecked, user, isForgotPassword } = useSelector((store: TODO_ANY) => store.auth);
 	const location = useLocation();
 
 	if (!isAuthChecked) {
@@ -35,20 +42,15 @@ const ProtectedRoute = ({
 	}
 
 	// Возвращаем компонент, если все проверки пройдены
-	return component;
+	return <>{component}</>;
 };
 
-ProtectedRoute.propTypes = {
-	component: propTypes.node.isRequired,
-	onlyUnAuth: propTypes.bool,
-	onlyAfterForgot: propTypes.bool,
-	allowUnauthAccess: propTypes.bool,
-};
-
-export const OnlyAuth = ({ component }) => <ProtectedRoute component={component} />;
-export const OnlyUnAuth = ({ component }) => (
+export const OnlyAuth: React.FC<IProtectedRouteProps> = ({ component }) => (
+	<ProtectedRoute component={component} />
+);
+export const OnlyUnAuth: React.FC<IProtectedRouteProps> = ({ component }) => (
 	<ProtectedRoute onlyUnAuth={true} component={component} />
 );
-export const OnlyAfterForgot = ({ component }) => (
+export const OnlyAfterForgot: React.FC<IProtectedRouteProps> = ({ component }) => (
 	<ProtectedRoute onlyAfterForgot={true} allowUnauthAccess={true} component={component} />
 );
