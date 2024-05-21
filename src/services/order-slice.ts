@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { fetchWithRefresh } from '../utils/api';
+import { Status } from '../utils/types';
 
 interface IOrderState {
 	orderNumber: number | null;
-	status: 'idle' | 'loading' | 'succeeded' | 'failed';
+	status: Status;
 	error: string | null;
 	isSendingOrder: boolean;
 }
@@ -17,7 +18,7 @@ interface IOrderResponse {
 
 const initialState: IOrderState = {
 	orderNumber: null,
-	status: 'idle',
+	status: Status.IDLE,
 	error: null,
 	isSendingOrder: false,
 };
@@ -33,16 +34,16 @@ export const orderSlice = createSlice({
 	extraReducers(builder) {
 		builder
 			.addCase(sendOrder.pending, (state) => {
-				state.status = 'loading';
+				state.status = Status.LOADING;
 				state.isSendingOrder = true;
 			})
 			.addCase(sendOrder.fulfilled, (state, action) => {
-				state.status = 'succeeded';
+				state.status = Status.SUCCESS;
 				state.isSendingOrder = false;
 				state.orderNumber = action.payload.order.number;
 			})
 			.addCase(sendOrder.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = Status.ERROR;
 				state.isSendingOrder = false;
 				if (action.error.message !== undefined) {
 					state.error = action.error.message;

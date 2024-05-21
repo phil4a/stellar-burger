@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { fetchWithRefresh } from '../../utils/api';
+import { Status } from '../../utils/types';
 
 interface IAuthState {
 	user: {
@@ -9,7 +10,7 @@ interface IAuthState {
 	isFetchingUser: boolean;
 	isForgotPassword: boolean;
 	isAuthChecked: boolean;
-	status: 'idle' | 'loading' | 'succeeded' | 'failed';
+	status: Status;
 	error: string | null;
 	accessToken: string | null;
 	refreshToken: string | null;
@@ -35,7 +36,7 @@ const initialState: IAuthState = {
 			? JSON.parse(localStorage.getItem('isForgotPassword')!)
 			: false,
 	isAuthChecked: false,
-	status: 'idle',
+	status: Status.IDLE,
 	error: null,
 	accessToken: localStorage.getItem('accessToken'),
 	refreshToken: localStorage.getItem('refreshToken'),
@@ -53,11 +54,11 @@ export const authSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(login.pending, (state) => {
-				state.status = 'loading';
+				state.status = Status.LOADING;
 				state.isFetchingUser = true;
 			})
 			.addCase(login.fulfilled, (state, action) => {
-				state.status = 'succeeded';
+				state.status = Status.SUCCESS;
 				state.isFetchingUser = false;
 				state.isAuthChecked = true;
 				if (action.payload.user) {
@@ -69,7 +70,7 @@ export const authSlice = createSlice({
 				localStorage.setItem('refreshToken', action.payload.refreshToken);
 			})
 			.addCase(login.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = Status.ERROR;
 				state.isFetchingUser = false;
 				state.isAuthChecked = true;
 				if (action.error.message !== undefined) {
@@ -79,18 +80,18 @@ export const authSlice = createSlice({
 
 		builder
 			.addCase(registration.pending, (state) => {
-				state.status = 'loading';
+				state.status = Status.LOADING;
 				state.isFetchingUser = true;
 			})
 			.addCase(registration.fulfilled, (state, action: PayloadAction<IResponse>) => {
-				state.status = 'succeeded';
+				state.status = Status.SUCCESS;
 				state.isFetchingUser = false;
 				const { accessToken, refreshToken } = action.payload;
 				localStorage.setItem('accessToken', accessToken);
 				localStorage.setItem('refreshToken', refreshToken);
 			})
 			.addCase(registration.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = Status.ERROR;
 				state.isFetchingUser = false;
 				if (action.error.message !== undefined) {
 					state.error = action.error.message;
@@ -104,27 +105,27 @@ export const authSlice = createSlice({
 				state.accessToken = null;
 				state.refreshToken = null;
 				state.isFetchingUser = false;
-				state.status = 'idle';
+				state.status = Status.IDLE;
 				state.user = { name: '', email: '' };
 			})
 			.addCase(logout.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = Status.ERROR;
 				state.isFetchingUser = false;
 				if (action.error.message !== undefined) {
 					state.error = action.error.message;
 				}
 			})
 			.addCase(logout.pending, (state) => {
-				state.status = 'loading';
+				state.status = Status.LOADING;
 				state.isFetchingUser = true;
 			});
 		builder
 			.addCase(refreshUser.pending, (state) => {
-				state.status = 'loading';
+				state.status = Status.LOADING;
 				state.isFetchingUser = true;
 			})
 			.addCase(refreshUser.fulfilled, (state, action: PayloadAction<IResponse>) => {
-				state.status = 'succeeded';
+				state.status = Status.SUCCESS;
 				state.isFetchingUser = false;
 				state.isAuthChecked = true;
 				if (action.payload.user) {
@@ -134,7 +135,7 @@ export const authSlice = createSlice({
 				state.refreshToken = action.payload.refreshToken;
 			})
 			.addCase(refreshUser.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = Status.ERROR;
 				state.isFetchingUser = false;
 				if (action.error.message !== undefined) {
 					state.error = action.error.message;
@@ -144,7 +145,7 @@ export const authSlice = createSlice({
 			});
 		builder
 			.addCase(checkAuth.fulfilled, (state, action: PayloadAction<IResponse>) => {
-				state.status = 'succeeded';
+				state.status = Status.SUCCESS;
 				state.isFetchingUser = false;
 				state.isAuthChecked = true;
 				if (action.payload.user) {
@@ -154,7 +155,7 @@ export const authSlice = createSlice({
 				state.refreshToken = action.payload.refreshToken;
 			})
 			.addCase(checkAuth.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = Status.ERROR;
 				state.isFetchingUser = false;
 				state.isAuthChecked = true;
 				state.error = action.error.message || 'Failed to authenticate';
@@ -169,7 +170,7 @@ export const authSlice = createSlice({
 						? JSON.parse(localStorage.getItem('isForgotPassword')!)
 						: false;
 				state.isFetchingUser = true;
-				state.status = 'loading';
+				state.status = Status.LOADING;
 			});
 	},
 });

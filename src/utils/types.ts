@@ -22,3 +22,10 @@ export interface IDraggedIngredient extends IIngredient {
 	index: number;
 	id: string;
 }
+
+export enum Status {
+	IDLE = 'idle',
+	LOADING = 'loading',
+	SUCCESS = 'succeeded',
+	ERROR = 'failed',
+}

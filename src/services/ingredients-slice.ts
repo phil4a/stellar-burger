@@ -1,17 +1,17 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { fetchIngredients } from '../utils/api';
-import { IIngredient } from '../utils/types';
+import { IIngredient, Status } from '../utils/types';
 
 interface IIngredientsState {
 	ingredients: IIngredient[];
-	status: 'idle' | 'loading' | 'succeeded' | 'failed';
+	status: Status;
 	error: string | null;
 	isFetchingIngredients: boolean;
 }
 
 const initialState: IIngredientsState = {
 	ingredients: [],
-	status: 'idle',
+	status: Status.IDLE,
 	error: null,
 	isFetchingIngredients: false,
 };
@@ -51,11 +51,11 @@ export const ingredientsSlice = createSlice({
 	extraReducers(builder) {
 		builder
 			.addCase(getIngredientsFromServer.pending, (state) => {
-				state.status = 'loading';
+				state.status = Status.LOADING;
 				state.isFetchingIngredients = true;
 			})
 			.addCase(getIngredientsFromServer.fulfilled, (state, action) => {
-				state.status = 'succeeded';
+				state.status = Status.SUCCESS;
 				state.isFetchingIngredients = false;
 				state.ingredients = action.payload.data.map((ingredient: IIngredient) => ({
 					...ingredient,
@@ -64,7 +64,7 @@ export const ingredientsSlice = createSlice({
 			})
 
 			.addCase(getIngredientsFromServer.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = Status.ERROR;
 				state.isFetchingIngredients = false;
 				if (action.error.message !== undefined) {
 					state.error = action.error.message;
