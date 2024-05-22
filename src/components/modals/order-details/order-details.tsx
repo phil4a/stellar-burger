@@ -3,14 +3,15 @@ import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-component
 import Spinner from '../../../images/spinner.svg';
 import styles from './order-details.module.css';
 import { RootState } from '../../../services/store';
+import { Status } from '../../../utils/types';
 
 const OrderDetails = (): JSX.Element => {
-	const orderNumber = useSelector((state: RootState): string => state.currentOrder.orderNumber);
-	const getOrderStatus = useSelector((state: RootState): string => state.currentOrder.status);
+	const { orderNumber } = useSelector((state: RootState) => state.currentOrder);
+	const { status } = useSelector((state: RootState) => state.currentOrder);
 
 	return (
 		<div className={styles.body}>
-			{getOrderStatus === 'loading' ? (
+			{status === Status.LOADING ? (
 				<img src={Spinner} className={styles.spinner} alt="" />
 			) : (
 				<>
