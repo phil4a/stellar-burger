@@ -47,6 +47,13 @@ export const ingredientsSlice = createSlice({
 				return ingredient;
 			});
 		},
+		/**
+		 * Resets the ingredients state to the initial state.
+		 * @returns {IIngredientsState} The initial ingredients state.
+		 */
+		resetCounters(): IIngredientsState {
+			return { ...initialState };
+		},
 	},
 	extraReducers(builder) {
 		builder
@@ -73,7 +80,8 @@ export const ingredientsSlice = createSlice({
 	},
 });
 
-export const { increaseIngredientsCounter, decreaseIngredientsCounter } = ingredientsSlice.actions;
+export const { increaseIngredientsCounter, decreaseIngredientsCounter, resetCounters } =
+	ingredientsSlice.actions;
 
 export const getIngredientsFromServer = createAsyncThunk<{ data: IIngredient[] }>(
 	'ingredients/fetch',

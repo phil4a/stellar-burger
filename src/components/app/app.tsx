@@ -38,10 +38,6 @@ const App: React.FC = () => {
 	const { isFetchingIngredients } = useSelector((state: RootState) => state.ingredients);
 
 	useEffect(() => {
-		dispatch({
-			type: 'asdad',
-			payload: 'azcdfsdad',
-		});
 		if (!isAuthChecked && accessToken) {
 			dispatch(checkAuth());
 		}

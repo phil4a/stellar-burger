@@ -4,7 +4,7 @@ import { RootState, useAppDispatch } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import { addIngredient, setBun, clearIngredients } from '../../services/constructor-slice';
-import { increaseIngredientsCounter } from '../../services/ingredients-slice';
+import { increaseIngredientsCounter, resetCounters } from '../../services/ingredients-slice';
 
 import { sendOrder } from '../../services/order-slice';
 
@@ -41,6 +41,7 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 
 			dispatch(sendOrder(ingredientIds)).then(() => {
 				dispatch(clearIngredients());
+				dispatch(resetCounters());
 			});
 		}
 	};
