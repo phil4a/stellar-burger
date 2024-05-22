@@ -52,7 +52,7 @@ export const orderSlice = createSlice({
 	},
 });
 
-export const sendOrder = createAsyncThunk<IOrderResponse, number[]>(
+export const sendOrder = createAsyncThunk<IOrderResponse, string[]>(
 	'currentOrder/send',
 	async (ingredientIds) => {
 		const accessToken = localStorage.getItem('accessToken');

@@ -24,7 +24,7 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 	const dispatch = useAppDispatch();
 	const { user } = useSelector((store: RootState) => store.auth);
 	const ingredients = useSelector((store: RootState) => store.burgerConstructor.ingredients);
-	const bun = useSelector((store: RootState) => store.burgerConstructor.bun);
+	const { bun } = useSelector((store: RootState) => store.burgerConstructor);
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -33,7 +33,12 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 			navigate('/login');
 		} else {
 			setIsModalOpen(true);
-			const ingredientIds = [bun, ingredients].map((ingredient) => ingredient._id, bun._id);
+			const ingredientIds = ingredients.map((ingredient) => ingredient._id);
+			if (bun) {
+				ingredientIds.unshift(bun._id);
+				ingredientIds.push(bun._id);
+			}
+
 			dispatch(sendOrder(ingredientIds)).then(() => {
 				dispatch(clearIngredients());
 			});
