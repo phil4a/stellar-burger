@@ -1,9 +1,9 @@
-import React from 'react';
+import OrdersFeed from '../components/orders-feed/orders-feed';
 
 type Props = {};
 
 const Feed = (props: Props) => {
-	return <div>Feed</div>;
+	return <OrdersFeed />;
 };
 
 export default Feed;

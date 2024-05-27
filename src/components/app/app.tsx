@@ -24,8 +24,6 @@ import Modal from '../modals/modal/modal';
 
 import AppHeader from '../app-header/app-header';
 
-//TODO 1. исправить ошибки в useSelector
-
 const App: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
