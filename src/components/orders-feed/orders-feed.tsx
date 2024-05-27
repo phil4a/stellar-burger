@@ -7,7 +7,7 @@ type Props = {};
 const OrdersFeed = (props: Props): JSX.Element => {
 	return (
 		<>
-			<section>
+			<section className={`${styles.section} pt-10 mr-10`}>
 				<h1 className="text text_type_main-large pb-5">Лента заказов</h1>
 				<ul className={styles.list}>
 					<OrderInfo />
