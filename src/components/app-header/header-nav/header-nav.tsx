@@ -18,8 +18,10 @@ const HeaderNav: React.FC = () => {
 					</NavLink>
 				</li>
 				<li className={`${styles.item} text_color_inactive`}>
-					<ListIcon type="secondary" />
-					<span>Лента заказов</span>
+					<NavLink className={styles.item} to={'/feed'}>
+						<ListIcon type="secondary" />
+						<span>Лента заказов</span>
+					</NavLink>
 				</li>
 			</ul>
 		</nav>

@@ -13,6 +13,7 @@ import {
 	ForgotPassword,
 	ResetPassword,
 	ProfilePage,
+	Feed,
 } from '../../pages';
 
 import { OnlyAuth, OnlyUnAuth, OnlyAfterForgot } from '../protected-route';
@@ -54,6 +55,7 @@ const App: React.FC = () => {
 			<Routes location={background || location}>
 				<Route element={<Layout />}>
 					<Route path="/" element={<Home />} />
+					<Route path="/feed" element={<Feed />} />
 					<Route path="/ingredients/:id" element={<IngredientDetails />} />
 					<Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
 					<Route path="/login" element={<OnlyUnAuth component={<Login />} />} />

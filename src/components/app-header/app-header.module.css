@@ -5,6 +5,7 @@
 .container {
 	composes: container from '../../styles/common.module.css';
 	display: grid;
+	align-items: center;
 	grid-template-columns: 495px 1fr 495px;
 	padding: 20px 0;
 }
