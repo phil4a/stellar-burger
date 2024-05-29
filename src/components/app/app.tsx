@@ -23,6 +23,7 @@ import IngredientDetails from '../modals/ingredient-details/ingredient-details';
 import Modal from '../modals/modal/modal';
 
 import AppHeader from '../app-header/app-header';
+import BurgerDetails from '../modals/burger-details/burger-details';
 
 const App: React.FC = () => {
 	const location = useLocation();
@@ -55,6 +56,7 @@ const App: React.FC = () => {
 					<Route path="/" element={<Home />} />
 					<Route path="/feed" element={<Feed />} />
 					<Route path="/ingredients/:id" element={<IngredientDetails />} />
+					<Route path="/feed/:number" element={<BurgerDetails />} />
 					<Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
 					<Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
 					<Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword />} />} />
@@ -73,6 +75,14 @@ const App: React.FC = () => {
 						element={
 							<Modal onClose={() => navigate(-1)}>
 								<IngredientDetails />
+							</Modal>
+						}
+					/>
+					<Route
+						path="/feed/:number"
+						element={
+							<Modal onClose={() => navigate(-1)}>
+								<BurgerDetails />
 							</Modal>
 						}
 					/>

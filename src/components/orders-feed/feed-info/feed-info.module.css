@@ -1,0 +1,24 @@
+.section {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 60px;
+}
+
+.orders {
+	display: flex;
+
+	gap: 36px;
+}
+.ready {
+	flex: 0 0 50%;
+}
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.readyList {
+	color: #00cccc;
+}
