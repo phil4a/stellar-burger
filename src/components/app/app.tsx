@@ -65,6 +65,7 @@ const App: React.FC = () => {
 						element={<OnlyAfterForgot component={<ResetPassword />} />}
 					/>
 					<Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
+					<Route path="/profile/orders" element={<OnlyAuth component={<ProfilePage />} />} />
 					<Route path="*" element={<NotFound />} />
 				</Route>
 			</Routes>

@@ -2,9 +2,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { Link, useLocation } from 'react-router-dom';
 import styles from './order-info.module.css';
 
-type Props = {};
-
-const OrderInfo = (props: Props) => {
+const OrderInfo = () => {
 	const location = useLocation();
 
 	return (
