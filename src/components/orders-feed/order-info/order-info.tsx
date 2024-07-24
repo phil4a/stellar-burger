@@ -6,14 +6,13 @@ type Props = {};
 
 const OrderInfo = (props: Props) => {
 	const location = useLocation();
+
 	return (
 		<li className={styles.item}>
-			<Link className={styles.link} to={'/feed/1'} state={{ background: location }}>
+			<Link to={'/feed/123'} className={styles.link} state={{ background: location }}>
 				<div className={styles.info}>
 					<span className="text text_type_digits-default">#034535</span>
-					<span className="text text_type_main-default ml-2 text_color_inactive">
-						Сегодня, 16:20
-					</span>
+					<span className="text text_type_main-default ml-2">Сегодня, 16:20</span>
 				</div>
 				<h2 className="text text_type_main-medium">Death Star Starship Main бургер</h2>
 				<div className={styles.list}>

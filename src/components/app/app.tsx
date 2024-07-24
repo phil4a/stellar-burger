@@ -20,10 +20,10 @@ import { OnlyAuth, OnlyUnAuth, OnlyAfterForgot } from '../protected-route';
 import Layout from '../layout/layout';
 import Preloader from '../preloader/preloader';
 import IngredientDetails from '../modals/ingredient-details/ingredient-details';
+import FeedDetails from '../modals/feed-details/feed-details';
 import Modal from '../modals/modal/modal';
 
 import AppHeader from '../app-header/app-header';
-import BurgerDetails from '../modals/burger-details/burger-details';
 
 const App: React.FC = () => {
 	const location = useLocation();
@@ -55,8 +55,8 @@ const App: React.FC = () => {
 				<Route element={<Layout />}>
 					<Route path="/" element={<Home />} />
 					<Route path="/feed" element={<Feed />} />
+					<Route path="/feed/:id" element={<FeedDetails />} />
 					<Route path="/ingredients/:id" element={<IngredientDetails />} />
-					<Route path="/feed/:number" element={<BurgerDetails />} />
 					<Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
 					<Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
 					<Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword />} />} />
@@ -79,10 +79,10 @@ const App: React.FC = () => {
 						}
 					/>
 					<Route
-						path="/feed/:number"
+						path="/feed/:id"
 						element={
 							<Modal onClose={() => navigate(-1)}>
-								<BurgerDetails />
+								<FeedDetails />
 							</Modal>
 						}
 					/>

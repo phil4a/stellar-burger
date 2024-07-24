@@ -4,11 +4,12 @@
 	background-color: #1c1c21;
 }
 .link {
-	color: white;
-	text-decoration: none;
 	display: flex;
 	flex-direction: column;
 	gap: 24px;
+	color: #f2f2f3;
+	text-decoration: none;
+	transition: color 0.3s ease 0s;
 }
 .info {
 	display: flex;
