@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { logout } from '../../services/auth/auth-slice';
 
 import ProfilePersonal from './profile-personal/profile-personal';
-import ProfileOrders from './profile-orders/profile-orders';
+import FeedList from '../orders-feed/feed-list/feed-list';
 
 import styles from './profile.module.css';
 
@@ -20,7 +20,7 @@ const Profile: React.FC = (): React.ReactElement => {
 
 	const renderAside = () => {
 		if (pathname === '/profile/orders') {
-			return <ProfileOrders />;
+			return <FeedList />;
 		}
 		return <ProfilePersonal />;
 	};
