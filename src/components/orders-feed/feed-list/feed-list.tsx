@@ -1,13 +1,18 @@
 import OrderInfo from '../order-info/order-info';
 import styles from './feed-list.module.css';
+import { IWebsocketOrder } from '../../../utils/websockets-types';
 
-const FeedList = () => {
+interface FeedListProps {
+	orders: IWebsocketOrder[];
+}
+
+const FeedList = ({ orders }: FeedListProps) => {
+	console.log(orders);
 	return (
 		<ul className={styles.list}>
-			<OrderInfo />
-			<OrderInfo />
-			<OrderInfo />
-			<OrderInfo />
+			{orders.map((order, i) => (
+				<OrderInfo order={order} key={order._id} />
+			))}
 		</ul>
 	);
 };

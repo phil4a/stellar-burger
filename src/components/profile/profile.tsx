@@ -20,7 +20,7 @@ const Profile: React.FC = (): React.ReactElement => {
 
 	const renderAside = () => {
 		if (pathname === '/profile/orders') {
-			return <FeedList />;
+			// return <FeedList />;
 		}
 		return <ProfilePersonal />;
 	};

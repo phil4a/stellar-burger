@@ -1,6 +1,7 @@
 import { IIngredient } from '../utils/types';
 
 const API_URL = 'https://norma.nomoreparties.space/api';
+export const WS_URL = 'wss://norma.nomoreparties.space/orders';
 
 interface IRefreshResponse {
 	success: boolean;

@@ -1,23 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-	WebsocketStatus,
-	IWebsocketOrder,
-	IWebsocketResponse,
-} from '../../../utils/websockets-types';
+import { WebsocketStatus, IWebsocketOrder } from '../../../utils/websockets-types';
 
-export interface IOrdersState {
+export interface OrdersState {
 	status: WebsocketStatus;
 	orders: IWebsocketOrder[];
-	total: number;
-	totalToday: number;
 	connectionError: string | null;
 }
 
-const initialState: IOrdersState = {
+const initialState: OrdersState = {
 	status: WebsocketStatus.OFFLINE,
 	orders: [],
-	total: 0,
-	totalToday: 0,
 	connectionError: null,
 };
 
@@ -38,27 +30,15 @@ export const ordersSlice = createSlice({
 		wsError: (state, action: PayloadAction<string>) => {
 			state.connectionError = action.payload;
 		},
-		wsMessage: (state, action: PayloadAction<IWebsocketResponse>) => {
-			const { orders, total, totalToday } = action.payload;
-			state.orders = orders;
-			state.total = total;
-			state.totalToday = totalToday;
+		wsMessage: (state, action: PayloadAction<IWebsocketOrder>) => {
+			state.orders = [...state.orders, action.payload];
 		},
 	},
 	selectors: {
 		getOrders: (state) => state.orders,
 		getWebsocketStatus: (state) => state.status,
-		getTotalOrders: (state) => state.total,
-		getTotalTodayOrders: (state) => state.totalToday,
-		getConnectionError: (state) => state.connectionError,
 	},
 });
 
 export const { wsConnecting, wsOpen, wsClose, wsError, wsMessage } = ordersSlice.actions;
-export const {
-	getOrders,
-	getWebsocketStatus,
-	getTotalOrders,
-	getTotalTodayOrders,
-	getConnectionError,
-} = ordersSlice.selectors;
+export const { getOrders, getWebsocketStatus } = ordersSlice.selectors;

@@ -1,49 +1,30 @@
 import React from 'react';
+import { IWebsocketOrder } from '../../../utils/websockets-types';
 import styles from './feed-info.module.css';
 
-type Props = {};
+interface FeedInfoProps {
+	orders: IWebsocketOrder[];
+	total: number;
+	totalToday: number;
+}
 
-const readyOrdersNumbers = [
-	'034533',
-	'034532',
-	'034530',
-	'034527',
-	'034525',
-	'034524',
-	'034523',
-	'034522',
-	'034521',
-	'034520',
-	'034519',
-	'034518',
-	'034517',
-];
-const inProgressOrdersNumbers = [
-	'034533',
-	'034532',
-	'034530',
-	'034533',
-	'034532',
-	'034530',
-	'034533',
-	'034532',
-	'034530',
-	'034533',
-	'034532',
-	'034530',
-	'034533',
-	'034532',
-	'034530',
-];
+const FeedInfo = (props: FeedInfoProps) => {
+	const { total, totalToday, orders } = props;
 
-const FeedInfo = (props: Props) => {
+	const readyOrdersNum = orders
+		.filter((order) => order.status === 'done')
+		.map((order) => order.number.toString());
+	const inProgressOrdersNum = orders
+		.filter((order) => order.status === 'inProgress')
+		.map((order) => order.number.toString());
+
 	return (
 		<section className={`${styles.section} pt-25`}>
 			<div className={`${styles.orders}`}>
 				<div className={styles.ordersCol}>
 					<h2 className="text text_type_main-medium mb-6">Готовы:</h2>
 					<ul className={styles.list}>
-						{readyOrdersNumbers.map((num) => (
+						{readyOrdersNum.map((num) => (
 							<li className={styles.item} key={num}>
 								<p className="text text_type_digits-default">{num}</p>
 							</li>
@@ -53,7 +34,7 @@ const FeedInfo = (props: Props) => {
 				<div className={styles.ordersCol}>
 					<h2 className="text text_type_main-medium mb-6">В работе:</h2>
 					<ul className={styles.list}>
-						{inProgressOrdersNumbers.map((num) => (
+						{inProgressOrdersNum.map((num) => (
 							<li key={num}>
 								<p className="text text_type_digits-default">{num}</p>
 							</li>
@@ -63,11 +44,11 @@ const FeedInfo = (props: Props) => {
 			</div>
 			<div className={styles.total}>
 				<h2 className="text text_type_main-medium">Выполнено за все время:</h2>
-				<p className="text text_type_digits-large">12332</p>
+				<p className="text text_type_digits-large">{total}</p>
 			</div>
 			<div className={styles.totalToday}>
 				<h2 className="text text_type_main-medium">Выполнено за сегодня:</h2>
-				<p className="text text_type_digits-large">412</p>
+				<p className="text text_type_digits-large">{totalToday}</p>
 			</div>
 		</section>
 	);

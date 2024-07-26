@@ -14,6 +14,7 @@ export interface IWebsocketResponse {
 export interface IWebsocketOrder {
 	ingredients: string[];
 	_id: string;
+	name: string;
 	status: string;
 	number: number;
 	createdAt: string;
