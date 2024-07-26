@@ -1,11 +1,16 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useAppSelector } from '../../../services/store';
+import { RootState } from '../../../services/store';
+import { getOrderById } from '../../../services/websockets/order-feed/slice';
 
 import styles from './feed-details.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const FeedDetails: React.FC = (): JSX.Element | null => {
 	const { id } = useParams<{ id: string }>();
+
+	const order = useAppSelector((state: RootState) => getOrderById(state, id));
 
 	return (
 		<div className={styles.body}>

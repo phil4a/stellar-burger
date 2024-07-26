@@ -47,10 +47,7 @@ export const ingredientsSlice = createSlice({
 				return ingredient;
 			});
 		},
-		/**
-		 * Resets the ingredients state to the initial state.
-		 * @returns {IIngredientsState} The initial ingredients state.
-		 */
+
 		resetCounters(): IIngredientsState {
 			return { ...initialState };
 		},

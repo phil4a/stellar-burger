@@ -7,7 +7,6 @@ interface FeedListProps {
 }
 
 const FeedList = ({ orders }: FeedListProps) => {
-	console.log(orders);
 	return (
 		<ul className={styles.list}>
 			{orders.map((order, i) => (

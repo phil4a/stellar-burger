@@ -51,6 +51,7 @@ export const ordersSlice = createSlice({
 		getTotalOrders: (state) => state.total,
 		getTotalTodayOrders: (state) => state.totalToday,
 		getConnectionError: (state) => state.connectionError,
+		getOrderById: (state, id) => state.orders.find((order) => order._id === id),
 	},
 });
 
@@ -61,4 +62,5 @@ export const {
 	getTotalOrders,
 	getTotalTodayOrders,
 	getConnectionError,
+	getOrderById,
 } = ordersSlice.selectors;
