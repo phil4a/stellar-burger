@@ -1,9 +1,15 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation } from 'react-router-dom';
-import styles from './order-info.module.css';
 
 import { IWebsocketOrder } from '../../../utils/websockets-types';
 import { RootState, useAppSelector } from '../../../services/store';
+import {
+	calculateTotalPrice,
+	getIngredientsByIds,
+	useAllIngredients,
+} from '../../../utils/helpers';
+
+import styles from './order-info.module.css';
 
 interface IOrderInfoProps {
 	order: IWebsocketOrder;
@@ -13,16 +19,10 @@ const OrderInfo = ({ order }: IOrderInfoProps) => {
 	const location = useLocation();
 
 	const { ingredients, _id, status, number, createdAt, updatedAt, name } = order;
-	const allIngredients = useAppSelector((state: RootState) => state.ingredients.ingredients);
 
-	const orderIngredients = ingredients.map((id) =>
-		allIngredients.find((ingredient) => ingredient._id === id),
-	);
-
-	const totalPrice = orderIngredients.reduce(
-		(sum, ingredient) => sum + (ingredient ? ingredient.price : 0),
-		0,
-	);
+	const allIngredients = useAllIngredients();
+	const orderIngredients = getIngredientsByIds(allIngredients, order.ingredients);
+	const totalPrice = calculateTotalPrice(orderIngredients);
 
 	return (
 		<li className={styles.item}>
