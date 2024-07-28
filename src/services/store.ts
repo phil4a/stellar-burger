@@ -4,6 +4,7 @@ import currentIngredientSlice from './current-ingredient-slice';
 import ingredientsSlice from './ingredients-slice';
 import constructorSlice from './constructor-slice';
 import orderSlice from './order-slice';
+import { profileOrdersSlice } from './websockets/profile-feed/slice';
 
 import {
 	ordersSlice,
@@ -27,6 +28,15 @@ const ordersFeedMiddleware = socketMiddleware({
 	onError: wsError,
 	onMessage: wsMessage,
 });
+const profileOrdersFeedMiddleware = socketMiddleware({
+	connect: wsConnect,
+	disconnect: wsDisconnect,
+	onConnecting: wsConnecting,
+	onOpen: wsOpen,
+	onClose: wsClose,
+	onError: wsError,
+	onMessage: wsMessage,
+});
 
 const rootReducer = combineReducers({
 	currentIngredient: currentIngredientSlice,
@@ -35,12 +45,13 @@ const rootReducer = combineReducers({
 	burgerConstructor: constructorSlice,
 	auth: authSlice,
 	[ordersSlice.reducerPath]: ordersSlice.reducer,
+	[profileOrdersSlice.reducerPath]: ordersSlice.reducer,
 });
 
 export const store = configureStore({
 	reducer: rootReducer,
 	middleware: (getDefaultMiddleware) => {
-		return getDefaultMiddleware().concat(ordersFeedMiddleware);
+		return getDefaultMiddleware().concat(ordersFeedMiddleware).concat(profileOrdersFeedMiddleware);
 	},
 });
 

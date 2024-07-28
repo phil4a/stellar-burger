@@ -22,6 +22,9 @@ const OrdersFeed = (): JSX.Element => {
 
 	useEffect(() => {
 		dispatch(wsConnect(`${WS_URL}/all`));
+		return () => {
+			dispatch(wsDisconnect());
+		};
 	}, [dispatch]);
 	return (
 		<>

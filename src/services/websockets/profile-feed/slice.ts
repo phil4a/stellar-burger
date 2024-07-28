@@ -1,20 +1,28 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { WebsocketStatus, IWebsocketOrder } from '../../../utils/websockets-types';
+import {
+	WebsocketStatus,
+	IWebsocketOrder,
+	IWebsocketResponse,
+} from '../../../utils/websockets-types';
 
-export interface OrdersState {
+export interface IOrdersState {
 	status: WebsocketStatus;
 	orders: IWebsocketOrder[];
+	total: number;
+	totalToday: number;
 	connectionError: string | null;
 }
 
-const initialState: OrdersState = {
+const initialState: IOrdersState = {
 	status: WebsocketStatus.OFFLINE,
 	orders: [],
+	total: 0,
+	totalToday: 0,
 	connectionError: null,
 };
 
-export const ordersSlice = createSlice({
-	name: 'orders',
+export const profileOrdersSlice = createSlice({
+	name: 'profileOrders',
 	initialState,
 	reducers: {
 		wsConnecting: (state) => {
@@ -30,15 +38,29 @@ export const ordersSlice = createSlice({
 		wsError: (state, action: PayloadAction<string>) => {
 			state.connectionError = action.payload;
 		},
-		wsMessage: (state, action: PayloadAction<IWebsocketOrder>) => {
-			state.orders = [...state.orders, action.payload];
+		wsMessage: (state, action: PayloadAction<IWebsocketResponse>) => {
+			const { orders, total, totalToday } = action.payload;
+			state.orders = orders;
+			state.total = total;
+			state.totalToday = totalToday;
 		},
 	},
 	selectors: {
 		getOrders: (state) => state.orders,
 		getWebsocketStatus: (state) => state.status,
+		getTotalOrders: (state) => state.total,
+		getTotalTodayOrders: (state) => state.totalToday,
+		getConnectionError: (state) => state.connectionError,
+		getOrderById: (state, id) => state.orders.find((order) => order._id === id),
 	},
 });
 
-export const { wsConnecting, wsOpen, wsClose, wsError, wsMessage } = ordersSlice.actions;
-export const { getOrders, getWebsocketStatus } = ordersSlice.selectors;
+export const { wsConnecting, wsOpen, wsClose, wsError, wsMessage } = profileOrdersSlice.actions;
+export const {
+	getOrders,
+	getWebsocketStatus,
+	getTotalOrders,
+	getTotalTodayOrders,
+	getConnectionError,
+	getOrderById,
+} = profileOrdersSlice.selectors;
