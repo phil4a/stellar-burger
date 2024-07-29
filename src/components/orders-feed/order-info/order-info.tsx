@@ -1,4 +1,4 @@
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation } from 'react-router-dom';
 
 import { IWebsocketOrder } from '../../../utils/websockets-types';
@@ -30,19 +30,20 @@ const OrderInfo = ({ order }: IOrderInfoProps) => {
 				<div className={styles.info}>
 					<span className="text text_type_digits-default">#{number}</span>
 					<span className="text text_type_main-default ml-2">
-						{new Intl.DateTimeFormat('ru', {
-							year: 'numeric',
-							month: 'long',
-							day: 'numeric',
-							hour: '2-digit',
-							minute: '2-digit',
-						}).format(new Date(createdAt))}
+						<FormattedDate date={new Date(createdAt)} />
 					</span>
 				</div>
 				<h2 className="text text_type_main-medium">{name}</h2>
 				<div className={styles.list}>
 					<ul className={styles.orderItems}>
-						{orderIngredients.map((ingredient, index) => {
+						{orderIngredients.length > 6 && (
+							<li className={styles.orderItem}>
+								<span className={`${styles.remainingItems} text text_type_main-default`}>
+									+{orderIngredients.length - 6}
+								</span>
+							</li>
+						)}
+						{orderIngredients.slice(0, 6).map((ingredient, index) => {
 							if (!ingredient) return null;
 
 							const uniqueKey = `${ingredient._id}-${index}`;

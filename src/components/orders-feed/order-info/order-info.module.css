@@ -42,6 +42,18 @@
 	margin-left: -16px;
 }
 
+.remainingItems {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 64px;
+	height: 64px;
+
+	border-radius: 50%;
+	color: #f2f2f3;
+	font-size: 18px;
+}
+
 .orderItemImg {
 	position: absolute;
 	top: 50%;

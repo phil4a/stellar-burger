@@ -11,12 +11,14 @@ interface FeedInfoProps {
 const FeedInfo = (props: FeedInfoProps) => {
 	const { total, totalToday, orders } = props;
 
-	const readyOrdersNum = orders
-		.filter((order) => order.status === 'done')
-		.map((order) => order.number.toString());
-	const inProgressOrdersNum = orders
-		.filter((order) => order.status === 'inProgress')
-		.map((order) => order.number.toString());
+	const extractOrderNumbers = (filter: 'done' | 'pending') =>
+		orders
+			.filter((order) => order.status === filter)
+			.map((order) => order.number.toString())
+			.slice(0, 20);
+
+	const readyOrdersNum = extractOrderNumbers('done');
+	const inProgressOrdersNum = extractOrderNumbers('pending');
 
 	return (
 		<section className={`${styles.section} pt-25`}>
