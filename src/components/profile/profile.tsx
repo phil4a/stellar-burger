@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { wsConnect, wsDisconnect } from '../../services/websockets/profile-feed/actions';
 import { getOrders } from '../../services/websockets/profile-feed/slice';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 
@@ -9,8 +7,6 @@ import { logout } from '../../services/auth/auth-slice';
 import ProfilePersonal from './profile-personal/profile-personal';
 import FeedList from '../orders-feed/feed-list/feed-list';
 
-import { WS_URL } from '../../utils/api';
-
 import styles from './profile.module.css';
 
 const Profile: React.FC = (): React.ReactElement => {
@@ -18,8 +14,6 @@ const Profile: React.FC = (): React.ReactElement => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { pathname } = location;
-
-	const accessToken = localStorage.getItem('accessToken')?.split(' ')[1];
 
 	const orders = useAppSelector(getOrders);
 
@@ -38,12 +32,6 @@ const Profile: React.FC = (): React.ReactElement => {
 	const getLinkClassName = (path: string) => {
 		return pathname === path ? `${styles.link} ${styles.active}` : styles.link;
 	};
-	console.log(WS_URL);
-	console.log(accessToken);
-	useEffect(() => {
-		// dispatch(wsConnect(`${WS_URL}?token=${accessToken}`));
-		dispatch(wsConnect(`${WS_URL}/all`));
-	}, [dispatch]);
 
 	return (
 		<div className={styles.profile}>
