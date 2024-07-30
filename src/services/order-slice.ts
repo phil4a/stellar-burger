@@ -2,16 +2,18 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { fetchWithRefresh } from '../utils/api';
 import { Status } from '../utils/types';
+import { IWebsocketOrder } from '../utils/websockets-types';
 
 interface IOrderState {
 	orderNumber: number | null;
 	status: Status;
 	error: string | null;
 	isSendingOrder: boolean;
-	recievedOrderById: IOrderResponse | null;
+	recievedOrderByNumber: IWebsocketOrder | undefined;
 }
 
 interface IOrderResponse {
+	orders: any;
 	order: {
 		number: number;
 	};
@@ -22,7 +24,7 @@ const initialState: IOrderState = {
 	status: Status.IDLE,
 	error: null,
 	isSendingOrder: false,
-	recievedOrderById: null,
+	recievedOrderByNumber: undefined,
 };
 
 export const orderSlice = createSlice({
@@ -51,14 +53,14 @@ export const orderSlice = createSlice({
 					state.error = action.error.message;
 				}
 			})
-			.addCase(fetchOrderById.pending, (state) => {
+			.addCase(fetchOrderByNumber.pending, (state) => {
 				state.status = Status.LOADING;
 			})
-			.addCase(fetchOrderById.fulfilled, (state, action) => {
+			.addCase(fetchOrderByNumber.fulfilled, (state, action) => {
 				state.status = Status.SUCCESS;
-				state.recievedOrderById = action.payload;
+				state.recievedOrderByNumber = action.payload.orders[0];
 			})
-			.addCase(fetchOrderById.rejected, (state, action) => {
+			.addCase(fetchOrderByNumber.rejected, (state, action) => {
 				state.status = Status.ERROR;
 				if (action.error.message !== undefined) {
 					state.error = action.error.message;
@@ -83,12 +85,12 @@ export const sendOrder = createAsyncThunk<IOrderResponse, string[]>(
 	},
 );
 
-export const fetchOrderById = createAsyncThunk<IOrderResponse, string>(
-	'currentOrder/fetchById',
-	async (orderId) => {
+export const fetchOrderByNumber = createAsyncThunk<IOrderResponse, string>(
+	'currentOrder/fetchOrderByNumber',
+	async (orderNumber) => {
 		const accessToken = localStorage.getItem('accessToken');
 
-		const response = await fetchWithRefresh(`orders/${orderId}`, {
+		const response = await fetchWithRefresh(`orders/${orderNumber}`, {
 			method: 'GET',
 			headers: {
 				Authorization: accessToken || '',

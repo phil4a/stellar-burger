@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../services/store';
 import { RootState } from '../../../services/store';
-import { getOrderById } from '../../../services/websockets/order-feed/slice';
-import { fetchOrderById } from '../../../services/order-slice';
+
+import { fetchOrderByNumber } from '../../../services/order-slice';
 
 import {
 	calculateTotalPrice,
@@ -13,13 +13,32 @@ import {
 
 import styles from './feed-details.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
+import Preloader from '../../preloader/preloader';
 
 const FeedDetails: React.FC = (): JSX.Element | null => {
 	const dispatch = useAppDispatch();
-	const { id } = useParams<{ id: string }>();
+	const { number } = useParams<{ number: string }>();
 
-	const order = useAppSelector((state: RootState) => getOrderById(state, id));
-	const { name, ingredients, number, status, _id, createdAt, updatedAt } = order || {};
+	const order = useAppSelector((state: RootState) => {
+		let order = state.orders.orders.find((order) => order.number === +number!);
+
+		if (order) {
+			return order;
+		}
+		order = state.profileOrders.profileOrders.find((order) => order.number === +number!);
+		if (order) {
+			return order;
+		}
+		return (order = state.currentOrder.recievedOrderByNumber);
+	});
+
+	useEffect(() => {
+		if (!order) {
+			dispatch(fetchOrderByNumber(number!));
+		}
+	}, [dispatch, number]);
+
+	const { name, ingredients, status, createdAt } = order || {};
 
 	const allIngredients = useAllIngredients();
 	const orderIngredients = getIngredientsByIds(allIngredients, ingredients ?? []);
@@ -38,21 +57,13 @@ const FeedDetails: React.FC = (): JSX.Element | null => {
 		}
 	});
 
-	// Преобразуем объект обратно в массив для отображения
 	const uniqueIngredients = Object.values(ingredientCountMap);
 
 	const totalPrice = calculateTotalPrice(orderIngredients);
 
-	useEffect(() => {
-		if (id !== undefined) {
-			dispatch(fetchOrderById(id));
-		}
-	}, [dispatch, id]);
-
-	const fetchedOrderById = useAppSelector(
-		(store: RootState) => store.currentOrder.recievedOrderById,
-	);
-	console.log(fetchedOrderById);
+	if (!order) {
+		return <Preloader />;
+	}
 
 	return (
 		<div className={styles.body}>

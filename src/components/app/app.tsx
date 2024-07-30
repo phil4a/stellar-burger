@@ -55,7 +55,7 @@ const App: React.FC = () => {
 				<Route element={<Layout />}>
 					<Route path="/" element={<Home />} />
 					<Route path="/feed" element={<Feed />} />
-					<Route path="/feed/:id" element={<FeedDetails />} />
+					<Route path="/feed/:number" element={<FeedDetails />} />
 					<Route path="/ingredients/:id" element={<IngredientDetails />} />
 					<Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
 					<Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
@@ -80,7 +80,7 @@ const App: React.FC = () => {
 						}
 					/>
 					<Route
-						path="/feed/:id"
+						path="/feed/:number"
 						element={
 							<Modal onClose={() => navigate(-1)}>
 								<FeedDetails />

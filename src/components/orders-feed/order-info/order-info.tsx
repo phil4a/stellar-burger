@@ -26,7 +26,7 @@ const OrderInfo = ({ order }: IOrderInfoProps) => {
 
 	return (
 		<li className={styles.item}>
-			<Link to={`/feed/${_id}`} className={styles.link} state={{ background: location }}>
+			<Link to={`/feed/${number}`} className={styles.link} state={{ background: location }}>
 				<div className={styles.info}>
 					<span className="text text_type_digits-default">#{number}</span>
 					<span className="text text_type_main-default ml-2">
