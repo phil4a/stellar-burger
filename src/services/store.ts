@@ -4,7 +4,14 @@ import currentIngredientSlice from './current-ingredient-slice';
 import ingredientsSlice from './ingredients-slice';
 import constructorSlice from './constructor-slice';
 import orderSlice from './order-slice';
-import { profileOrdersSlice } from './websockets/profile-feed/slice';
+import {
+	profileOrdersSlice,
+	profileWsClose,
+	profileWsConnecting,
+	profileWsError,
+	profileWsMessage,
+	profileWsOpen,
+} from './websockets/profile-feed/slice';
 
 import {
 	ordersSlice,
@@ -16,8 +23,9 @@ import {
 } from './websockets/order-feed/slice';
 
 import authSlice from './auth/auth-slice';
-import { socketMiddleware } from './websockets/order-feed/middleware/socket-middleware';
+import { socketMiddleware } from './websockets/middleware/socket-middleware';
 import { wsConnect, wsDisconnect } from './websockets/order-feed/actions';
+import { profileWsConnect, profileWsDisconnect } from './websockets/profile-feed/actions';
 
 const ordersFeedMiddleware = socketMiddleware({
 	connect: wsConnect,
@@ -28,14 +36,15 @@ const ordersFeedMiddleware = socketMiddleware({
 	onError: wsError,
 	onMessage: wsMessage,
 });
-const profileOrdersFeedMiddleware = socketMiddleware({
-	connect: wsConnect,
-	disconnect: wsDisconnect,
-	onConnecting: wsConnecting,
-	onOpen: wsOpen,
-	onClose: wsClose,
-	onError: wsError,
-	onMessage: wsMessage,
+
+const profileFeedMiddleware = socketMiddleware({
+	connect: profileWsConnect,
+	disconnect: profileWsDisconnect,
+	onConnecting: profileWsConnecting,
+	onOpen: profileWsOpen,
+	onClose: profileWsClose,
+	onError: profileWsError,
+	onMessage: profileWsMessage,
 });
 
 const rootReducer = combineReducers({
@@ -45,13 +54,13 @@ const rootReducer = combineReducers({
 	burgerConstructor: constructorSlice,
 	auth: authSlice,
 	[ordersSlice.reducerPath]: ordersSlice.reducer,
-	[profileOrdersSlice.reducerPath]: ordersSlice.reducer,
+	[profileOrdersSlice.reducerPath]: profileOrdersSlice.reducer,
 });
 
 export const store = configureStore({
 	reducer: rootReducer,
 	middleware: (getDefaultMiddleware) => {
-		return getDefaultMiddleware().concat(ordersFeedMiddleware).concat(profileOrdersFeedMiddleware);
+		return getDefaultMiddleware().concat(ordersFeedMiddleware).concat(profileFeedMiddleware);
 	},
 });
 

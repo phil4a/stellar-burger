@@ -22,6 +22,11 @@ const OrdersFeed = (): JSX.Element => {
 
 	useEffect(() => {
 		dispatch(wsConnect(`${WS_URL}/all`));
+		console.log('mounted orders-feed');
+		return () => {
+			dispatch(wsDisconnect());
+			console.log('unmounted orders-feed');
+		};
 	}, [dispatch]);
 	return (
 		<>

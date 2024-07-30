@@ -7,7 +7,7 @@ import {
 
 export interface IOrdersState {
 	status: WebsocketStatus;
-	orders: IWebsocketOrder[];
+	profileOrders: IWebsocketOrder[];
 	total: number;
 	totalToday: number;
 	connectionError: string | null;
@@ -15,7 +15,7 @@ export interface IOrdersState {
 
 const initialState: IOrdersState = {
 	status: WebsocketStatus.OFFLINE,
-	orders: [],
+	profileOrders: [],
 	total: 0,
 	totalToday: 0,
 	connectionError: null,
@@ -25,39 +25,45 @@ export const profileOrdersSlice = createSlice({
 	name: 'profileOrders',
 	initialState,
 	reducers: {
-		wsConnecting: (state) => {
+		profileWsConnecting: (state) => {
 			state.status = WebsocketStatus.CONNECTING;
 		},
-		wsOpen: (state) => {
+		profileWsOpen: (state) => {
 			state.status = WebsocketStatus.ONLINE;
 			state.connectionError = null;
 		},
-		wsClose: (state) => {
+		profileWsClose: (state) => {
 			state.status = WebsocketStatus.OFFLINE;
 		},
-		wsError: (state, action: PayloadAction<string>) => {
+		profileWsError: (state, action: PayloadAction<string>) => {
 			state.connectionError = action.payload;
 		},
-		wsMessage: (state, action: PayloadAction<IWebsocketResponse>) => {
+		profileWsMessage: (state, action: PayloadAction<IWebsocketResponse>) => {
 			const { orders, total, totalToday } = action.payload;
-			state.orders = orders;
+			state.profileOrders = orders;
 			state.total = total;
 			state.totalToday = totalToday;
 		},
 	},
 	selectors: {
-		getOrders: (state) => state.orders,
+		getProfileOrders: (state) => state.profileOrders,
 		getWebsocketStatus: (state) => state.status,
 		getTotalOrders: (state) => state.total,
 		getTotalTodayOrders: (state) => state.totalToday,
 		getConnectionError: (state) => state.connectionError,
-		getOrderById: (state, id) => state.orders.find((order) => order._id === id),
+		getOrderById: (state, id) => state.profileOrders.find((order) => order._id === id),
 	},
 });
 
-export const { wsConnecting, wsOpen, wsClose, wsError, wsMessage } = profileOrdersSlice.actions;
 export const {
-	getOrders,
+	profileWsConnecting,
+	profileWsOpen,
+	profileWsClose,
+	profileWsError,
+	profileWsMessage,
+} = profileOrdersSlice.actions;
+export const {
+	getProfileOrders,
 	getWebsocketStatus,
 	getTotalOrders,
 	getTotalTodayOrders,

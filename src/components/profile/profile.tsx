@@ -1,11 +1,10 @@
-import { getOrders } from '../../services/websockets/profile-feed/slice';
-import { useAppDispatch, useAppSelector } from '../../services/store';
+import { useAppDispatch } from '../../services/store';
 
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { logout } from '../../services/auth/auth-slice';
 
 import ProfilePersonal from './profile-personal/profile-personal';
-import FeedList from '../orders-feed/feed-list/feed-list';
+import ProfileFeed from './profile-feed';
 
 import styles from './profile.module.css';
 
@@ -15,8 +14,6 @@ const Profile: React.FC = (): React.ReactElement => {
 	const location = useLocation();
 	const { pathname } = location;
 
-	const orders = useAppSelector(getOrders);
-
 	const handleLogoutClick = (): void => {
 		dispatch(logout());
 		navigate('/', { replace: true });
@@ -24,7 +21,7 @@ const Profile: React.FC = (): React.ReactElement => {
 
 	const renderAside = () => {
 		if (pathname === '/profile/orders') {
-			return <FeedList orders={orders} />;
+			return <ProfileFeed />;
 		}
 		return <ProfilePersonal />;
 	};

@@ -1,7 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
 
-export const wsConnect = createAction<string, 'PROFILE_FEED_CONNECT'>('PROFILE_FEED_CONNECT');
+export const profileWsConnect = createAction<string, 'PROFILE_FEED_CONNECT'>(
+	'PROFILE_FEED_CONNECT',
+);
 
-export const wsDisconnect = createAction('PROFILE_FEED_DISCONNECT');
+export const profileWsDisconnect = createAction('PROFILE_FEED_DISCONNECT');
 
-export type TWsExternalActions = ReturnType<typeof wsConnect> | ReturnType<typeof wsDisconnect>;
+export type TWsExternalActions =
+	| ReturnType<typeof profileWsConnect>
+	| ReturnType<typeof profileWsDisconnect>;
