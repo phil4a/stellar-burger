@@ -8,6 +8,7 @@ interface IOrderState {
 	status: Status;
 	error: string | null;
 	isSendingOrder: boolean;
+	recievedOrderById: IOrderResponse | null;
 }
 
 interface IOrderResponse {
@@ -21,6 +22,7 @@ const initialState: IOrderState = {
 	status: Status.IDLE,
 	error: null,
 	isSendingOrder: false,
+	recievedOrderById: null,
 };
 
 export const orderSlice = createSlice({
@@ -48,6 +50,19 @@ export const orderSlice = createSlice({
 				if (action.error.message !== undefined) {
 					state.error = action.error.message;
 				}
+			})
+			.addCase(fetchOrderById.pending, (state) => {
+				state.status = Status.LOADING;
+			})
+			.addCase(fetchOrderById.fulfilled, (state, action) => {
+				state.status = Status.SUCCESS;
+				state.recievedOrderById = action.payload;
+			})
+			.addCase(fetchOrderById.rejected, (state, action) => {
+				state.status = Status.ERROR;
+				if (action.error.message !== undefined) {
+					state.error = action.error.message;
+				}
 			});
 	},
 });
@@ -56,7 +71,6 @@ export const sendOrder = createAsyncThunk<IOrderResponse, string[]>(
 	'currentOrder/send',
 	async (ingredientIds) => {
 		const accessToken = localStorage.getItem('accessToken');
-		console.log(accessToken);
 		const response = await fetchWithRefresh('orders', {
 			method: 'POST',
 			headers: {
@@ -64,6 +78,22 @@ export const sendOrder = createAsyncThunk<IOrderResponse, string[]>(
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({ ingredients: ingredientIds }),
+		});
+		return response as Promise<IOrderResponse>;
+	},
+);
+
+export const fetchOrderById = createAsyncThunk<IOrderResponse, string>(
+	'currentOrder/fetchById',
+	async (orderId) => {
+		const accessToken = localStorage.getItem('accessToken');
+
+		const response = await fetchWithRefresh(`orders/${orderId}`, {
+			method: 'GET',
+			headers: {
+				Authorization: accessToken || '',
+				'Content-Type': 'application/json',
+			},
 		});
 		return response as Promise<IOrderResponse>;
 	},

@@ -1,8 +1,9 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppSelector } from '../../../services/store';
+import { useAppSelector, useAppDispatch } from '../../../services/store';
 import { RootState } from '../../../services/store';
 import { getOrderById } from '../../../services/websockets/order-feed/slice';
+import { fetchOrderById } from '../../../services/order-slice';
 
 import {
 	calculateTotalPrice,
@@ -14,6 +15,7 @@ import styles from './feed-details.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const FeedDetails: React.FC = (): JSX.Element | null => {
+	const dispatch = useAppDispatch();
 	const { id } = useParams<{ id: string }>();
 
 	const order = useAppSelector((state: RootState) => getOrderById(state, id));
@@ -40,6 +42,17 @@ const FeedDetails: React.FC = (): JSX.Element | null => {
 	const uniqueIngredients = Object.values(ingredientCountMap);
 
 	const totalPrice = calculateTotalPrice(orderIngredients);
+
+	useEffect(() => {
+		if (id !== undefined) {
+			dispatch(fetchOrderById(id));
+		}
+	}, [dispatch, id]);
+
+	const fetchedOrderById = useAppSelector(
+		(store: RootState) => store.currentOrder.recievedOrderById,
+	);
+	console.log(fetchedOrderById);
 
 	return (
 		<div className={styles.body}>

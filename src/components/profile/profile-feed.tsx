@@ -21,10 +21,9 @@ const ProfileFeed = () => {
 	useEffect(() => {
 		if (match) {
 			dispatch(profileWsConnect(`${WS_URL}?token=${accessToken}`));
-			console.log('mounted profile');
+
 			return () => {
 				dispatch(profileWsDisconnect());
-				console.log('unmounted profile');
 			};
 		}
 	}, [dispatch, match]);

@@ -38,7 +38,6 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 				ingredientIds.unshift(bun._id);
 				ingredientIds.push(bun._id);
 			}
-			console.log(ingredientIds);
 
 			dispatch(sendOrder(ingredientIds)).then(() => {
 				dispatch(clearIngredients());
