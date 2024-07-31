@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import { addIngredient, setBun, clearIngredients } from '../../services/constructor-slice';
-import { increaseIngredientsCounter } from '../../services/ingredients-slice';
+import { increaseIngredientsCounter, resetCounters } from '../../services/ingredients-slice';
 
 import { sendOrder } from '../../services/order-slice';
 
@@ -15,25 +16,32 @@ import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger
 
 import styles from './burger-constructor.module.css';
 
-import { TODO_ANY, IIngredient } from '../../utils/types';
+import { IIngredient } from '../../utils/types';
 
 const BurgerConstructor: React.FC = (): JSX.Element => {
 	const navigate = useNavigate();
-	const { user, isAuthChecked } = useSelector((store: TODO_ANY) => store.auth);
+
+	const dispatch = useAppDispatch();
+	const { user } = useSelector((store: RootState) => store.auth);
+	const ingredients = useSelector((store: RootState) => store.burgerConstructor.ingredients);
+	const { bun } = useSelector((store: RootState) => store.burgerConstructor);
+
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const dispatch = useDispatch();
-	const ingredients = useSelector((store: TODO_ANY) => store.burgerConstructor.ingredients);
-	const bun = useSelector((store: TODO_ANY) => store.burgerConstructor.bun);
 
 	const handleOrderClick = () => {
-		if (!user.name && isAuthChecked) {
+		if (!user.name) {
 			navigate('/login');
 		} else {
 			setIsModalOpen(true);
-			const ingredientIds = [bun, ingredients].map((ingredient) => ingredient._id, bun._id);
-			//@ts-ignore
+			const ingredientIds = ingredients.map((ingredient) => ingredient._id);
+			if (bun) {
+				ingredientIds.unshift(bun._id);
+				ingredientIds.push(bun._id);
+			}
+
 			dispatch(sendOrder(ingredientIds)).then(() => {
 				dispatch(clearIngredients());
+				dispatch(resetCounters());
 			});
 		}
 	};

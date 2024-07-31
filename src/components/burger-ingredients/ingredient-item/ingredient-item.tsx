@@ -1,5 +1,5 @@
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../../services/store';
 import { setCurrentIngredient } from '../../../services/current-ingredient-slice';
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
@@ -8,7 +8,7 @@ import styles from './ingredient-item.module.css';
 import { IIngredient } from '../../../utils/types';
 
 const IngredientItem: React.FC<{ ingredient: IIngredient; count?: number }> = ({ ingredient }) => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const location = useLocation();
 	const ingredientId = ingredient._id;
 

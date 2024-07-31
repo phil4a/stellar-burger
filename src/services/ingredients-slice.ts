@@ -1,9 +1,17 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchWithRefresh } from '../utils/api';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { fetchIngredients } from '../utils/api';
+import { IIngredient, Status } from '../utils/types';
 
-const initialState = {
+interface IIngredientsState {
+	ingredients: IIngredient[];
+	status: Status;
+	error: string | null;
+	isFetchingIngredients: boolean;
+}
+
+const initialState: IIngredientsState = {
 	ingredients: [],
-	status: 'idle',
+	status: Status.IDLE,
 	error: null,
 	isFetchingIngredients: false,
 };
@@ -11,7 +19,7 @@ export const ingredientsSlice = createSlice({
 	name: 'ingredients',
 	initialState,
 	reducers: {
-		increaseIngredientsCounter(state, action) {
+		increaseIngredientsCounter(state, action: PayloadAction<IIngredient>) {
 			const { _id, type } = action.payload;
 			if (type === 'bun') {
 				state.ingredients = state.ingredients.map((ingredient) => {
@@ -30,7 +38,7 @@ export const ingredientsSlice = createSlice({
 				}
 			}
 		},
-		decreaseIngredientsCounter(state, action) {
+		decreaseIngredientsCounter(state, action: PayloadAction<IIngredient>) {
 			const { _id } = action.payload;
 			state.ingredients = state.ingredients.map((ingredient) => {
 				if (ingredient._id === _id) {
@@ -39,34 +47,46 @@ export const ingredientsSlice = createSlice({
 				return ingredient;
 			});
 		},
+
+		resetCounters(state) {
+			state.ingredients.forEach((ingredient) => {
+				ingredient.count = 0;
+			});
+		},
 	},
 	extraReducers(builder) {
 		builder
-			.addCase(getIngredientsFromServer.pending, (state, action) => {
-				state.status = 'loading';
+			.addCase(getIngredientsFromServer.pending, (state) => {
+				state.status = Status.LOADING;
 				state.isFetchingIngredients = true;
 			})
 			.addCase(getIngredientsFromServer.fulfilled, (state, action) => {
-				state.status = 'succeeded';
+				state.status = Status.SUCCESS;
 				state.isFetchingIngredients = false;
-				state.ingredients = action.payload.data.map((ingredient) => ({
+				state.ingredients = action.payload.data.map((ingredient: IIngredient) => ({
 					...ingredient,
 					count: ingredient.count || 0,
 				}));
 			})
 
 			.addCase(getIngredientsFromServer.rejected, (state, action) => {
-				state.status = 'failed';
+				state.status = Status.ERROR;
 				state.isFetchingIngredients = false;
-				state.error = action.error.message;
+				if (action.error.message !== undefined) {
+					state.error = action.error.message;
+				}
 			});
 	},
 });
 
-export const { increaseIngredientsCounter, decreaseIngredientsCounter } = ingredientsSlice.actions;
+export const { increaseIngredientsCounter, decreaseIngredientsCounter, resetCounters } =
+	ingredientsSlice.actions;
 
-export const getIngredientsFromServer = createAsyncThunk('ingredients/fetch', async () => {
-	return await fetchWithRefresh('ingredients');
-});
+export const getIngredientsFromServer = createAsyncThunk<{ data: IIngredient[] }>(
+	'ingredients/fetch',
+	async () => {
+		return await fetchIngredients('ingredients');
+	},
+);
 
 export default ingredientsSlice.reducer;

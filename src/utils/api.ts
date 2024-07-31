@@ -1,4 +1,7 @@
+import { IIngredient } from '../utils/types';
+
 const API_URL = 'https://norma.nomoreparties.space/api';
+export const WS_URL = 'wss://norma.nomoreparties.space/orders';
 
 interface IRefreshResponse {
 	success: boolean;
@@ -13,7 +16,6 @@ interface IForgotPasswordResponse extends Partial<IRefreshResponse> {
 interface FetchOptions extends RequestInit {
 	method: string;
 	headers: {
-		// [key: string]: string;
 		'Content-Type': string;
 		Authorization?: string;
 	};
@@ -31,6 +33,13 @@ interface IResetPasswordRequest {
 export function checkResponse<T>(res: Response): Promise<T> {
 	return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 }
+
+export const fetchIngredients = async (
+	url: string,
+): Promise<{ data: IIngredient[]; success: boolean }> => {
+	const res = await fetch(`${API_URL}/${url}`);
+	return checkResponse(res);
+};
 
 export const refreshToken = async (): Promise<IRefreshResponse> => {
 	const res = await fetch(`${API_URL}/auth/token`, {

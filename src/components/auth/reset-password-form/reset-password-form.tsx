@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { fetchResetPassword } from '../../../utils/api';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../../services/store';
 import { setForgotPassword } from '../../../services/auth/auth-slice';
 
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ import styles from './reset-password-form.module.css';
 
 const ResetPasswordForm: React.FC = () => {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const [passwordValue, setPasswordValue] = useState<string>('');
 	const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);

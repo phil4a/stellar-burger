@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import Preloader from './preloader/preloader';
 
-import { TODO_ANY } from '../utils/types';
+import { RootState } from '../services/store';
 
 interface IProtectedRouteProps {
 	component: React.ReactNode;
@@ -17,7 +17,7 @@ const ProtectedRoute: React.FC<IProtectedRouteProps> = ({
 	onlyAfterForgot = false,
 	allowUnauthAccess = false,
 }) => {
-	const { isAuthChecked, user, isForgotPassword } = useSelector((store: TODO_ANY) => store.auth);
+	const { isAuthChecked, user, isForgotPassword } = useSelector((store: RootState) => store.auth);
 	const location = useLocation();
 
 	if (!isAuthChecked) {

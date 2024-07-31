@@ -1,0 +1,64 @@
+.body {
+	display: flex;
+	flex-direction: column;
+	padding: 40px 0;
+	width: 640px;
+	max-width: 640px;
+	margin: 0 auto;
+	max-height: 620px;
+}
+.number {
+	text-align: center;
+}
+.status {
+	color: #00cccc;
+}
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	overflow-y: auto;
+}
+.item {
+	display: flex;
+	justify-content: space-between;
+	gap: 16px;
+	align-items: center;
+}
+.ingredientImg {
+	position: relative;
+	border: double 2px transparent;
+	background-image: linear-gradient(#131316, #131316),
+		linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%);
+	background-origin: border-box;
+	background-clip: content-box, border-box;
+	border-radius: 50%;
+	width: 64px;
+	height: 64px;
+	background-color: #131316;
+}
+.ingredientImg > img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 112px;
+}
+.ingredientName {
+	flex: 1 1 auto;
+}
+.ingredientPrice {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+.summary {
+	display: flex;
+	justify-content: space-between;
+	align-content: center;
+}
+.total {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}

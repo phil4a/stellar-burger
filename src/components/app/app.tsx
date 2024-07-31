@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../../services/store';
 import { getIngredientsFromServer } from '../../services/ingredients-slice';
 import { checkAuth } from '../../services/auth/auth-slice';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
@@ -12,38 +13,36 @@ import {
 	ForgotPassword,
 	ResetPassword,
 	ProfilePage,
+	Feed,
 } from '../../pages';
 
 import { OnlyAuth, OnlyUnAuth, OnlyAfterForgot } from '../protected-route';
 import Layout from '../layout/layout';
 import Preloader from '../preloader/preloader';
 import IngredientDetails from '../modals/ingredient-details/ingredient-details';
+import FeedDetails from '../modals/feed-details/feed-details';
 import Modal from '../modals/modal/modal';
 
 import AppHeader from '../app-header/app-header';
 
-import { TODO_ANY } from '../../utils/types';
-
-//TODO 1. Разобраться с цепочкой авторизации при просроченном refreshtoken падает ошибка в экшене checkAuth
-//TODO 2. Подумать как исправить типизацию draggedingredient в файле burger-constructor
 const App: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const background = location.state && location.state.background;
 
-	const dispatch = useDispatch();
-	const ingredientsStatus = useSelector((state: TODO_ANY) => state.ingredients.status);
-	const { isAuthChecked } = useSelector((state: TODO_ANY) => state.auth);
-	const { accessToken } = useSelector((state: TODO_ANY) => state.auth);
-	const { isFetchingUser } = useSelector((state: TODO_ANY) => state.auth);
-	const { isFetchingIngredients } = useSelector((state: TODO_ANY) => state.ingredients);
+	const dispatch = useAppDispatch();
+	const ingredientsStatus = useSelector((state: RootState) => state.ingredients.status);
+	const { isAuthChecked, accessToken, isFetchingUser } = useSelector(
+		(state: RootState) => state.auth,
+	);
+	const { isFetchingIngredients } = useSelector((state: RootState) => state.ingredients);
 
 	useEffect(() => {
 		if (!isAuthChecked && accessToken) {
-			dispatch(checkAuth() as TODO_ANY);
+			dispatch(checkAuth());
 		}
 		if (ingredientsStatus === 'idle') {
-			dispatch(getIngredientsFromServer() as TODO_ANY);
+			dispatch(getIngredientsFromServer());
 		}
 	}, [dispatch, ingredientsStatus, isAuthChecked]);
 
@@ -55,7 +54,9 @@ const App: React.FC = () => {
 			<Routes location={background || location}>
 				<Route element={<Layout />}>
 					<Route path="/" element={<Home />} />
-					<Route path="/ingredients/:id" element={<IngredientDetails />} />
+					<Route path="/feed" element={<Feed />} />
+					<Route path="/feed/:number" element={<FeedDetails />} />
+					<Route path="/ingredients/:number" element={<IngredientDetails />} />
 					<Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
 					<Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
 					<Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword />} />} />
@@ -64,6 +65,11 @@ const App: React.FC = () => {
 						element={<OnlyAfterForgot component={<ResetPassword />} />}
 					/>
 					<Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
+					<Route path="/profile/orders" element={<OnlyAuth component={<ProfilePage />} />} />
+					<Route
+						path="/profile/orders/:number"
+						element={<OnlyAuth component={<ProfilePage />} />}
+					/>
 					<Route path="*" element={<NotFound />} />
 				</Route>
 			</Routes>
@@ -74,6 +80,22 @@ const App: React.FC = () => {
 						element={
 							<Modal onClose={() => navigate(-1)}>
 								<IngredientDetails />
+							</Modal>
+						}
+					/>
+					<Route
+						path="/feed/:number"
+						element={
+							<Modal onClose={() => navigate(-1)}>
+								<FeedDetails />
+							</Modal>
+						}
+					/>
+					<Route
+						path="/profile/orders/:number"
+						element={
+							<Modal onClose={() => navigate(-1)}>
+								<FeedDetails />
 							</Modal>
 						}
 					/>
