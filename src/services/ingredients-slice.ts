@@ -48,8 +48,10 @@ export const ingredientsSlice = createSlice({
 			});
 		},
 
-		resetCounters(): IIngredientsState {
-			return { ...initialState };
+		resetCounters(state) {
+			state.ingredients.forEach((ingredient) => {
+				ingredient.count = 0;
+			});
 		},
 	},
 	extraReducers(builder) {
