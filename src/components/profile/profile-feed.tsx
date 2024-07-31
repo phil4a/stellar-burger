@@ -35,7 +35,9 @@ const ProfileFeed = () => {
 	if (wsStatus !== WebsocketStatus.ONLINE) {
 		return <Preloader />;
 	}
-	return <FeedList orders={orders} />;
+	const reversedOrders = [...orders].reverse();
+
+	return <FeedList orders={reversedOrders} />;
 };
 
 export default ProfileFeed;
