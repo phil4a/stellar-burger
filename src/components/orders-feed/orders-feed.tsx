@@ -6,9 +6,12 @@ import {
 	getTotalTodayOrders,
 } from '../../services/websockets/order-feed/slice';
 import { useAppDispatch, useAppSelector } from '../../services/store';
+import { RootState } from '../../services/store';
+import { WebsocketStatus } from '../../utils/websockets-types';
 
 import FeedInfo from './feed-info/feed-info';
 import FeedList from './feed-list/feed-list';
+import Preloader from '../preloader/preloader';
 
 import { WS_URL } from '../../utils/api';
 
@@ -20,12 +23,18 @@ const OrdersFeed = (): JSX.Element => {
 	const totalOrderNum = useAppSelector(getTotalOrders);
 	const totalOrderTodayNum = useAppSelector(getTotalTodayOrders);
 
+	const wsStatus = useAppSelector((state: RootState) => state.orders.status);
+
 	useEffect(() => {
 		dispatch(wsConnect(`${WS_URL}/all`));
 		return () => {
 			dispatch(wsDisconnect());
 		};
 	}, [dispatch]);
+
+	if (wsStatus !== WebsocketStatus.ONLINE) {
+		return <Preloader />;
+	}
 	return (
 		<>
 			<section className={`${styles.section} pt-10 mr-10`}>

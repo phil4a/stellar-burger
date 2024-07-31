@@ -6,10 +6,12 @@ import {
 	profileWsDisconnect,
 } from '../../services/websockets/profile-feed/actions';
 import { getProfileOrders } from '../../services/websockets/profile-feed/slice';
-import { useAppDispatch, useAppSelector } from '../../services/store';
+import { RootState, useAppDispatch, useAppSelector } from '../../services/store';
 
 import { WS_URL } from '../../utils/api';
 import FeedList from '../orders-feed/feed-list/feed-list';
+import { WebsocketStatus } from '../../utils/websockets-types';
+import Preloader from '../preloader/preloader';
 
 const ProfileFeed = () => {
 	const accessToken = localStorage.getItem('accessToken')?.replace('Bearer ', '');
@@ -17,6 +19,8 @@ const ProfileFeed = () => {
 	const dispatch = useAppDispatch();
 	const match = useMatch('/profile/orders');
 	const orders = useAppSelector(getProfileOrders);
+
+	const wsStatus = useAppSelector((state: RootState) => state.profileOrders.status);
 
 	useEffect(() => {
 		if (match) {
@@ -28,6 +32,9 @@ const ProfileFeed = () => {
 		}
 	}, [dispatch, match]);
 
+	if (wsStatus !== WebsocketStatus.ONLINE) {
+		return <Preloader />;
+	}
 	return <FeedList orders={orders} />;
 };
 
