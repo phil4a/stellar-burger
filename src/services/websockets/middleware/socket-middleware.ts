@@ -3,8 +3,10 @@ import {
 	ActionCreatorWithPayload,
 	Middleware,
 } from '@reduxjs/toolkit';
+import { refreshToken } from '../../../utils/api';
 
 import { RootState } from '../../store';
+import { wsConnect, wsDisconnect } from '../order-feed/actions';
 
 export type TWsActionTypes = {
 	connect: ActionCreatorWithPayload<string>;
@@ -55,20 +57,17 @@ export const socketMiddleware = (
 						const parsedData = JSON.parse(data);
 
 						if (withTokenRefresh && parsedData.message === 'Invalid or missing token') {
-							// refreshToken()
-							//     .then(refreshData => {
-							//         const wssUrl = new URL(url);
-							//         wssUrl.searchParams.set(
-							//             "token",
-							//             refreshData.accessToken.replace("Bearer ", "")
-							//         );
-							//         dispatch({type: wsConnect, payload: wssUrl});
-							//     })
-							//     .catch(err => {
-							//         dispatch(onError((error as {message: string}).message));
-							//     });
-							//
-							// dispatch(wsDisconnect());
+							refreshToken()
+								.then((refreshData) => {
+									const wssUrl = new URL(url);
+									wssUrl.searchParams.set('token', refreshData.accessToken!.replace('Bearer ', ''));
+									dispatch({ type: wsConnect.type, payload: wssUrl });
+								})
+								.catch((err) => {
+									dispatch(onError((err as { message: string }).message));
+								});
+
+							dispatch(wsDisconnect());
 
 							return;
 						}
