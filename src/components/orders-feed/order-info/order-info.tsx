@@ -1,5 +1,5 @@
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useMatch } from 'react-router-dom';
 
 import { IWebsocketOrder } from '../../../utils/websockets-types';
 import { RootState, useAppSelector } from '../../../services/store';
@@ -17,16 +17,19 @@ interface IOrderInfoProps {
 
 const OrderInfo = ({ order }: IOrderInfoProps) => {
 	const location = useLocation();
+	const isFeedPage = useMatch('/feed');
 
-	const { ingredients, _id, status, number, createdAt, updatedAt, name } = order;
+	const { number, createdAt, name } = order;
 
 	const allIngredients = useAllIngredients();
 	const orderIngredients = getIngredientsByIds(allIngredients, order.ingredients);
 	const totalPrice = calculateTotalPrice(orderIngredients);
 
+	const linkTo = isFeedPage ? `/feed/${number}` : `/profile/orders/${number}`;
+
 	return (
 		<li className={styles.item}>
-			<Link to={`/feed/${number}`} className={styles.link} state={{ background: location }}>
+			<Link to={linkTo} className={styles.link} state={{ background: location }}>
 				<div className={styles.info}>
 					<span className="text text_type_digits-default">#{number}</span>
 					<span className="text text_type_main-default ml-2">
