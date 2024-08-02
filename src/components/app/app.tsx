@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../services/store';
-import { getIngredientsFromServer } from '../../services/ingredients-slice';
+import { getIngredientsFromServer } from '../../services/ingredients/ingredients-slice';
 import { checkAuth } from '../../services/auth/auth-slice';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 

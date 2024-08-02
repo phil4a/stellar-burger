@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../services/store';
 import { RootState } from '../../../services/store';
 
-import { fetchOrderByNumber } from '../../../services/order-slice';
+import { fetchOrderByNumber } from '../../../services/order/order-slice';
 
 import {
 	calculateTotalPrice,

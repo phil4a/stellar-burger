@@ -2,9 +2,9 @@ import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useAppDispatch } from '../../../services/store';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { decreaseIngredientsCounter } from '../../../services/ingredients-slice';
+import { decreaseIngredientsCounter } from '../../../services/ingredients/ingredients-slice';
 
-import { deleteIngredient, moveIngredients } from '../../../services/constructor-slice';
+import { deleteIngredient, moveIngredients } from '../../../services/constructor/constructor-slice';
 import styles from '../burger-constructor.module.css';
 
 import { IDraggedIngredient, IIngredient } from '../../../utils/types';

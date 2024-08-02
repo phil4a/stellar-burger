@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { fetchIngredients } from '../utils/api';
-import { IIngredient, Status } from '../utils/types';
+import { fetchIngredients } from '../../utils/api';
+import { IIngredient, Status } from '../../utils/types';
 
 interface IIngredientsState {
 	ingredients: IIngredient[];

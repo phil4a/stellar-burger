@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { fetchWithRefresh } from '../utils/api';
-import { Status } from '../utils/types';
-import { IWebsocketOrder } from '../utils/websockets-types';
+import { fetchWithRefresh } from '../../utils/api';
+import { Status } from '../../utils/types';
+import { IWebsocketOrder } from '../../utils/websockets-types';
 
 interface IOrderState {
 	orderNumber: number | null;

@@ -1,6 +1,6 @@
 import { createSlice, createSelector, nanoid, PayloadAction } from '@reduxjs/toolkit';
-import { IIngredient } from '../utils/types';
-import { RootState } from './store';
+import { IIngredient } from '../../utils/types';
+import { RootState } from '../store';
 
 interface IConstructorState {
 	bun: IIngredient | null;

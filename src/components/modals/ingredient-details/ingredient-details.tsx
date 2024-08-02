@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../../services/store';
-import { setCurrentIngredient } from '../../../services/current-ingredient-slice';
+import { setCurrentIngredient } from '../../../services/current-ingredient/current-ingredient-slice';
 import styles from './ingredient-details.module.css';
 
 import { IIngredient } from '../../../utils/types';

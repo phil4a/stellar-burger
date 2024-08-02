@@ -3,10 +3,17 @@ import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
-import { addIngredient, setBun, clearIngredients } from '../../services/constructor-slice';
-import { increaseIngredientsCounter, resetCounters } from '../../services/ingredients-slice';
+import {
+	addIngredient,
+	setBun,
+	clearIngredients,
+} from '../../services/constructor/constructor-slice';
+import {
+	increaseIngredientsCounter,
+	resetCounters,
+} from '../../services/ingredients/ingredients-slice';
 
-import { sendOrder } from '../../services/order-slice';
+import { sendOrder } from '../../services/order/order-slice';
 
 import Modal from '../modals/modal/modal';
 import OrderDetails from '../modals/order-details/order-details';

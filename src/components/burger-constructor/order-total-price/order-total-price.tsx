@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { totalPriceSelector } from '../../../services/constructor-slice';
+import { totalPriceSelector } from '../../../services/constructor/constructor-slice';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const OrderTotalPrice: React.FC = () => {
