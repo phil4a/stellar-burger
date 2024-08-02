@@ -9,7 +9,7 @@ interface IIngredientsState {
 	isFetchingIngredients: boolean;
 }
 
-const initialState: IIngredientsState = {
+export const initialState: IIngredientsState = {
 	ingredients: [],
 	status: Status.IDLE,
 	error: null,
