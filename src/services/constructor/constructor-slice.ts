@@ -7,7 +7,7 @@ interface IConstructorState {
 	ingredients: IIngredient[];
 }
 
-const initialState: IConstructorState = {
+export const initialState: IConstructorState = {
 	bun: null,
 	ingredients: [],
 };
@@ -20,7 +20,10 @@ export const constructorSlice = createSlice({
 			state.bun = action.payload;
 		},
 		addIngredient(state, action: PayloadAction<IIngredient>) {
-			state.ingredients.push(action.payload);
+			state.ingredients.push({
+				...action.payload,
+				nanoid: action.payload.nanoid || nanoid(),
+			});
 		},
 		moveIngredients(state, action: PayloadAction<{ dragIndex: number; hoverIndex: number }>) {
 			const { dragIndex, hoverIndex } = action.payload;
@@ -40,16 +43,6 @@ export const constructorSlice = createSlice({
 	},
 });
 
-export const addIngredient = (ingredient: IIngredient) => {
-	return {
-		type: constructorSlice.actions.addIngredient.type,
-		payload: {
-			...ingredient,
-			nanoid: nanoid(),
-		},
-	};
-};
-
 export const totalPriceSelector = createSelector(
 	[
 		(state: RootState) => state.burgerConstructor.ingredients,
@@ -65,7 +58,7 @@ export const totalPriceSelector = createSelector(
 	},
 );
 
-export const { setBun, deleteIngredient, moveIngredients, clearIngredients } =
+export const { setBun, deleteIngredient, addIngredient, moveIngredients, clearIngredients } =
 	constructorSlice.actions;
 
 export default constructorSlice.reducer;
