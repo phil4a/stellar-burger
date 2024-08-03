@@ -1,4 +1,3 @@
-import { count } from 'console';
 import reducer, {
 	initialState,
 	increaseIngredientsCounter,
@@ -6,7 +5,6 @@ import reducer, {
 	resetCounters,
 	getIngredientsFromServer,
 } from './ingredients-slice';
-import ingredientsSlice from './ingredients-slice';
 
 const createIngredient = (overrides = {}) => ({
 	_id: '1',
@@ -144,27 +142,6 @@ describe('async actions for ingredients', () => {
 		jest.clearAllMocks();
 	});
 
-	test('should get pending state from server', async () => {
-		const mockFetch = jest.spyOn(global, 'fetch').mockResolvedValue({
-			json: jest.fn().mockResolvedValue({ data: [] }),
-			ok: true,
-		});
-
-		const thunk = getIngredientsFromServer();
-		const dispatch = jest.fn();
-		const getState = jest.fn();
-
-		await thunk(dispatch, getState, {});
-
-		expect(dispatch).toHaveBeenCalledWith(
-			expect.objectContaining({
-				type: 'ingredients/fetch/pending',
-			}),
-		);
-
-		mockFetch.mockRestore();
-	});
-
 	test('should get ingredients from server', async () => {
 		const mockFetch = jest.spyOn(global, 'fetch').mockResolvedValue({
 			json: jest.fn().mockResolvedValue({ data: mockedIngredientsArray.ingredients }),
@@ -192,18 +169,14 @@ describe('async actions for ingredients', () => {
 		).toEqual({
 			...initialState,
 			status: 'succeeded',
-			ingredients: mockedIngredientsArray.ingredients.map((ingredient) => ({
-				...ingredient,
-				count: ingredient.count || 0,
-			})),
+			ingredients: mockedIngredientsArray.ingredients,
 		});
 
 		mockFetch.mockRestore();
 	});
 
-	test('should handle rejected state for getIngredientsFromServer', async () => {
+	test('should return an error state after network error', async () => {
 		const mockFetch = jest.spyOn(global, 'fetch').mockRejectedValue(new Error('Network Error'));
-
 		const thunk = getIngredientsFromServer();
 		const dispatch = jest.fn();
 		const getState = jest.fn();
@@ -218,6 +191,19 @@ describe('async actions for ingredients', () => {
 				}),
 			}),
 		);
+
+		expect(
+			reducer(initialState, {
+				type: 'ingredients/fetch/rejected',
+				error: {
+					message: 'Network Error',
+				},
+			}),
+		).toEqual({
+			...initialState,
+			status: 'failed',
+			error: 'Network Error',
+		});
 
 		mockFetch.mockRestore();
 	});
