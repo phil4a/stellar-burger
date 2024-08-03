@@ -18,8 +18,7 @@ interface IOrderResponse {
 		number: number;
 	};
 }
-
-const initialState: IOrderState = {
+export const initialState: IOrderState = {
 	orderNumber: null,
 	status: Status.IDLE,
 	error: null,
