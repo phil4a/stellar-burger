@@ -24,7 +24,9 @@ const IngredientDetails: React.FC = (): JSX.Element | null => {
 		<div className={styles.body}>
 			<h2 className={`${styles.title} text text_type_main-large`}>Детали ингредиента</h2>
 			<img src={ingredient.image_large} className="mb-4" alt={ingredient.name} />
-			<h3 className="text text_type_main-medium mb-8">{ingredient.name}</h3>
+			<h3 data-test-id="ingredient-name" className="text text_type_main-medium mb-8">
+				{ingredient.name}
+			</h3>
 			<ul className={`${styles.info} mb-5 text text_type_main-default text_color_inactive`}>
 				<li>
 					<p>Калории, ккал</p>
