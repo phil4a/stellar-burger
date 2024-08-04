@@ -11,7 +11,7 @@ import {
 	profileWsError,
 	profileWsMessage,
 	profileWsOpen,
-} from './websockets/profile-feed/slice';
+} from './websockets/profile-feed/profile-slice';
 
 import {
 	ordersSlice,

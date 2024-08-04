@@ -5,7 +5,7 @@ import {
 	profileWsConnect,
 	profileWsDisconnect,
 } from '../../services/websockets/profile-feed/actions';
-import { getProfileOrders } from '../../services/websockets/profile-feed/slice';
+import { getProfileOrders } from '../../services/websockets/profile-feed/profile-slice';
 import { RootState, useAppDispatch, useAppSelector } from '../../services/store';
 
 import { WS_URL } from '../../utils/api';
