@@ -4,8 +4,8 @@ import reducer, {
 	login,
 	registration,
 	logout,
-	checkAuth,
 	refreshUser,
+	checkAuth,
 } from './auth-slice';
 import { fetchWithRefresh } from '../../utils/api';
 
@@ -117,6 +117,7 @@ describe('Check auth', () => {
 			expect(state.error).toEqual(errorMessage);
 		});
 	});
+
 	describe('logout', () => {
 		test('should handle logout.pending correctly', () => {
 			const state = reducer(initialState, logout.pending());
@@ -139,6 +140,62 @@ describe('Check auth', () => {
 			expect(state.status).toBe('failed');
 			expect(state.isFetchingUser).toBe(false);
 			expect(state.error).toEqual(errorMessage);
+		});
+	});
+
+	describe('refreshUser', () => {
+		test('should handle refreshUser.pending correctly', () => {
+			const state = reducer(initialState, refreshUser.pending());
+			expect(state.status).toBe('loading');
+			expect(state.isFetchingUser).toBe(true);
+		});
+
+		test('should handle refreshUser.fulfilled correctly', () => {
+			fetchWithRefresh.mockResolvedValue(mockResponse);
+			const action = { type: refreshUser.fulfilled.type, payload: mockResponse };
+			const state = reducer(initialState, action);
+			expect(state.status).toBe('succeeded');
+			expect(state.isFetchingUser).toBe(false);
+			expect(state.user).toEqual(mockUser);
+			expect(state.accessToken).toEqual(mockResponse.accessToken);
+			expect(state.refreshToken).toEqual(mockResponse.refreshToken);
+		});
+
+		test('should handle refreshUser.rejected correctly', () => {
+			fetchWithRefresh.mockRejectedValue(new Error(errorMessage));
+			const action = { type: refreshUser.rejected.type, error: new Error(errorMessage) };
+			const state = reducer(initialState, action);
+			expect(state.status).toBe('failed');
+			expect(state.isFetchingUser).toBe(false);
+			expect(state.error).toEqual(errorMessage);
+			expect(localStorageMock.getItem('accessToken')).toEqual(null);
+			expect(localStorageMock.getItem('refreshToken')).toEqual(null);
+		});
+	});
+
+	describe('checkAuth', () => {
+		test('should handle checkAuth.pending correctly', () => {
+			const state = reducer(initialState, checkAuth.pending());
+			expect(state.status).toBe('loading');
+			expect(state.isFetchingUser).toBe(true);
+		});
+
+		test('should handle checkAuth.fulfilled correctly', () => {
+			const action = { type: checkAuth.fulfilled.type, payload: mockResponse };
+			const state = reducer(initialState, action);
+			expect(state.status).toBe('succeeded');
+			expect(state.isFetchingUser).toBe(false);
+			expect(state.user).toEqual(mockUser);
+		});
+
+		test('should handle checkAuth.rejected correctly', () => {
+			const action = { type: checkAuth.rejected.type, error: new Error(errorMessage) };
+			const state = reducer(initialState, action);
+			expect(state.status).toBe('failed');
+			expect(state.isFetchingUser).toBe(false);
+			expect(state.error).toEqual(errorMessage);
+			expect(state.accessToken).toEqual(null);
+			expect(state.refreshToken).toEqual(null);
 		});
 	});
 });
