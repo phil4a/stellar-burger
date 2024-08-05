@@ -45,7 +45,7 @@
 		},
 		{
 			"_id": "643d69a5c3f7b9001cfa0942",
-			"name": "Соус Spicy-X",
+			"name": "Ингредиент 3",
 			"type": "sauce",
 			"proteins": 30,
 			"fat": 20,
@@ -59,7 +59,7 @@
 		},
 		{
 			"_id": "643d69a5c3f7b9001cfa0943",
-			"name": "Соус фирменный Space Sauce",
+			"name": "Ингредиент 4",
 			"type": "sauce",
 			"proteins": 50,
 			"fat": 22,

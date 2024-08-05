@@ -66,7 +66,11 @@ const DraggedIngredient: React.FC<{ ingredient: IIngredient; id: string; index: 
 	};
 
 	return (
-		<div ref={ref} className={styles.ingredient} style={{ opacity }}>
+		<div
+			data-test-id="constructor-ingredient"
+			ref={ref}
+			className={styles.ingredient}
+			style={{ opacity }}>
 			<DragIcon type="primary" />
 			<ConstructorElement
 				text={ingredient.name}

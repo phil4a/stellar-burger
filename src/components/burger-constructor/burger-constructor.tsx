@@ -73,8 +73,12 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 	const borderColor = canDrop && itemType === 'bun' ? '#4C4CFF' : 'transparent';
 	const borderColorIngredients = canDrop && itemType !== 'bun' ? '#4C4CFF' : 'transparent';
 	return (
-		<section ref={dropRef} className={`${styles.section} pt-25 pl-4 pr-4`}>
+		<section
+			data-test-id="constructor"
+			ref={dropRef}
+			className={`${styles.section} pt-25 pl-4 pr-4`}>
 			<div
+				data-test-id="top-bun-constructor"
 				className={`${styles.bun} ${styles.topBunPlaceholder}`}
 				style={{ borderColor: borderColor }}>
 				{bun ? (
@@ -110,6 +114,7 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 			</div>
 
 			<div
+				data-test-id="bottom-bun-constructor"
 				className={`${styles.bun} ${styles.bottomBunPlaceholder}`}
 				style={{ borderColor: borderColor }}>
 				{bun ? (
