@@ -38,6 +38,6 @@
 
 Cypress.Commands.add('prepare', (email, password) => {
 	cy.intercept('GET', 'ingredients', { fixture: 'ingredients' }).as('getIngredients');
-	cy.visit('http://localhost:3000/');
+	cy.visit('/');
 	cy.wait('@getIngredients');
 });
