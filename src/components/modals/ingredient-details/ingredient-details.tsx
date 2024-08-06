@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState, useAppDispatch } from '../../../services/store';
+import { useAppSelector, useAppDispatch } from '../../../services/store';
 import { setCurrentIngredient } from '../../../services/current-ingredient/current-ingredient-slice';
 import styles from './ingredient-details.module.css';
 
@@ -10,8 +9,8 @@ import { IIngredient } from '../../../utils/types';
 const IngredientDetails: React.FC = (): JSX.Element | null => {
 	const { id } = useParams<{ id: string }>();
 	const dispatch = useAppDispatch();
-	const ingredient = useSelector((state: RootState) => state.currentIngredient.ingredient);
-	const ingredients = useSelector((state: RootState) => state.ingredients.ingredients);
+	const ingredient = useAppSelector((state) => state.currentIngredient.ingredient);
+	const ingredients = useAppSelector((state) => state.ingredients.ingredients);
 
 	useEffect(() => {
 		const ingredientData = ingredients.find((ing: IIngredient) => ing._id === id);

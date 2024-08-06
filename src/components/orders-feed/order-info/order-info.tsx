@@ -2,7 +2,6 @@ import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burge
 import { Link, useLocation, useMatch } from 'react-router-dom';
 
 import { IWebsocketOrder } from '../../../utils/websockets-types';
-import { RootState, useAppSelector } from '../../../services/store';
 import {
 	calculateTotalPrice,
 	getIngredientsByIds,

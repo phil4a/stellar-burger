@@ -1,12 +1,10 @@
 import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../services/store';
 import { NavLink, useLocation } from 'react-router-dom';
 import styles from './header-profile-button.module.css';
 
-import { RootState } from '../../../services/store';
-
 const HeaderProfileButton: React.FC = () => {
-	const { name } = useSelector((state: RootState) => state.auth.user);
+	const { name } = useAppSelector((state) => state.auth.user);
 	const location = useLocation();
 	const profileActive = location.pathname.includes('/profile');
 
