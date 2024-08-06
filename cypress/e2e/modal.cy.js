@@ -3,33 +3,23 @@ describe('Modal', () => {
 	const modalTitleText = 'Детали ингредиента';
 
 	beforeEach(() => {
-		cy.prepare();
-		cy.contains(ingredientToSearch).should('exist').click();
+		cy.prepareAndOpenModal(ingredientToSearch, modalTitleText);
 	});
 
 	it('should open modal and check ingredient name', function () {
-		cy.contains(modalTitleText).should('exist');
+		cy.get('@modalTitle').should('exist');
 		cy.get('[data-test-id="ingredient-name"]').should('have.text', ingredientToSearch);
 	});
 
 	it('should close modal on press close icon', function () {
-		cy.get('[aria-label="Закрыть"]').should('exist').click();
-		cy.contains(modalTitleText).should('not.exist');
+		cy.closeModalWithButton();
 	});
 
 	it('should close modal on press esc', function () {
-		cy.contains(modalTitleText).should('exist');
-		cy.get('body').type('{esc}');
-		cy.contains(modalTitleText).should('not.exist');
+		cy.closeModalWithEsc();
 	});
 
 	it('should close modal on click outside', function () {
-		cy.contains(modalTitleText).should('exist');
-		cy.get('[data-test-id="modal"]').then(($modal) => {
-			const modal = $modal[0];
-			const { top, right, bottom, left } = modal.getBoundingClientRect();
-			cy.get('body').click(left - 10, top - 10);
-		});
-		cy.contains(modalTitleText).should('not.exist');
+		cy.closeModalWithClickOutside();
 	});
 });

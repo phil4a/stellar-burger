@@ -1,43 +1,39 @@
-/// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
-
-Cypress.Commands.add('prepare', (email, password) => {
+//Общие команды
+Cypress.Commands.add('prepare', () => {
 	cy.intercept('GET', 'ingredients', { fixture: 'ingredients' }).as('getIngredients');
 	cy.visit('/');
 	cy.wait('@getIngredients');
+});
+
+//Команды для модального окна
+Cypress.Commands.add('prepareAndOpenModal', (ingredientToSearch, modalTitleText) => {
+	cy.prepare();
+	cy.contains(ingredientToSearch).as('ingredientToSearch').should('exist').click();
+	cy.contains(modalTitleText).as('modalTitle').should('exist');
+	cy.get('[data-test-id="modal"]').as('modal');
+});
+
+Cypress.Commands.add('closeModalWithEsc', () => {
+	cy.get('body').type('{esc}');
+	cy.get('@modalTitle').should('not.exist');
+});
+
+Cypress.Commands.add('closeModalWithClickOutside', () => {
+	cy.get('@modal').then(($modal) => {
+		const modal = $modal[0];
+		const { top, right, bottom, left } = modal.getBoundingClientRect();
+		cy.get('body').click(left - 10, top - 10);
+	});
+	cy.get('@modalTitle').should('not.exist');
+});
+
+Cypress.Commands.add('closeModalWithButton', () => {
+	cy.get('[aria-label="Закрыть"]').as('closeButton').should('exist').click();
+	cy.get('@modalTitle').should('not.exist');
+});
+
+//Команды для Drag and Drop
+Cypress.Commands.add('dragAndDrop', (dragSelector, dropSelector) => {
+	cy.get(dragSelector).trigger('dragstart');
+	cy.get(dropSelector).trigger('drop');
 });
