@@ -13,7 +13,7 @@ export interface IOrdersState {
 	connectionError: string | null;
 }
 
-const initialState: IOrdersState = {
+export const initialState: IOrdersState = {
 	status: WebsocketStatus.OFFLINE,
 	profileOrders: [],
 	total: 0,
@@ -68,3 +68,5 @@ export const {
 	getTotalTodayOrders,
 	getConnectionError,
 } = profileOrdersSlice.selectors;
+
+export default profileOrdersSlice.reducer;

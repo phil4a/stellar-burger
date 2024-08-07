@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../services/store';
-import { RootState } from '../../../services/store';
 
-import { fetchOrderByNumber } from '../../../services/order-slice';
+import { fetchOrderByNumber } from '../../../services/order/order-slice';
 
 import {
 	calculateTotalPrice,
@@ -19,7 +18,7 @@ const FeedDetails: React.FC = (): JSX.Element | null => {
 	const dispatch = useAppDispatch();
 	const { number } = useParams<{ number: string }>();
 
-	const order = useAppSelector((state: RootState) => {
+	const order = useAppSelector((state) => {
 		let order = state.orders.orders.find((order) => order.number === +number!);
 
 		if (order) {

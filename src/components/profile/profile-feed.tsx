@@ -5,8 +5,8 @@ import {
 	profileWsConnect,
 	profileWsDisconnect,
 } from '../../services/websockets/profile-feed/actions';
-import { getProfileOrders } from '../../services/websockets/profile-feed/slice';
-import { RootState, useAppDispatch, useAppSelector } from '../../services/store';
+import { getProfileOrders } from '../../services/websockets/profile-feed/profile-slice';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 
 import { WS_URL } from '../../utils/api';
 import FeedList from '../orders-feed/feed-list/feed-list';
@@ -20,7 +20,7 @@ const ProfileFeed = () => {
 	const match = useMatch('/profile/orders');
 	const orders = useAppSelector(getProfileOrders);
 
-	const wsStatus = useAppSelector((state: RootState) => state.profileOrders.status);
+	const wsStatus = useAppSelector((state) => state.profileOrders.status);
 
 	useEffect(() => {
 		if (match) {

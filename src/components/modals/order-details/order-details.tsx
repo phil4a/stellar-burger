@@ -1,13 +1,12 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../services/store';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Spinner from '../../../images/spinner.svg';
 import styles from './order-details.module.css';
-import { RootState } from '../../../services/store';
 import { Status } from '../../../utils/types';
 
 const OrderDetails = (): JSX.Element => {
-	const { orderNumber } = useSelector((state: RootState) => state.currentOrder);
-	const { status } = useSelector((state: RootState) => state.currentOrder);
+	const { orderNumber } = useAppSelector((state) => state.currentOrder);
+	const { status } = useAppSelector((state) => state.currentOrder);
 
 	return (
 		<div className={styles.body}>

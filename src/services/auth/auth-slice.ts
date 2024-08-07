@@ -25,7 +25,7 @@ interface IResponse {
 	};
 }
 
-const initialState: IAuthState = {
+export const initialState: IAuthState = {
 	user: {
 		name: '',
 		email: '',

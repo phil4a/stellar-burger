@@ -1,8 +1,6 @@
 import { useState, useRef } from 'react';
-import { RootState, useAppDispatch } from '../../../services/store';
-import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../services/store';
 
-import { useSelector } from 'react-redux';
 import { refreshUser } from '../../../services/auth/auth-slice';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -12,7 +10,7 @@ import styles from '../profile.module.css';
 const ProfilePersonal: React.FC = (): React.ReactElement => {
 	const dispatch = useAppDispatch();
 
-	const { user } = useSelector((state: RootState) => state.auth);
+	const { user } = useAppSelector((state) => state.auth);
 
 	const [nameValue, setNameValue] = useState<string>(user.name);
 	const [emailValue, setEmailValue] = useState<string>(user.email);

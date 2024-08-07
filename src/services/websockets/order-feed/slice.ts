@@ -13,7 +13,7 @@ export interface IOrdersState {
 	connectionError: string | null;
 }
 
-const initialState: IOrdersState = {
+export const initialState: IOrdersState = {
 	status: WebsocketStatus.OFFLINE,
 	orders: [],
 	total: 0,

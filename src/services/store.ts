@@ -1,9 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
-import currentIngredientSlice from './current-ingredient-slice';
-import ingredientsSlice from './ingredients-slice';
-import constructorSlice from './constructor-slice';
-import orderSlice from './order-slice';
+import currentIngredientSlice from './current-ingredient/current-ingredient-slice';
+import ingredientsSlice from './ingredients/ingredients-slice';
+import constructorSlice from './constructor/constructor-slice';
+import orderSlice from './order/order-slice';
 import {
 	profileOrdersSlice,
 	profileWsClose,
@@ -11,7 +11,7 @@ import {
 	profileWsError,
 	profileWsMessage,
 	profileWsOpen,
-} from './websockets/profile-feed/slice';
+} from './websockets/profile-feed/profile-slice';
 
 import {
 	ordersSlice,

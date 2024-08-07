@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../services/store';
 import { useRef, useState } from 'react';
 import IngredientItem from '../ingredient-item/ingredient-item';
 import IngredientTabs from '../ingredient-tabs/ingredient-tabs';
@@ -6,7 +6,6 @@ import IngredientTabs from '../ingredient-tabs/ingredient-tabs';
 import styles from './ingredient-list.module.css';
 
 import { IIngredient } from '../../../utils/types';
-import { RootState } from '../../../services/store';
 
 const IngredientList: React.FC = (): JSX.Element => {
 	const wrapperRef = useRef<HTMLDivElement>(null);
@@ -20,7 +19,7 @@ const IngredientList: React.FC = (): JSX.Element => {
 		main: useRef<HTMLDivElement>(null),
 	};
 
-	const { ingredients } = useSelector((store: RootState) => store.ingredients);
+	const { ingredients } = useAppSelector((store) => store.ingredients);
 
 	const getIngredientType = (type: string): string => {
 		switch (type) {

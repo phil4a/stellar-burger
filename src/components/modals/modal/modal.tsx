@@ -30,8 +30,8 @@ const Modal: React.FC<{ children: React.ReactNode; onClose: () => void }> = ({
 
 	return ReactDOM.createPortal(
 		<>
-			<div className={styles.wrapper}>
-				<button className={styles.close} onClick={handleCloseModal}>
+			<div data-test-id="modal" className={styles.wrapper}>
+				<button className={styles.close} onClick={handleCloseModal} aria-label="Закрыть">
 					<CloseIcon type="primary" />
 				</button>
 				{children}

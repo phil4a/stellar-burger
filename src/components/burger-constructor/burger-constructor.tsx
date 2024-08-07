@@ -1,12 +1,19 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState, useAppDispatch } from '../../services/store';
+
+import { useAppDispatch, useAppSelector } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
-import { addIngredient, setBun, clearIngredients } from '../../services/constructor-slice';
-import { increaseIngredientsCounter, resetCounters } from '../../services/ingredients-slice';
+import {
+	addIngredient,
+	setBun,
+	clearIngredients,
+} from '../../services/constructor/constructor-slice';
+import {
+	increaseIngredientsCounter,
+	resetCounters,
+} from '../../services/ingredients/ingredients-slice';
 
-import { sendOrder } from '../../services/order-slice';
+import { sendOrder } from '../../services/order/order-slice';
 
 import Modal from '../modals/modal/modal';
 import OrderDetails from '../modals/order-details/order-details';
@@ -22,9 +29,9 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 	const navigate = useNavigate();
 
 	const dispatch = useAppDispatch();
-	const { user } = useSelector((store: RootState) => store.auth);
-	const ingredients = useSelector((store: RootState) => store.burgerConstructor.ingredients);
-	const { bun } = useSelector((store: RootState) => store.burgerConstructor);
+	const { user } = useAppSelector((store) => store.auth);
+	const ingredients = useAppSelector((store) => store.burgerConstructor.ingredients);
+	const { bun } = useAppSelector((store) => store.burgerConstructor);
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -66,8 +73,12 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 	const borderColor = canDrop && itemType === 'bun' ? '#4C4CFF' : 'transparent';
 	const borderColorIngredients = canDrop && itemType !== 'bun' ? '#4C4CFF' : 'transparent';
 	return (
-		<section ref={dropRef} className={`${styles.section} pt-25 pl-4 pr-4`}>
+		<section
+			data-test-id="constructor"
+			ref={dropRef}
+			className={`${styles.section} pt-25 pl-4 pr-4`}>
 			<div
+				data-test-id="top-bun-constructor"
 				className={`${styles.bun} ${styles.topBunPlaceholder}`}
 				style={{ borderColor: borderColor }}>
 				{bun ? (
@@ -103,6 +114,7 @@ const BurgerConstructor: React.FC = (): JSX.Element => {
 			</div>
 
 			<div
+				data-test-id="bottom-bun-constructor"
 				className={`${styles.bun} ${styles.bottomBunPlaceholder}`}
 				style={{ borderColor: borderColor }}>
 				{bun ? (

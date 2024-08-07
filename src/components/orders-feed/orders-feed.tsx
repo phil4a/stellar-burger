@@ -6,7 +6,6 @@ import {
 	getTotalTodayOrders,
 } from '../../services/websockets/order-feed/slice';
 import { useAppDispatch, useAppSelector } from '../../services/store';
-import { RootState } from '../../services/store';
 import { WebsocketStatus } from '../../utils/websockets-types';
 
 import FeedInfo from './feed-info/feed-info';
@@ -23,7 +22,7 @@ const OrdersFeed = (): JSX.Element => {
 	const totalOrderNum = useAppSelector(getTotalOrders);
 	const totalOrderTodayNum = useAppSelector(getTotalTodayOrders);
 
-	const wsStatus = useAppSelector((state: RootState) => state.orders.status);
+	const wsStatus = useAppSelector((state) => state.orders.status);
 
 	useEffect(() => {
 		dispatch(wsConnect(`${WS_URL}/all`));

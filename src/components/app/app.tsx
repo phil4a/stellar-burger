@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState, useAppDispatch } from '../../services/store';
-import { getIngredientsFromServer } from '../../services/ingredients-slice';
+import { useAppDispatch, useAppSelector } from '../../services/store';
+import { getIngredientsFromServer } from '../../services/ingredients/ingredients-slice';
 import { checkAuth } from '../../services/auth/auth-slice';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
@@ -31,11 +30,9 @@ const App: React.FC = () => {
 	const background = location.state && location.state.background;
 
 	const dispatch = useAppDispatch();
-	const ingredientsStatus = useSelector((state: RootState) => state.ingredients.status);
-	const { isAuthChecked, accessToken, isFetchingUser } = useSelector(
-		(state: RootState) => state.auth,
-	);
-	const { isFetchingIngredients } = useSelector((state: RootState) => state.ingredients);
+	const ingredientsStatus = useAppSelector((state) => state.ingredients.status);
+	const { isAuthChecked, accessToken, isFetchingUser } = useAppSelector((state) => state.auth);
+	const { isFetchingIngredients } = useAppSelector((state) => state.ingredients);
 
 	useEffect(() => {
 		if (!isAuthChecked && accessToken) {
@@ -44,7 +41,7 @@ const App: React.FC = () => {
 		if (ingredientsStatus === 'idle') {
 			dispatch(getIngredientsFromServer());
 		}
-	}, [dispatch, ingredientsStatus, isAuthChecked]);
+	}, [dispatch, ingredientsStatus, isAuthChecked, accessToken]);
 
 	return isFetchingIngredients || isFetchingUser ? (
 		<Preloader />
