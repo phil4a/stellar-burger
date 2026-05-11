@@ -12,6 +12,18 @@ Stellar Burger — веб‑приложение для создания и оф
 
 Проект "Stellar Burger" - это веб-приложение для создания и оформления заказов на звездные бургеры.
 
+## Технологии
+
+- React
+- TypeScript
+- Create React App (react-scripts)
+- Redux Toolkit + React Redux
+- React Router
+- React DnD
+- WebSocket (лента заказов)
+- Тесты: Jest + React Testing Library, Cypress
+- UI: @ya.praktikum/react-developer-burger-ui-components
+
 ### Функциональность
 
 - Создание и редактирование бургеров через DND
