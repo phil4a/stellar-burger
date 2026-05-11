@@ -1,7 +1,6 @@
 import { IIngredient } from '../utils/types';
 
-const API_URL = 'https://norma.nomoreparties.space/api';
-export const WS_URL = 'wss://norma.nomoreparties.space/orders';
+import { API_URL } from '../constants/config';
 
 interface IRefreshResponse {
 	success: boolean;
@@ -54,14 +53,17 @@ export const refreshToken = async (): Promise<IRefreshResponse> => {
 	return checkResponse<IRefreshResponse>(res);
 };
 
-export const fetchWithRefresh = async (endpoint: string, options: FetchOptions): Promise<any> => {
+export const fetchWithRefresh = async <T>(endpoint: string, options: FetchOptions): Promise<T> => {
 	const url = `${API_URL}/${endpoint}`;
 	try {
 		const res = await fetch(url, options);
-		const data = await checkResponse(res);
+		const data = await checkResponse<T>(res);
 		return data;
 	} catch (err) {
-		if (err === 'jwt expired') {
+		const errorMessage =
+			typeof err === 'string' ? err : (err as { message?: string } | null)?.message;
+
+		if (errorMessage === 'jwt expired') {
 			const refreshData: IRefreshResponse = await refreshToken();
 			if (!refreshData.success) {
 				return Promise.reject(refreshData);
@@ -74,7 +76,7 @@ export const fetchWithRefresh = async (endpoint: string, options: FetchOptions):
 			}
 			options.headers.Authorization = refreshData.accessToken; // Обновляем токен в заголовке
 			const res = await fetch(url, options); // Повторный запрос с новым токеном
-			return await checkResponse(res);
+			return await checkResponse<T>(res);
 		} else {
 			return Promise.reject(err);
 		}
@@ -83,14 +85,13 @@ export const fetchWithRefresh = async (endpoint: string, options: FetchOptions):
 
 export const fetchForgotPassword = (email: string): Promise<IForgotPasswordResponse> => {
 	const request: IForgotPasswordRequest = { email };
-	return fetchWithRefresh('password-reset', {
+	return fetchWithRefresh<IForgotPasswordResponse>('password-reset', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json;charset=utf-8',
-			Authorization: localStorage.getItem('accessToken') || '',
 		},
 		body: JSON.stringify(request),
-	}).then((res) => res.json()) as Promise<IForgotPasswordResponse>;
+	});
 };
 
 export const fetchResetPassword = (
@@ -98,11 +99,10 @@ export const fetchResetPassword = (
 	token: string,
 ): Promise<IForgotPasswordResponse> => {
 	const request: IResetPasswordRequest = { password, token };
-	return fetchWithRefresh('password-reset/reset', {
+	return fetchWithRefresh<IForgotPasswordResponse>('password-reset/reset', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json;charset=utf-8',
-			Authorization: localStorage.getItem('accessToken') || '',
 		},
 		body: JSON.stringify(request),
 	});

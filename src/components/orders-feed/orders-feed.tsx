@@ -12,7 +12,7 @@ import FeedInfo from './feed-info/feed-info';
 import FeedList from './feed-list/feed-list';
 import Preloader from '../preloader/preloader';
 
-import { WS_URL } from '../../utils/api';
+import { WS_URL } from '../../constants/config';
 
 import styles from './orders-feed.module.css';
 

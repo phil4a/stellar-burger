@@ -8,7 +8,7 @@ import {
 import { getProfileOrders } from '../../services/websockets/profile-feed/profile-slice';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 
-import { WS_URL } from '../../utils/api';
+import { WS_URL } from '../../constants/config';
 import FeedList from '../orders-feed/feed-list/feed-list';
 import { WebsocketStatus } from '../../utils/websockets-types';
 import Preloader from '../preloader/preloader';

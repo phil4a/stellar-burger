@@ -25,6 +25,11 @@ interface IResponse {
 	};
 }
 
+interface ILogoutResponse {
+	success: boolean;
+	message?: string;
+}
+
 export const initialState: IAuthState = {
 	user: {
 		name: '',
@@ -189,7 +194,7 @@ export const registration = createAsyncThunk<IResponse, IFetchUserData>(
 			password: data.password,
 			name: data.name,
 		});
-		return fetchWithRefresh('auth/register', {
+		return fetchWithRefresh<IResponse>('auth/register', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -203,7 +208,7 @@ export const login = createAsyncThunk<IResponse, IFetchUserData>('auth/login', (
 	const accessToken = localStorage.getItem('accessToken');
 
 	const { email, password } = data;
-	const response = fetchWithRefresh('auth/login', {
+	const response = fetchWithRefresh<IResponse>('auth/login', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -214,8 +219,8 @@ export const login = createAsyncThunk<IResponse, IFetchUserData>('auth/login', (
 	return response;
 });
 
-export const logout = createAsyncThunk<void>('auth/logout', () => {
-	return fetchWithRefresh('auth/logout', {
+export const logout = createAsyncThunk<void>('auth/logout', async () => {
+	await fetchWithRefresh<ILogoutResponse>('auth/logout', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -227,7 +232,7 @@ export const logout = createAsyncThunk<void>('auth/logout', () => {
 export const checkAuth = createAsyncThunk<IResponse>('auth/check', async () => {
 	const accessToken = localStorage.getItem('accessToken');
 
-	return fetchWithRefresh('auth/user', {
+	return fetchWithRefresh<IResponse>('auth/user', {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -245,7 +250,7 @@ export const refreshUser = createAsyncThunk<IResponse, IFetchUserData>(
 			email: data.email,
 			name: data.name,
 		});
-		return fetchWithRefresh('auth/user', {
+		return fetchWithRefresh<IResponse>('auth/user', {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',

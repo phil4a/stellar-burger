@@ -72,7 +72,7 @@ export const sendOrder = createAsyncThunk<IOrderResponse, string[]>(
 	'currentOrder/send',
 	async (ingredientIds) => {
 		const accessToken = localStorage.getItem('accessToken');
-		const response = await fetchWithRefresh('orders', {
+		const response = await fetchWithRefresh<IOrderResponse>('orders', {
 			method: 'POST',
 			headers: {
 				Authorization: accessToken || '',
@@ -80,7 +80,7 @@ export const sendOrder = createAsyncThunk<IOrderResponse, string[]>(
 			},
 			body: JSON.stringify({ ingredients: ingredientIds }),
 		});
-		return response as Promise<IOrderResponse>;
+		return response;
 	},
 );
 
@@ -89,14 +89,14 @@ export const fetchOrderByNumber = createAsyncThunk<IOrderResponse, string>(
 	async (orderNumber) => {
 		const accessToken = localStorage.getItem('accessToken');
 
-		const response = await fetchWithRefresh(`orders/${orderNumber}`, {
+		const response = await fetchWithRefresh<IOrderResponse>(`orders/${orderNumber}`, {
 			method: 'GET',
 			headers: {
 				Authorization: accessToken || '',
 				'Content-Type': 'application/json',
 			},
 		});
-		return response as Promise<IOrderResponse>;
+		return response;
 	},
 );
 

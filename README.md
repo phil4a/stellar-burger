@@ -1,5 +1,7 @@
 # Stellar-Burger
 
+Учебный проект на Яндекс Практикум
+
 ## [Перейти на демо-сайт](https://stellar.students.nomorepartiesco.ru/)
 
 ## Описание
