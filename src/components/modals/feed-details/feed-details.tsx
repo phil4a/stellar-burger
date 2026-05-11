@@ -35,7 +35,7 @@ const FeedDetails: React.FC = (): JSX.Element | null => {
 		if (!order) {
 			dispatch(fetchOrderByNumber(number!));
 		}
-	}, [dispatch, number]);
+	}, [dispatch, number, order]);
 
 	const { name, ingredients, status, createdAt } = order || {};
 

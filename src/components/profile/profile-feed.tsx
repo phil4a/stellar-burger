@@ -23,14 +23,14 @@ const ProfileFeed = () => {
 	const wsStatus = useAppSelector((state) => state.profileOrders.status);
 
 	useEffect(() => {
-		if (match) {
+		if (match && accessToken) {
 			dispatch(profileWsConnect(`${WS_URL}?token=${accessToken}`));
 
 			return () => {
 				dispatch(profileWsDisconnect());
 			};
 		}
-	}, [dispatch, match]);
+	}, [dispatch, match, accessToken]);
 
 	if (wsStatus !== WebsocketStatus.ONLINE) {
 		return <Preloader />;

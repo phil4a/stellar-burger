@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import ModalOverlay from '../modal-overlay/modal-overlay';
 
@@ -10,9 +10,9 @@ const Modal: React.FC<{ children: React.ReactNode; onClose: () => void }> = ({
 	children,
 	onClose,
 }): React.ReactPortal => {
-	const handleCloseModal = (): void => {
+	const handleCloseModal = useCallback((): void => {
 		onClose();
-	};
+	}, [onClose]);
 
 	useEffect(() => {
 		const handleEsc = (e: KeyboardEvent): void => {
@@ -24,7 +24,7 @@ const Modal: React.FC<{ children: React.ReactNode; onClose: () => void }> = ({
 		return () => {
 			document.removeEventListener('keydown', handleEsc);
 		};
-	}, [onClose]);
+	}, [handleCloseModal]);
 
 	const modalRoot = document.querySelector('#modals');
 
