@@ -1,5 +1,9 @@
 # Stellar-Burger
 
+Stellar Burger — веб‑приложение для создания и оформления заказов на «звёздные» бургеры.
+
+![Интерфейс Stellar Burger](public/stellar.png)
+
 Учебный проект на Яндекс Практикум
 
 ## [Перейти на демо-сайт](https://stellar.dphil.ru/)
