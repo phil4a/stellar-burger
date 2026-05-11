@@ -2,7 +2,7 @@
 
 Учебный проект на Яндекс Практикум
 
-## [Перейти на демо-сайт](https://stellar.students.nomorepartiesco.ru/)
+## [Перейти на демо-сайт](https://stellar.dphil.ru/)
 
 ## Описание
 
