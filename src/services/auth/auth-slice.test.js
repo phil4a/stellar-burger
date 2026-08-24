@@ -9,8 +9,8 @@ import reducer, {
 } from './auth-slice';
 import { fetchWithRefresh } from '../../utils/api';
 
-jest.mock('../../utils/api', () => ({
-	fetchWithRefresh: jest.fn(),
+vi.mock('../../utils/api', () => ({
+	fetchWithRefresh: vi.fn(),
 }));
 
 const mockUser = {
@@ -57,7 +57,7 @@ describe('Check auth', () => {
 		window.localStorage.clear();
 	});
 	afterEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	test('should return the initial state', () => {

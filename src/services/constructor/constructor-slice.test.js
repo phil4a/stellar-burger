@@ -8,11 +8,11 @@ import reducer, {
 } from './constructor-slice';
 
 // Мок для nanoid
-jest.mock('@reduxjs/toolkit', () => {
-	const originalModule = jest.requireActual('@reduxjs/toolkit');
+vi.mock('@reduxjs/toolkit', async (importOriginal) => {
+	const originalModule = await importOriginal();
 	return {
 		...originalModule,
-		nanoid: jest.fn(() => 'fixed-nanoid'),
+		nanoid: vi.fn(() => 'fixed-nanoid'),
 	};
 });
 

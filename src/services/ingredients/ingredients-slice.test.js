@@ -35,7 +35,7 @@ const mockedIngredientsArray = {
 
 describe('Check ingredients', () => {
 	beforeEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	test('should return the initial state', () => {
@@ -139,18 +139,18 @@ describe('Check ingredients', () => {
 
 describe('async actions for ingredients', () => {
 	beforeEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	test('should get ingredients from server', async () => {
-		const mockFetch = jest.spyOn(global, 'fetch').mockResolvedValue({
-			json: jest.fn().mockResolvedValue({ data: mockedIngredientsArray.ingredients }),
+		const mockFetch = vi.spyOn(global, 'fetch').mockResolvedValue({
+			json: vi.fn().mockResolvedValue({ data: mockedIngredientsArray.ingredients }),
 			ok: true,
 		});
 
 		const thunk = getIngredientsFromServer();
-		const dispatch = jest.fn();
-		const getState = jest.fn();
+		const dispatch = vi.fn();
+		const getState = vi.fn();
 
 		await thunk(dispatch, getState, {});
 
@@ -176,10 +176,10 @@ describe('async actions for ingredients', () => {
 	});
 
 	test('should return an error state after network error', async () => {
-		const mockFetch = jest.spyOn(global, 'fetch').mockRejectedValue(new Error('Network Error'));
+		const mockFetch = vi.spyOn(global, 'fetch').mockRejectedValue(new Error('Network Error'));
 		const thunk = getIngredientsFromServer();
-		const dispatch = jest.fn();
-		const getState = jest.fn();
+		const dispatch = vi.fn();
+		const getState = vi.fn();
 
 		await thunk(dispatch, getState, {});
 
