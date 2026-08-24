@@ -24,7 +24,7 @@ const RECONNECT_PERIOD = 3000;
 export const socketMiddleware = (
 	wsActions: TWsActionTypes,
 	withTokenRefresh: boolean = false,
-): Middleware<{}, RootState> => {
+): Middleware<object, RootState> => {
 	return (store) => {
 		let socket: WebSocket | null = null;
 		const { connect, sendMessage, onOpen, onClose, onError, onMessage, onConnecting, disconnect } =

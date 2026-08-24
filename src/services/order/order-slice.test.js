@@ -6,11 +6,11 @@ import reducer, {
 } from './order-slice';
 import { fetchWithRefresh } from '../../utils/api';
 
-jest.mock('../../utils/api');
+vi.mock('../../utils/api');
 
 describe('Check order', () => {
 	beforeEach(() => {
-		jest.clearAllMocks();
+		vi.clearAllMocks();
 	});
 
 	test('should return the initial state', () => {
@@ -95,8 +95,8 @@ describe('Check order', () => {
 	});
 
 	test('should dispatch sendOrder and update state', async () => {
-		const mockDispatch = jest.fn();
-		const mockGetState = jest.fn();
+		const mockDispatch = vi.fn();
+		const mockGetState = vi.fn();
 		const mockResponse = { orders: [] };
 
 		fetchWithRefresh.mockResolvedValue(mockResponse);
@@ -113,8 +113,8 @@ describe('Check order', () => {
 	});
 
 	test('should dispatch fetchOrderByNumber and update state', async () => {
-		const mockDispatch = jest.fn();
-		const mockGetState = jest.fn();
+		const mockDispatch = vi.fn();
+		const mockGetState = vi.fn();
 		const mockResponse = { order: { number: 12345 } };
 
 		fetchWithRefresh.mockResolvedValue(mockResponse);

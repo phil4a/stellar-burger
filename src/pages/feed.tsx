@@ -1,8 +1,6 @@
 import OrdersFeed from '../components/orders-feed/orders-feed';
 
-type Props = {};
-
-const Feed = (props: Props) => {
+const Feed = () => {
 	return <OrdersFeed />;
 };
 

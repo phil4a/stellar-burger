@@ -2,7 +2,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import {
 	BurgerIcon,
 	ListIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons';
+} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './header-nav.module.css';
 
 const HeaderNav: React.FC = () => {

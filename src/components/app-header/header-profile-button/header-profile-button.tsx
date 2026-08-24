@@ -1,4 +1,4 @@
-import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons';
+import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useAppSelector } from '../../../services/store';
 import { NavLink, useLocation } from 'react-router-dom';
 import styles from './header-profile-button.module.css';
