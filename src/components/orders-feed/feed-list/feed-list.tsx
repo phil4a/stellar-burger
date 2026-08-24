@@ -9,7 +9,7 @@ interface FeedListProps {
 const FeedList = ({ orders }: FeedListProps) => {
 	return (
 		<ul className={styles.list}>
-			{orders.map((order, i) => (
+			{orders.map((order) => (
 				<OrderInfo order={order} key={order._id} />
 			))}
 		</ul>

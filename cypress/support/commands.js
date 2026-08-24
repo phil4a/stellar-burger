@@ -21,7 +21,7 @@ Cypress.Commands.add('closeModalWithEsc', () => {
 Cypress.Commands.add('closeModalWithClickOutside', () => {
 	cy.get('@modal').then(($modal) => {
 		const modal = $modal[0];
-		const { top, right, bottom, left } = modal.getBoundingClientRect();
+		const { top, left } = modal.getBoundingClientRect();
 		cy.get('body').click(left - 10, top - 10);
 	});
 	cy.get('@modalTitle').should('not.exist');
