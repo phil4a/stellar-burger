@@ -16,12 +16,12 @@ Stellar Burger — веб‑приложение для создания и оф
 
 - React
 - TypeScript
-- Create React App (react-scripts)
+- Vite
 - Redux Toolkit + React Redux
 - React Router
 - React DnD
 - WebSocket (лента заказов)
-- Тесты: Jest + React Testing Library, Cypress
+- Тесты: Vitest, Cypress
 - UI: @ya.praktikum/react-developer-burger-ui-components
 
 ### Функциональность
@@ -32,3 +32,15 @@ Stellar Burger — веб‑приложение для создания и оф
 - Модальные окна c номерами заказа и информацией об ингредиентах
 - Просмотр истории заказов пользователя и общей ленты заказов
 - Unit и E2E тесты
+
+### Запуск
+
+```bash
+npm install
+npm run dev        # дев-сервер на http://localhost:3000
+npm run build      # проверка типов + прод-сборка в dist/
+npm run preview    # раздача собранного dist/ на http://localhost:3000
+npm test           # юнит-тесты (Vitest)
+npm run cypress    # e2e-тесты (нужен запущенный dev или preview)
+npm run lint       # ESLint
+```
